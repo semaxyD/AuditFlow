@@ -1,6 +1,6 @@
 # 📂 Estructura del Proyecto
 
-## 🏛 ESTRUCTURA PROPUESTA PARA CADA CAPA
+## 🏛 ESTRUCTURA PROPUESTA PARA CADA CAPA(BORRAR EL .gitkeep CUANDO LOS DIRECTORIOS TENGAN ARCHIVOS)
 
 ```
 /proyecto-auditoria-iso
