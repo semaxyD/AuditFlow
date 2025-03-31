@@ -30,7 +30,7 @@ const formSchema = z.object({
   role: z.enum(['administrador', 'auditor_interno', 'auditor_externo', 'empresa_cliente']),
 });
 
-const roles: { value: UserRole; label: string }[] = [
+export const ROLES: { value: UserRole; label: string }[] = [
   { value: 'administrador', label: 'Administrador' },
   { value: 'auditor_interno', label: 'Auditor Interno' },
   { value: 'auditor_externo', label: 'Auditor Externo' },
@@ -119,7 +119,7 @@ export function RegisterForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent className='w-full'>
-                  {roles.map((role) => (
+                  {ROLES.map((role) => (
                     <SelectItem key={role.value} value={role.value}>
                       {role.label}
                     </SelectItem>
