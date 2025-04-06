@@ -51,11 +51,36 @@ export function RegisterForm() {
 
   async function onSubmit(data: RegisterFormData) {
     setIsLoading(true);
+    
+    // Aquí se implementará la llamada al backend
     try {
-      // Aquí se implementará la llamada al backend
-      console.log(data);
+      const payload = {
+        nombre: data.name,
+        correo: data.email,
+        contrasena: data.password,
+        rol: data.role,
+      };
+  
+      const res = await fetch('http://localhost:3001/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      const result = await res.json();
+  
+      if (res.ok) {
+        alert(result.message || 'Usuario registrado correctamente');
+        form.reset(); // limpia el formulario si quieres
+      } else {
+        alert(result.message || 'Ocurrió un error al registrar');
+      }
+  
     } catch (error) {
-      console.error('Error al registrar usuario:', error);
+      alert('Error al registrar usuario. Intente más tarde.');
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
