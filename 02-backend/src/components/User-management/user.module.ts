@@ -5,8 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from '../../../../03-data-access/src/components/system-schema/user.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Usuario])],
-    controllers: [UserController],
-    providers: [UserService],
-  })
-  export class UserModule {}
+  // Importa el repositorio de la entidad Usuario para poder usarlo en el servicio
+  imports: [TypeOrmModule.forFeature([Usuario])],
+
+  // Controlador que maneja las rutas relacionadas a usuarios
+  controllers: [UserController],
+
+  // Servicio que contiene la lógica para manejar usuarios
+  providers: [UserService],
+})
+export class UserModule {}

@@ -1,3 +1,4 @@
+// Util para probar si la conexión está funcionando
 import { AppDataSource } from './data-source';
 
 AppDataSource.initialize()

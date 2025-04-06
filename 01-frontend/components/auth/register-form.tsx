@@ -49,11 +49,12 @@ export function RegisterForm() {
     },
   });
 
+  //Backend------------------------------------------------
   async function onSubmit(data: RegisterFormData) {
-    setIsLoading(true);
-    
-    // Aquí se implementará la llamada al backend
+    setIsLoading(true); // Activa el estado de carga mientras se envía el formulario
+  
     try {
+      // Preparamos los datos que espera el backend
       const payload = {
         nombre: data.name,
         correo: data.email,
@@ -61,6 +62,7 @@ export function RegisterForm() {
         rol: data.role,
       };
   
+      // Enviamos los datos al backend 
       const res = await fetch('http://localhost:3001/usuarios', {
         method: 'POST',
         headers: {
@@ -69,22 +71,27 @@ export function RegisterForm() {
         body: JSON.stringify(payload),
       });
   
-      const result = await res.json();
+      const result = await res.json(); // Obtenemos la respuesta del backend
   
       if (res.ok) {
+        // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
+        
         alert(result.message || 'Usuario registrado correctamente');
-        form.reset(); // limpia el formulario si quieres
+        form.reset(); // Limpia el formulario
       } else {
+        //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
         alert(result.message || 'Ocurrió un error al registrar');
       }
   
     } catch (error) {
+      //mostramos error genérico
       alert('Error al registrar usuario. Intente más tarde.');
       console.error(error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Apagamos el estado de carga
     }
   }
+  //Backend------------------------------------------------------
 
   return (
     <Form {...form}>

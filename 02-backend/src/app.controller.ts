@@ -1,19 +1,18 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller() 
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get() // Ruta GET en la raíz ('/')
   getHello(): string {
-    return this.appService.getHello();
+    return this.appService.getHello(); // Devuelve un mensaje desde el servicio
   }
 
-  @Get('/ping')
+  @Get('/ping') // Ruta GET en '/ping'
   ping() {
+    // Esto sirve para probar que el backend está corriendo bien
     return { message: 'Backend está funcionando correctamente' };
   }
-
- 
 }

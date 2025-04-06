@@ -8,21 +8,24 @@ import { CreateUserDto } from './create-user.dto';
 export class UserService {
   constructor(
     @InjectRepository(Usuario)
-    private usuarioRepo: Repository<Usuario>,
+    private usuarioRepo: Repository<Usuario>, // Repositorio para acceder a la tabla de usuarios
   ) {}
 
   async crearUsuario(dto: CreateUserDto): Promise<any> {
+    // Validar si el correo ya existe en la base de datos
     const existe = await this.usuarioRepo.findOneBy({ correo: dto.correo });
     if (existe) {
-      throw new BadRequestException('El correo ya está registrado');
+      throw new BadRequestException('El correo ya está registrado'); // Si ya existe, lanza error
     }
 
+    // Si no existe, crea y guarda un nuevo usuario
     const nuevo = this.usuarioRepo.create(dto);
     const usuario = await this.usuarioRepo.save(nuevo);
+
+    // Retorna mensaje de éxito y los datos del usuario
     return {
       message: 'Usuario registrado correctamente',
       usuario,
     };
   }
 }
-
