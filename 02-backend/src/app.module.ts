@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from '../../03-data-access/src/components/system-schema/user.entity'; 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './components/User-management/user.module';
+import { UserModule } from './components/User-management/user/user.module';
 
 @Module({
   imports: [
