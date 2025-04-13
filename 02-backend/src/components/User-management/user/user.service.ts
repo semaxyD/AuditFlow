@@ -1,43 +1,40 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Usuario } from '../../../../../03-data-access/src/components/system-schema/user.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from './create-user.dto';
-import { PrismaService } from '@data-access/src/prisma/prisma.service'
-import { User } from '@data-access/node_modules/@prisma/client';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '@data-access/src/prisma/prisma.service';
+import { LoginDto } from './login.dto';
+import * as bcrypt from 'bcrypt';
+import { User } from '@data-access/src/prisma/prisma-types'; // Asegúrate de que esto sea el tipo correcto
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  //cambiar la logica de implementacion entre el ORM y el metodo de crearUsuario
-  /*constructor(
-    @InjectRepository(Usuario)
-    private usuarioRepo: Repository<Usuario>, // Repositorio para acceder a la tabla de usuarios
-  ) {}*/
 
-  async crearUsuario(dto: CreateUserDto): Promise<any> {
-    // Validar si el correo ya existe en la base de datos
-    const existe = await this.usuarioRepo.findOneBy({ correo: dto.correo });
-    if (existe) {
-      throw new BadRequestException('El correo ya está registrado'); // Si ya existe, lanza error
+  async login(dto: LoginDto): Promise<{ message: string; userModel: Partial<User> }> {
+    // Buscar al usuario en la base de datos usando su correo electrónico
+    const user = await this.prisma.user.findUnique({
+      where: { email: dto.email },
+    });
+
+    // Si no se encuentra el usuario, se lanza una excepción
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
     }
 
-    // Si no existe, crea y guarda un nuevo usuario
-    const nuevo = this.usuarioRepo.create(dto);
-    const usuario = await this.usuarioRepo.save(nuevo);
+    // Comparar la contraseña ingresada con la almacenada en la base de datos
+    const passwordMatches = await bcrypt.compare(dto.password, user.password);
 
-    // Retorna mensaje de éxito y los datos del usuario
+    // Si la contraseña no coincide, se lanza una excepción
+    if (!passwordMatches) {
+      throw new NotFoundException('Contraseña incorrecta');
+    }
+
+    // Si todo es correcto, se retorna el mensaje y el usuario sin su contraseña
     return {
-      message: 'Usuario registrado correctamente',
-      usuario,
+      message: 'Inicio de sesión exitoso',
+      userModel: {
+        id: user.id,
+        email: user.email,
+        rol: user.rol,
+      },
     };
   }
-
-  //Buscar user por medio de su email para el login
-  async findByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: { email },
-    });
-  }
-
 }

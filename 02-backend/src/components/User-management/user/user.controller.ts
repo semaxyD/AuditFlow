@@ -1,20 +1,23 @@
-import { Body, Controller, Post, Get, Query } from '@nestjs/common';
+// src/components/user-management/user/user.controller.ts
+import { Body, Controller, Post, UseGuards, Get } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './create-user.dto';
+import { LoginDto } from './login.dto';
+import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el guardia JWT
 
-@Controller('user') // Ruta base: http://localhost:3001/usuarios
+
+@Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post() // Maneja las solicitudes POST para registrar usuarios
-  async crear(@Body() datos: CreateUserDto) {
-    // Llama al servicio para crear el usuario con los datos recibidos
-    return this.userService.crearUsuario(datos);
+  @Post('login') // Ruta para el login de validacion(no de autenticacion)
+  async login(@Body() loginDto: LoginDto) {
+    return this.userService.login(loginDto);
   }
 
-  @Get('by-email')
-  async getUserByEmail(@Query('email')email: string){
-    const user = await this.userService.findByEmail(email);
-    return user;
+  //endpoint temporal para probar la proteccion de endpoints(mientras se implementan otros endpoints que si sena protegidos)
+  @UseGuards(JwtAuthGuard) // Aplicar el guardia para esta ruta de prueba
+  @Get('protected')
+  async getProtectedData() {
+    return { message: 'Acceso concedido' };
   }
 }
