@@ -9,11 +9,14 @@ import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el 
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+
+
   @Post('create') // Ruta para crear un nuevo usuario
   async crearUsuario(@Body() body: any) {
     return this.userService.crearUsuario(body);
   }
 
+  // Endpoints Hu005
   @Post('login') // Ruta para el login de validacion(no de autenticacion)
   async login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);

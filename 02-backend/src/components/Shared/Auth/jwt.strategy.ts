@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { PrismaService } from '@data-access/src/prisma/prisma.service';
+import { PrismaService } from '@data-access/src/prismaconfig/prisma.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -29,6 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new Error('Token válido, pero usuario no encontrado en la base de datos');
     }
 
-    return user;
+    return {id:user.id , email: user.email, role: user.role};
   }
 }
