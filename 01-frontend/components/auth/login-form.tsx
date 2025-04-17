@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -40,26 +41,18 @@ export function LoginForm() {
     setIsLoading(true);
     setErrorMessage("");
 
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+    const res = await signIn("credentials", {
+      redirect: false,
+      password: data.password,
+    });
 
-      if (response.ok) {
-        router.push("/dashboard");
-      } else {
-        const result = await response.json();
-        setErrorMessage(result.message || "No se pudo iniciar sesión");
-      }
-    } catch (error) {
-      setErrorMessage("Error de conexión con el servidor");
-    } finally {
-      setIsLoading(false);
+    if (res?.ok) {
+      router.push("/dashboard");
+    } else {
+      setErrorMessage("Correo o contraseña incorrectos");
     }
+
+    setIsLoading(false);
   };
 
   return (
