@@ -1,6 +1,6 @@
-import { prisma } from '../../../prismaconfig/prisma-client'
+import { prisma } from "../../../prismaconfig/prisma-client";
 
-// Función para obtener todas las evaluaciones de una empresa
+// Función para obtener todas las evaluaciones de una empresa QUERY 02
 export async function getEvaluationsByCompany(companyId: number) {
   const evaluations = await prisma.evaluation.findMany({
     where: {
@@ -11,9 +11,8 @@ export async function getEvaluationsByCompany(companyId: number) {
       created_at: true,
       auditor_id: true,
       company_id: true,
-      standard_id: true,
     },
-  })
+  });
 
-  return evaluations
+  return evaluations;
 }
