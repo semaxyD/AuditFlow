@@ -53,4 +53,67 @@ export const getQueries = {
     });
     return evolution;
   },
+
+  // Obtener evaluaciones por empresa con normas asociadas - QUERY COMPUESTA 02
+  getEvaluationsByCompany: async (companyId: number) => {
+    const evaluations = await prisma.evaluation.findMany({
+      where: {
+        company_id: companyId,
+      },
+      select: {
+        id: true,
+        created_at: true,
+        creator: {
+          select: {
+            name: true,
+          },
+        },
+        versions: {
+          select: {
+            answers: {
+              select: {
+                question: {
+                  select: {
+                    criterion: {
+                      select: {
+                        norm: {
+                          select: {
+                            id: true,
+                            name: true,
+                            code: true,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const formatted = evaluations.map((evaluation) => {
+      const normsMap = new Map();
+
+      evaluation.versions.forEach((version) => {
+        version.answers.forEach((answer) => {
+          const norm = answer.question.criterion.norm;
+          if (norm && !normsMap.has(norm.id)) {
+            normsMap.set(norm.id, norm);
+          }
+        });
+      });
+
+      return {
+        evaluation_id: evaluation.id,
+        evaluation_created_at: evaluation.created_at,
+        creator_name: evaluation.creator.name,
+        norms: Array.from(normsMap.values()),
+      };
+    });
+
+    return formatted;
+  },
 };
