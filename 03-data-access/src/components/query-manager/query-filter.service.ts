@@ -6,7 +6,7 @@ export class QueryFilterService {
   constructor(private readonly queryManagerService: QueryManagerService) {}
 
   // Lógica para filtrar la consulta según el tipo
-  async filterQuery(queryType: string, queryName: string) {
+  async filterQuery(queryType: string, queryName: string, ...args: any[]) {
     // Cargar la query correspondiente de acuerdo al tipo
     const query = this.queryManagerService.getQuery(queryName);
 
@@ -14,8 +14,11 @@ export class QueryFilterService {
       throw new Error(`Query not found: ${queryName}`);
     }
 
-    // Aquí se puede realizar alguna lógica adicional si es necesario,
-    // como validar o modificar la query antes de devolverla
-    return query[queryType];  // Ejecuta el tipo de consulta que necesites (por ejemplo, 'create', 'read', etc.)
+    const queryFunc = query[queryType];
+    if (typeof queryFunc !== 'function'){
+      throw new Error(`Query function not found for type: ${queryType}`);
+    }
+
+    return queryFunc(...args);  // Ejecuta el tipo de consulta que necesites (por ejemplo, 'create', 'read', etc.)
   }
 }

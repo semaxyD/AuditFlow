@@ -22,6 +22,10 @@ import {
   
       const request = context.switchToHttp().getRequest();
       const user = request.user;
+
+      if(!user || !user.role){
+        return false;
+      }
   
       // Verificamos si el usuario tiene uno de los roles requeridos
       return requiredRoles.includes(user?.role);
