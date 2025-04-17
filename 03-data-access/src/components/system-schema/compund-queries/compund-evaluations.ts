@@ -3,35 +3,30 @@
 import { prisma } from "../../../prismaconfig/prisma-client";
 
 export const getQueries = {
-  // Obtener detalles de evaluación
+  // Obtener detalles de evaluación QUERY COMPUESTA 04
   getEvaluationDetail: async (evaluationId: number) => {
-    const evaluationDetail = await prisma.evaluation.findUnique({
-      where: { id: evaluationId },
-      include: {
-        company: { select: { id: true, name: true } },
-        creator: { select: { id: true, name: true } },
-        versions: {
-          select: {
-            id: true,
-            created_by: true,
-            created_at: true,
-            is_latest: true,
-            answers: {
-              select: {
-                id: true,
-                response: true,
-                score: true,
-                question: { select: { text: true } },
-              },
-            },
-          },
-        },
-      },
-    });
-    return evaluationDetail;
-  },
+    const answersByQuestion = await prisma.$queryRaw`
+      SELECT DISTINCT ON (q.id)
+        q.id AS "question_id",
+        q.text,
+        c.description AS "criterion_description",
+        n.code AS "norm_code",
+        a.response,
+        a.created_by,
+        a.created_at,
+        ev.id AS "version_id"
+      FROM question q
+      JOIN criterion c ON q.criterion_id = c.id
+      JOIN norm n ON c.norm_id = n.id
+      LEFT JOIN answer a ON a.question_id = q.id
+      LEFT JOIN evaluation_version ev ON a.version_id = ev.id
+      WHERE ev.evaluation_id = ${evaluationId} AND ev.id <= 3
+      ORDER BY q.id, ev.id DESC, a.created_at DESC
+    `;
 
-  // Obtener evolución de la evaluación  QUERY COMPUESTA -03
+    return answersByQuestion;
+  },
+  // Obtener evolución de la evaluación  QUERY COMPUESTA 03
   getEvolutionEvaluation: async (evaluationId: number) => {
     const evolution = await prisma.evaluationVersion.findMany({
       where: { evaluation_id: evaluationId },
@@ -39,14 +34,13 @@ export const getQueries = {
         created_at: "asc",
       },
       select: {
+        id: true,
         version_number: true,
         created_at: true,
-        is_latest: true,
-        answers: {
+        created_by: true,
+        creator: {
           select: {
-            id: true,
-            score: true,
-            created_at: true,
+            name: true,
           },
         },
       },
