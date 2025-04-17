@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException} from '@nestjs/common';
 import { PrismaService } from '@data-access/src/prisma/prisma.service';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +7,35 @@ import { User } from '@data-access/src/prisma/prisma-types'; // Asegúrate de qu
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  async crearUsuario(data: any) {
+    const { nombre, correo, contrasena, rol } = data;
+
+    // Verificar si ya existe un usuario con ese correo
+    const usuarioExistente = await this.db.user.findUnique({
+      where: { correo },
+    });
+
+    if (usuarioExistente) {
+      throw new BadRequestException('El correo ya está registrado');
+    }
+
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
+    const nuevoUsuario = await this.db.user.create({
+      data: {
+        nombre,
+        correo,
+        contrasena: hashedPassword,
+        rol,
+      },
+    });
+
+    return {
+      message: 'Usuario registrado correctamente',
+      id: nuevoUsuario.id,
+    };
+  }
 
   async login(dto: LoginDto): Promise<{ message: string; userModel: Partial<User> }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
@@ -38,3 +67,4 @@ export class UserService {
     };
   }
 }
+
