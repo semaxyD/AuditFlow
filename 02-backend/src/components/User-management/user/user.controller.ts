@@ -9,6 +9,7 @@ import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el 
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  // Endpoints Hu005
   @Post('login') // Ruta para el login de validacion(no de autenticacion)
   async login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
