@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '@data-access/src/prisma/prisma.service';
+import { PrismaService } from '@data-access/src/prismaconfig/prisma.service';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '@data-access/src/prisma/prisma-types'; // Asegúrate de que esto sea el tipo correcto
+import { User } from '@data-access/src/prismaconfig/prisma-types'; // Asegúrate de que esto sea el tipo correcto
 
 @Injectable()
 export class UserService {
@@ -33,7 +33,7 @@ export class UserService {
       userModel: {
         id: user.id,
         email: user.email,
-        rol: user.rol,
+        role: user.role,
       },
     };
   }
