@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# dist y node_modules específicos de backend y data-access
+/02-backend/dist/
+/02-backend/node_modules/
+/03-data-access/dist/
+/03-data-access/node_modules/
