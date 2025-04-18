@@ -2,7 +2,8 @@ import { Injectable, NotFoundException, BadRequestException} from '@nestjs/commo
 import { PrismaService } from '@data-access/src/prisma/prisma.service';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '@data-access/src/prisma/prisma-types'; // Asegúrate de que esto sea el tipo correcto
+import { User } from '@data-access/src/prisma/prisma-types';
+
 
 @Injectable()
 export class UserService {
@@ -82,7 +83,27 @@ export class UserService {
       data: usuarios,
     };
   }
-  
-  
-}
+  // devuelve los campos del usuario por id
+async obtenerUsuarioPorId(id: number) {
+  const usuario = await this.prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      // no se incluyeron las relaciones
+    },
+  });
 
+  if (!usuario) {
+    throw new NotFoundException('Usuario no encontrado');
+  }
+
+  return {
+    message: 'Usuario cargado correctamente',
+    data: usuario,
+    };
+  
+  }
+}
