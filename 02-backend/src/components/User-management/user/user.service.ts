@@ -66,5 +66,23 @@ export class UserService {
       },
     };
   }
+  // método que devuelve los usuarios (solo admins lo usan)
+  async buscarUsuarios() {
+    const usuarios = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        nombre: true,
+        correo: true,
+        rol: true,
+      },
+    });
+  
+    return {
+      message: 'Usuarios encontrados correctamente',
+      data: usuarios,
+    };
+  }
+  
+  
 }
 

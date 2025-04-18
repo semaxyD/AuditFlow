@@ -3,7 +3,9 @@ import { Body, Controller, Post, UseGuards, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el guardia JWT
-
+import { Req } from '@nestjs/common';
+import { Roles } from '../../Shared/Auth/roles.decorator';
+import { RolesGuard } from '../../Shared/Auth/roles.guard';
 
 @Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
@@ -28,4 +30,12 @@ export class UserController {
   async getProtectedData() {
     return { message: 'Acceso concedido' };
   }
+  //endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  @UseGuards(JwtAuthGuard, RolesGuard)// 
+  @Roles('ADMIN')
+  @Get('search')
+  async buscarUsuarios(@Req() req) {
+    return this.userService.buscarUsuarios();
+  }
+
 }
