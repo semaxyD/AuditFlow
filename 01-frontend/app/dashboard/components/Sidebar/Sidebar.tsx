@@ -25,6 +25,7 @@ import {
   Settings,
   User,
   UserPlus,
+  Building2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -39,6 +40,11 @@ const items = [
     title: "Configuración",
     url: "/dashboard/settings",
     icon: Settings,
+  },
+  {
+    title: "Empresas",
+    url: "/dashboard/companies",
+    icon: Building2,
   },
 ];
 
