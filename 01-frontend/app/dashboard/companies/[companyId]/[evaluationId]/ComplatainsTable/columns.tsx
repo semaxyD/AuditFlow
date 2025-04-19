@@ -10,6 +10,7 @@ export type EvaluationVersion = {
   create_by: string;
   created_at: string;
   is_latest: boolean;
+  score: number;
 };
 
 export const versionColumns: ColumnDef<EvaluationVersion>[] = [
@@ -41,12 +42,31 @@ export const versionColumns: ColumnDef<EvaluationVersion>[] = [
     header: "¿Última?",
     cell: ({ row }) =>
       row.original.is_latest ? (
-        <div className="text-green-600 font-semibold flex items-center gap-1">
+        <div className="text-teal-700 font-semibold flex items-center gap-1">
           <Star className="h-4 w-4" /> Sí
         </div>
       ) : (
         <span className="text-muted-foreground">No</span>
       ),
+  },
+  {
+    accessorKey: "score",
+    header: "Puntaje",
+    cell: ({ row }) => {
+      const score = row.original.score; // asumimos un número entre 0 y 100
+
+      return (
+        <div className="w-full max-w-[120px]">
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div
+              className="h-full bg-teal-700 transition-all"
+              style={{ width: `${score}%` }}
+            />
+          </div>
+          <div className="text-xs text-right mt-1">{score}</div>
+        </div>
+      );
+    },
   },
   {
     id: "actions",

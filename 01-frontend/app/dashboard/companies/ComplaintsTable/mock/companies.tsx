@@ -21,6 +21,7 @@ export type Company = {
       created_at: string;
       is_latest: boolean;
       version_number: number;
+      score: number;
     }[];
   }[];
 };
@@ -51,6 +52,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-04-15T10:00:00.000Z",
             is_latest: false,
             version_number: 1,
+            score: 60,
           },
           {
             version_id: 2,
@@ -58,6 +60,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-04-16T12:00:00.000Z",
             is_latest: false,
             version_number: 2,
+            score: 75,
           },
           {
             version_id: 3,
@@ -65,6 +68,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-04-17T14:30:00.000Z",
             is_latest: true,
             version_number: 3,
+            score: 85,
           },
         ],
       },
@@ -95,6 +99,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-03-01T08:45:10.000Z",
             is_latest: false,
             version_number: 1,
+            score: 70,
           },
           {
             version_id: 6,
@@ -102,6 +107,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-03-05T10:20:00.000Z",
             is_latest: true,
             version_number: 2,
+            score: 90,
           },
         ],
       },
@@ -132,6 +138,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-01-15T15:00:00.000Z",
             is_latest: false,
             version_number: 1,
+            score: 50,
           },
           {
             version_id: 8,
@@ -139,6 +146,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-01-20T09:00:00.000Z",
             is_latest: false,
             version_number: 2,
+            score: 65,
           },
           {
             version_id: 9,
@@ -146,6 +154,7 @@ export const COMPANIES_MOCK: Company[] = [
             created_at: "2025-01-25T12:45:00.000Z",
             is_latest: true,
             version_number: 3,
+            score: 80,
           },
         ],
       },
