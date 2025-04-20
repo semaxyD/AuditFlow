@@ -22,6 +22,11 @@ export type Company = {
       is_latest: boolean;
       version_number: number;
       score: number;
+      questions: {
+        question_id: number;
+        question_text: string;
+        response: string;
+      }[]; // Nuevas preguntas y respuestas
     }[];
   }[];
 };
@@ -53,6 +58,18 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: false,
             version_number: 1,
             score: 60,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿Existen protocolos de seguridad?",
+                response: "No",
+              },
+            ],
           },
           {
             version_id: 2,
@@ -61,6 +78,18 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: false,
             version_number: 2,
             score: 75,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿Existen protocolos de seguridad?",
+                response: "Sí",
+              },
+            ],
           },
           {
             version_id: 3,
@@ -69,6 +98,23 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: true,
             version_number: 3,
             score: 85,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿Existen protocolos de seguridad?",
+                response: "Sí",
+              },
+              {
+                question_id: 3,
+                question_text: "¿El sistema de gestión es efectivo?",
+                response: "Sí",
+              },
+            ],
           },
         ],
       },
@@ -100,6 +146,18 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: false,
             version_number: 1,
             score: 70,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa tiene un plan de reciclaje?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿La empresa cumple con las normas ambientales?",
+                response: "Sí",
+              },
+            ],
           },
           {
             version_id: 6,
@@ -108,6 +166,24 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: true,
             version_number: 2,
             score: 90,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa tiene un plan de reciclaje?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿La empresa cumple con las normas ambientales?",
+                response: "Sí",
+              },
+              {
+                question_id: 3,
+                question_text:
+                  "¿Existen políticas de reducción de huella de carbono?",
+                response: "Sí",
+              },
+            ],
           },
         ],
       },
@@ -139,6 +215,13 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: false,
             version_number: 1,
             score: 50,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "No",
+              },
+            ],
           },
           {
             version_id: 8,
@@ -147,6 +230,13 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: false,
             version_number: 2,
             score: 65,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "Sí",
+              },
+            ],
           },
           {
             version_id: 9,
@@ -155,6 +245,18 @@ export const COMPANIES_MOCK: Company[] = [
             is_latest: true,
             version_number: 3,
             score: 80,
+            questions: [
+              {
+                question_id: 1,
+                question_text: "¿La empresa cumple con los requisitos básicos?",
+                response: "Sí",
+              },
+              {
+                question_id: 2,
+                question_text: "¿Existen protocolos de seguridad?",
+                response: "Sí",
+              },
+            ],
           },
         ],
       },

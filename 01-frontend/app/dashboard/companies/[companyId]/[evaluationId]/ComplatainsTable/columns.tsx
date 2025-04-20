@@ -6,11 +6,13 @@ import { Eye, Star, Trash } from "lucide-react";
 import Link from "next/link";
 
 export type EvaluationVersion = {
-  version_number: number;
+  version_id: number;
   create_by: string;
   created_at: string;
   is_latest: boolean;
   score: number;
+  company_id: number;
+  evaluation_id: number;
 };
 
 export const versionColumns: ColumnDef<EvaluationVersion>[] = [
@@ -72,9 +74,18 @@ export const versionColumns: ColumnDef<EvaluationVersion>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const version = row.original;
+      const evaluationId = row.original.evaluation_id;
+      const companyId = row.original.company_id;
+      const version_id = row.original.version_id;
       return (
         <div className="flex gap-2 justify-end">
+          <Link
+            href={`/dashboard/companies/${companyId}/${evaluationId}/${version_id}`}
+          >
+            <Button variant="outline" size="sm">
+              <Eye className="w-4 h-4" />
+            </Button>
+          </Link>
           <Button variant="destructive" size="sm">
             <Trash className="w-4 h-4" />
           </Button>
