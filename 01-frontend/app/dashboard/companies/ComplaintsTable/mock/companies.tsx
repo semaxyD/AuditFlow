@@ -170,7 +170,7 @@ export const COMPANIES_MOCK: Company[] = [
               {
                 question_id: 1,
                 question_text: "¿La empresa tiene un plan de reciclaje?",
-                response: "Sí",
+                response: "No",
               },
               {
                 question_id: 2,
@@ -181,7 +181,7 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 3,
                 question_text:
                   "¿Existen políticas de reducción de huella de carbono?",
-                response: "Sí",
+                response: "No",
               },
             ],
           },

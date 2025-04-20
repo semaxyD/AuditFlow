@@ -30,7 +30,7 @@ export default function CompanyVersionPage({
                 evaluation.versions?.map((version) => ({
                   ...version,
                   evaluation_id: evaluation.evaluation_id,
-                  company_id: company.id,
+                  company_id: Number(company.id),
                 })) || [] // si evaluation.versions es undefined, devolvemos []
             ) || [] // si evaluations es undefined, devolvemos []
           }
