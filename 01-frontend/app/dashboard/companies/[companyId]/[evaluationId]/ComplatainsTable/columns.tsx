@@ -13,6 +13,7 @@ export type EvaluationVersion = {
   score: number;
   company_id: number;
   evaluation_id: number;
+  version_number: number;
 };
 
 export const versionColumns: ColumnDef<EvaluationVersion>[] = [

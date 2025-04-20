@@ -23,7 +23,7 @@ export default function CompanyPage({
           columns={evaluationColumns}
           data={company.evaluations.map((evaluation) => ({
             ...evaluation,
-            company_id: company.id,
+            company_id: Number(company.id),
           }))}
         />{" "}
       </div>

@@ -12,8 +12,9 @@ import {
   LinearScale,
 } from "chart.js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Check, X } from "lucide-react";
+import { CompanyHeader } from "./components/CompanyHeader";
+import { EvaluationInfoCard } from "./components/EvaluationInfoCard";
+import { QuestionsList } from "./components/QuestionsList";
 
 // Register Chart.js components
 ChartJS.register(
@@ -142,116 +143,24 @@ export default function EvaluationPage({
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-teal-700">{company.name}</h1>
-        <div className="flex items-center mt-2">
-          <Badge variant="outline" className="text-sm">
-            NIT: {company.nit}
-          </Badge>
-        </div>
-      </div>
+      <CompanyHeader name={company.name} nit={company.nit} />
 
-      <Card className="mb-8 shadow-md">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-2xl font-semibold text-teal-700">
-            Información de la Evaluación
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="px-4 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium">Norma</h3>
-                <p className="text-muted-foreground">
-                  {evaluation.norm.norm_name} - {evaluation.norm.norm_code}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium">Versión</h3>
-                <p className="text-muted-foreground">
-                  {version.version_number}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium">Fecha de creación</h3>
-                <p className="text-muted-foreground">
-                  {formatDate(version.created_at)}
-                </p>
-              </div>
-              <div className="pt-4">
-                <h3 className="text-lg font-medium">Resumen</h3>
-                <div className="flex flex-col gap-2 mt-2">
-                  <div className="flex items-center gap-2">
-                    <Check className=" text-teal-500" />
-                    <span>
-                      Respuestas Sí: <strong>{yesCount}</strong> (
-                      {Math.round((yesCount / totalQuestions) * 100)}%)
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <X className=" text-red-500" />
-                    <span>
-                      Respuestas No: <strong>{noCount}</strong> (
-                      {Math.round((noCount / totalQuestions) * 100)}%)
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="relative w-64 aspect-[1/1]">
-                <Pie data={data} options={options} />
-                <div className="absolute inset-0 flex items-center justify-center flex-col -translate-y-5">
-                  <span className="text-4xl font-bold">
-                    {compliancePercentage}%
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    Cumplimiento
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <EvaluationInfoCard
+        norm={evaluation.norm}
+        version={version}
+        yesCount={yesCount}
+        noCount={noCount}
+        totalQuestions={totalQuestions}
+        compliancePercentage={compliancePercentage}
+        chartData={data}
+        chartOptions={options}
+        formatDate={formatDate}
+      />
 
       <h2 className="text-2xl font-semibold text-teal-700 mb-6">
         Preguntas y Respuestas
       </h2>
-      <div className="grid gap-4">
-        {version.questions.map((question) => (
-          <Card key={question.question_id} className="shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                {question.response === "Sí" ? (
-                  <Check className="h-6 w-6 text-teal-500 mt-0.5 flex-shrink-0" />
-                ) : (
-                  <X className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
-                )}
-                <div>
-                  <h5 className="font-medium text-lg">
-                    {question.question_text}
-                  </h5>
-                  <div className="mt-2 flex items-center">
-                    <Badge
-                      variant={
-                        question.response === "Sí" ? "success" : "destructive"
-                      }
-                      className={
-                        question.response === "Sí"
-                          ? "bg-teal-100 text-teal-800 hover:bg-teal-100"
-                          : "bg-red-100 text-red-800 hover:bg-red-100"
-                      }
-                    >
-                      {question.response}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <QuestionsList questions={version.questions} />
     </div>
   );
 }
