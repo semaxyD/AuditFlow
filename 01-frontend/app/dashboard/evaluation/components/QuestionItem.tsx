@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card } from "@/components/ui/card";
 import { VALID_ANSWERS } from "../schemas/evaluation.schema";
+import { Input } from "@/components/ui/input";
+
 import {
   Dialog,
   DialogContent,
@@ -23,6 +25,8 @@ export const QuestionItem = memo(function QuestionItem({
   questionId,
   questionText,
 }: Props) {
+  const [evidenceUrl, setEvidenceUrl] = useState("");
+
   const [showEvidence, setShowEvidence] = useState(false);
   const [showObservations, setShowObservations] = useState(false);
 
@@ -146,13 +150,16 @@ export const QuestionItem = memo(function QuestionItem({
           type="button"
           variant="secondary"
           onClick={() => setShowEvidence(true)}
+          className="hover:bg-teal-700 hover:text-white"
         >
           Evidencias
         </Button>
+
         <Button
           type="button"
           variant="secondary"
           onClick={() => setShowObservations(true)}
+          className="hover:bg-teal-700 hover:text-white"
         >
           Observaciones
         </Button>
@@ -166,23 +173,32 @@ export const QuestionItem = memo(function QuestionItem({
       )}
 
       {/* Modal para Evidencias */}
-      <Dialog open={showEvidence} onOpenChange={setShowEvidence}>
+      <Dialog
+        open={showEvidence}
+        onOpenChange={(open) => {
+          if (!open) {
+            trigger(`${namePrefix}.evidences`);
+          }
+          setShowEvidence(open);
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Evidencias</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <p>Aquí puedes añadir evidencias</p>
-            <input
-              type="file"
-              multiple
-              onChange={(e) => {
-                if (e.target.files?.length) {
-                  console.log("Archivos seleccionados:", e.target.files);
-                  // Implementar lógica de subida de archivos
-                }
-              }}
+            <p>Agrega una URL como evidencia</p>
+            <Input
+              type="url"
+              placeholder="https://ejemplo.com/evidencia.jpg"
+              {...register(`${namePrefix}.evidences`)}
+              className={fieldError?.evidences ? "border-red-400" : ""}
             />
+            {fieldError?.evidences && (
+              <p className="text-red-500 text-sm mt-1">
+                {fieldError.evidences.message}
+              </p>
+            )}
           </div>
         </DialogContent>
       </Dialog>

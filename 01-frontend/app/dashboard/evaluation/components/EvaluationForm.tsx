@@ -25,7 +25,7 @@ export function EvaluationForm() {
       sections: AUDIT_FORM_MOCK.sections.reduce((acc, section) => {
         acc[section.id] = section.questions.reduce((qAcc, q) => {
           qAcc[q.id] = {
-            answer: "Si",
+            answer: "",
             evidence: [],
             observations: "",
             score: 100,
@@ -104,7 +104,9 @@ export function EvaluationForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
         {/* Navegación entre secciones */}
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-teal-700">Secciones de la evaluación</h2>
+          <h2 className="text-lg font-semibold text-teal-700">
+            Secciones de la evaluación
+          </h2>
           <div className="flex flex-wrap gap-2 mt-4 mb-8">
             {AUDIT_FORM_MOCK.sections.map((section, index) => (
               <Button
