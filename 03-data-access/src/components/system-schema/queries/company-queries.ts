@@ -10,3 +10,9 @@ export async function getAllCompanies() {
   })
   return companies
 }
+
+export const getUserCompanyById = (id: number) => ({
+  where: { id },
+  select: { id: true, company_id: true },
+});
+
