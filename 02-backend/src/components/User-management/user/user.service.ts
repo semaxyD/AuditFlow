@@ -5,7 +5,6 @@ import * as bcrypt from 'bcrypt';
 import { User } from '@data-access/src/prismaconfig/prisma-types';
 
 
-
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
