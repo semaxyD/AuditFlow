@@ -119,10 +119,78 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  nombre: 'nombre',
-  correo: 'correo',
-  contrasena: 'contrasena',
-  rol: 'rol'
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role'
+};
+
+exports.Prisma.CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  direction: 'direction'
+};
+
+exports.Prisma.NormScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name'
+};
+
+exports.Prisma.CriterionScalarFieldEnum = {
+  id: 'id',
+  description: 'description',
+  norm_id: 'norm_id'
+};
+
+exports.Prisma.QuestionScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  criterion_id: 'criterion_id'
+};
+
+exports.Prisma.EvaluationScalarFieldEnum = {
+  id: 'id',
+  company_id: 'company_id',
+  created_by: 'created_by',
+  created_at: 'created_at'
+};
+
+exports.Prisma.EvaluationVersionScalarFieldEnum = {
+  id: 'id',
+  evaluation_id: 'evaluation_id',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  is_latest: 'is_latest',
+  submitted_at: 'submitted_at',
+  status: 'status',
+  version_number: 'version_number'
+};
+
+exports.Prisma.AnswerScalarFieldEnum = {
+  id: 'id',
+  question_id: 'question_id',
+  version_id: 'version_id',
+  response: 'response',
+  created_by: 'created_by',
+  created_at: 'created_at',
+  score: 'score'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  text: 'text',
+  created_by: 'created_by',
+  answer_id: 'answer_id',
+  created_at: 'created_at'
+};
+
+exports.Prisma.EvidenceScalarFieldEnum = {
+  id: 'id',
+  answer_id: 'answer_id',
+  url: 'url',
+  created_by: 'created_by',
+  created_at: 'created_at'
 };
 
 exports.Prisma.SortOrder = {
@@ -135,9 +203,23 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Company: 'Company',
+  Norm: 'Norm',
+  Criterion: 'Criterion',
+  Question: 'Question',
+  Evaluation: 'Evaluation',
+  EvaluationVersion: 'EvaluationVersion',
+  Answer: 'Answer',
+  Comment: 'Comment',
+  Evidence: 'Evidence'
 };
 
 /**

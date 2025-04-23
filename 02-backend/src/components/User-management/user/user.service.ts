@@ -2,40 +2,43 @@ import { Injectable, NotFoundException, BadRequestException} from '@nestjs/commo
 import { PrismaService } from '@data-access/src/prismaconfig/prisma.service';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '@data-access/src/prismaconfig/prisma-types'; // Asegúrate de que esto sea el tipo correcto
+import { User } from '@data-access/src/prismaconfig/prisma-types';
+
+
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async crearUsuario(data: any) {
-    const { nombre, correo, contrasena, rol } = data;
-
-    // Verificar si ya existe un usuario con ese correo
-    const usuarioExistente = await this.db.user.findUnique({
-      where: { correo },
+    const { name, email, password, role } = data;
+  
+    // Verificar si ya existe un usuario con ese email
+    const usuarioExistente = await this.prisma.user.findUnique({
+      where: { email },
     });
-
+  
     if (usuarioExistente) {
       throw new BadRequestException('El correo ya está registrado');
     }
-
-    const hashedPassword = await bcrypt.hash(contrasena, 10);
-
-    const nuevoUsuario = await this.db.user.create({
+  
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
+    const nuevoUsuario = await this.prisma.user.create({
       data: {
-        nombre,
-        correo,
-        contrasena: hashedPassword,
-        rol,
+        name,
+        email,
+        password: hashedPassword,
+        role,
       },
     });
-
+  
     return {
       message: 'Usuario registrado correctamente',
       id: nuevoUsuario.id,
     };
   }
+  
 
   async login(dto: LoginDto): Promise<{ message: string; userModel: Partial<User> }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
@@ -65,5 +68,45 @@ export class UserService {
         role: user.role,
       },
     };
+  }
+  // solo admins
+  // método que devuelve los usuarios
+  async buscarUsuarios() {
+    const usuarios = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+  
+    return {
+      message: 'Usuarios encontrados correctamente',
+      data: usuarios,
+    };
+  }
+  // devuelve los campos del usuario por id
+async obtenerUsuarioPorId(id: number) {
+  const usuario = await this.prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      // no se incluyeron las relaciones
+    },
+  });
+
+  if (!usuario) {
+    throw new NotFoundException('Usuario no encontrado');
+  }
+
+  return {
+    message: 'Usuario cargado correctamente',
+    data: usuario,
+    };
+  
   }
 }
