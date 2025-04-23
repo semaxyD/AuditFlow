@@ -3,7 +3,10 @@ import { Body, Controller, Post, UseGuards, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el guardia JWT
-
+import { Req } from '@nestjs/common';
+import { Roles } from '../../Shared/decorators/roles.decorator';
+import { RolesGuard } from '../../Shared/Auth/roles.guard';
+import { Param } from '@nestjs/common';
 
 @Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
@@ -28,4 +31,21 @@ export class UserController {
   async getProtectedData() {
     return { message: 'Acceso concedido' };
   }
+  //endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  @UseGuards(JwtAuthGuard, RolesGuard)// 
+  @Roles('administrador')
+  @Get('search')
+  async buscarUsuarios(@Req() req) {
+    return this.userService.buscarUsuarios();
+  }
+  
+  //endpoinrt que devuelve info completa de un usuario por su ID
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('administrador')
+  @Get(':id')
+  async obtenerUsuario(@Param('id') id: string) {
+  //  Solo accesible si el token es válido y el rol es ADMIN
+  return this.userService.obtenerUsuarioPorId(+id); 
+}
+
 }
