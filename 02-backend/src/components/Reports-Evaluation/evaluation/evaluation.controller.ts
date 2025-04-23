@@ -4,7 +4,7 @@ import { Roles } from '../../Shared/decorators/roles.decorator'
 import { RolesGuard } from '../../Shared/Auth/roles.guard'
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
 
-@Controller('reports-evaluation')
+@Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
 export class EvaluationController {
   constructor(private readonly service: EvaluationService) {}
 

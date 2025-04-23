@@ -9,6 +9,7 @@ import { User } from '@data-access/src/prismaconfig/prisma-types';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  //Crear users(Solo para Admins)
   async crearUsuario(data: any) {
     const { name, email, password, role } = data;
   
@@ -68,6 +69,7 @@ export class UserService {
       },
     };
   }
+  
   // solo admins
   // método que devuelve los usuarios
   async buscarUsuarios() {
@@ -85,6 +87,7 @@ export class UserService {
       data: usuarios,
     };
   }
+
   // devuelve los campos del usuario por id
 async obtenerUsuarioPorId(id: number) {
   const usuario = await this.prisma.user.findUnique({
