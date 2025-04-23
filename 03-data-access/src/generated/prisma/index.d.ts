@@ -8694,6 +8694,7 @@ export namespace Prisma {
     evaluation_id: number | null
     created_by: number | null
     version_number: number | null
+    score: number | null
   }
 
   export type EvaluationVersionSumAggregateOutputType = {
@@ -8701,6 +8702,7 @@ export namespace Prisma {
     evaluation_id: number | null
     created_by: number | null
     version_number: number | null
+    score: number | null
   }
 
   export type EvaluationVersionMinAggregateOutputType = {
@@ -8712,6 +8714,7 @@ export namespace Prisma {
     submitted_at: Date | null
     status: string | null
     version_number: number | null
+    score: number | null
   }
 
   export type EvaluationVersionMaxAggregateOutputType = {
@@ -8723,6 +8726,7 @@ export namespace Prisma {
     submitted_at: Date | null
     status: string | null
     version_number: number | null
+    score: number | null
   }
 
   export type EvaluationVersionCountAggregateOutputType = {
@@ -8734,6 +8738,7 @@ export namespace Prisma {
     submitted_at: number
     status: number
     version_number: number
+    score: number
     _all: number
   }
 
@@ -8743,6 +8748,7 @@ export namespace Prisma {
     evaluation_id?: true
     created_by?: true
     version_number?: true
+    score?: true
   }
 
   export type EvaluationVersionSumAggregateInputType = {
@@ -8750,6 +8756,7 @@ export namespace Prisma {
     evaluation_id?: true
     created_by?: true
     version_number?: true
+    score?: true
   }
 
   export type EvaluationVersionMinAggregateInputType = {
@@ -8761,6 +8768,7 @@ export namespace Prisma {
     submitted_at?: true
     status?: true
     version_number?: true
+    score?: true
   }
 
   export type EvaluationVersionMaxAggregateInputType = {
@@ -8772,6 +8780,7 @@ export namespace Prisma {
     submitted_at?: true
     status?: true
     version_number?: true
+    score?: true
   }
 
   export type EvaluationVersionCountAggregateInputType = {
@@ -8783,6 +8792,7 @@ export namespace Prisma {
     submitted_at?: true
     status?: true
     version_number?: true
+    score?: true
     _all?: true
   }
 
@@ -8881,6 +8891,7 @@ export namespace Prisma {
     submitted_at: Date | null
     status: string | null
     version_number: number | null
+    score: number | null
     _count: EvaluationVersionCountAggregateOutputType | null
     _avg: EvaluationVersionAvgAggregateOutputType | null
     _sum: EvaluationVersionSumAggregateOutputType | null
@@ -8911,6 +8922,7 @@ export namespace Prisma {
     submitted_at?: boolean
     status?: boolean
     version_number?: boolean
+    score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
     answers?: boolean | EvaluationVersion$answersArgs<ExtArgs>
@@ -8926,6 +8938,7 @@ export namespace Prisma {
     submitted_at?: boolean
     status?: boolean
     version_number?: boolean
+    score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluationVersion"]>
@@ -8939,6 +8952,7 @@ export namespace Prisma {
     submitted_at?: boolean
     status?: boolean
     version_number?: boolean
+    score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluationVersion"]>
@@ -8952,9 +8966,10 @@ export namespace Prisma {
     submitted_at?: boolean
     status?: boolean
     version_number?: boolean
+    score?: boolean
   }
 
-  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "submitted_at" | "status" | "version_number", ExtArgs["result"]["evaluationVersion"]>
+  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "submitted_at" | "status" | "version_number" | "score", ExtArgs["result"]["evaluationVersion"]>
   export type EvaluationVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -8986,6 +9001,7 @@ export namespace Prisma {
       submitted_at: Date | null
       status: string | null
       version_number: number | null
+      score: number | null
     }, ExtArgs["result"]["evaluationVersion"]>
     composites: {}
   }
@@ -9420,6 +9436,7 @@ export namespace Prisma {
     readonly submitted_at: FieldRef<"EvaluationVersion", 'DateTime'>
     readonly status: FieldRef<"EvaluationVersion", 'String'>
     readonly version_number: FieldRef<"EvaluationVersion", 'Int'>
+    readonly score: FieldRef<"EvaluationVersion", 'Int'>
   }
     
 
@@ -13361,7 +13378,8 @@ export namespace Prisma {
     is_latest: 'is_latest',
     submitted_at: 'submitted_at',
     status: 'status',
-    version_number: 'version_number'
+    version_number: 'version_number',
+    score: 'score'
   };
 
   export type EvaluationVersionScalarFieldEnum = (typeof EvaluationVersionScalarFieldEnum)[keyof typeof EvaluationVersionScalarFieldEnum]
@@ -13830,6 +13848,7 @@ export namespace Prisma {
     submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    score?: IntNullableFilter<"EvaluationVersion"> | number | null
     evaluation?: XOR<EvaluationScalarRelationFilter, EvaluationWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     answers?: AnswerListRelationFilter
@@ -13844,6 +13863,7 @@ export namespace Prisma {
     submitted_at?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
+    score?: SortOrderInput | SortOrder
     evaluation?: EvaluationOrderByWithRelationInput
     creator?: UserOrderByWithRelationInput
     answers?: AnswerOrderByRelationAggregateInput
@@ -13861,6 +13881,7 @@ export namespace Prisma {
     submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    score?: IntNullableFilter<"EvaluationVersion"> | number | null
     evaluation?: XOR<EvaluationScalarRelationFilter, EvaluationWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     answers?: AnswerListRelationFilter
@@ -13875,6 +13896,7 @@ export namespace Prisma {
     submitted_at?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
+    score?: SortOrderInput | SortOrder
     _count?: EvaluationVersionCountOrderByAggregateInput
     _avg?: EvaluationVersionAvgOrderByAggregateInput
     _max?: EvaluationVersionMaxOrderByAggregateInput
@@ -13894,6 +13916,7 @@ export namespace Prisma {
     submitted_at?: DateTimeNullableWithAggregatesFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableWithAggregatesFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
+    score?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
   }
 
   export type AnswerWhereInput = {
@@ -14392,6 +14415,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
     answers?: AnswerCreateNestedManyWithoutEvaluationVersionInput
@@ -14406,6 +14430,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
 
@@ -14415,6 +14440,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
     answers?: AnswerUpdateManyWithoutEvaluationVersionNestedInput
@@ -14429,6 +14455,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
 
@@ -14441,6 +14468,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
   }
 
   export type EvaluationVersionUpdateManyMutationInput = {
@@ -14449,6 +14477,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EvaluationVersionUncheckedUpdateManyInput = {
@@ -14460,6 +14489,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AnswerCreateInput = {
@@ -15063,6 +15093,7 @@ export namespace Prisma {
     submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    score?: SortOrder
   }
 
   export type EvaluationVersionAvgOrderByAggregateInput = {
@@ -15070,6 +15101,7 @@ export namespace Prisma {
     evaluation_id?: SortOrder
     created_by?: SortOrder
     version_number?: SortOrder
+    score?: SortOrder
   }
 
   export type EvaluationVersionMaxOrderByAggregateInput = {
@@ -15081,6 +15113,7 @@ export namespace Prisma {
     submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    score?: SortOrder
   }
 
   export type EvaluationVersionMinOrderByAggregateInput = {
@@ -15092,6 +15125,7 @@ export namespace Prisma {
     submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    score?: SortOrder
   }
 
   export type EvaluationVersionSumOrderByAggregateInput = {
@@ -15099,6 +15133,7 @@ export namespace Prisma {
     evaluation_id?: SortOrder
     created_by?: SortOrder
     version_number?: SortOrder
+    score?: SortOrder
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -16266,6 +16301,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     answers?: AnswerCreateNestedManyWithoutEvaluationVersionInput
   }
@@ -16278,6 +16314,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
 
@@ -16422,6 +16459,7 @@ export namespace Prisma {
     submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    score?: IntNullableFilter<"EvaluationVersion"> | number | null
   }
 
   export type AnswerUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -16811,6 +16849,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
     answers?: AnswerCreateNestedManyWithoutEvaluationVersionInput
   }
@@ -16823,6 +16862,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
 
@@ -17104,6 +17144,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
   }
@@ -17117,6 +17158,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
   }
 
   export type EvaluationVersionCreateOrConnectWithoutAnswersInput = {
@@ -17230,6 +17272,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
   }
@@ -17243,6 +17286,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type UserUpsertWithoutAnswersInput = {
@@ -17549,6 +17593,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
   }
 
   export type AnswerCreateManyCreatorInput = {
@@ -17599,6 +17644,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     answers?: AnswerUpdateManyWithoutEvaluationVersionNestedInput
   }
@@ -17611,6 +17657,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
 
@@ -17622,6 +17669,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AnswerUpdateWithoutCreatorInput = {
@@ -17808,6 +17856,7 @@ export namespace Prisma {
     submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
+    score?: number | null
   }
 
   export type EvaluationVersionUpdateWithoutEvaluationInput = {
@@ -17816,6 +17865,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
     answers?: AnswerUpdateManyWithoutEvaluationVersionNestedInput
   }
@@ -17828,6 +17878,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
 
@@ -17839,6 +17890,7 @@ export namespace Prisma {
     submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AnswerCreateManyEvaluationVersionInput = {
