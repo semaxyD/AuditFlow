@@ -12,8 +12,6 @@
     "baseUrl": ".",
     "paths": {
       "@data-access/*": ["../03-data-access/*"]
-      
-      
     },
     "incremental": true,
     "skipLibCheck": true,
@@ -23,6 +21,5 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src"],
-  
+  "include": ["src"]
 }
