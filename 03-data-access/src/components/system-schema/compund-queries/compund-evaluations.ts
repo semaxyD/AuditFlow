@@ -34,9 +34,10 @@ export const getQueries = {
       },
       select: {
         id: true,
-        version_number: true,
+        is_latest: true,
+        score: true,
         created_at: true,
-        created_by: true,
+        version_number: true,
         creator: {
           select: {
             name: true,
@@ -44,7 +45,18 @@ export const getQueries = {
         },
       },
     });
-    return evolution;
+
+    // Formatear los resultados para que coincidan con la consulta SQL
+    const formattedEvolution = evolution.map((ev) => ({
+      id: ev.id,
+      creator_name: ev.creator.name,
+      is_latest: ev.is_latest,
+      score: ev.score,
+      created_at: ev.created_at,
+      version_number: ev.version_number,
+    }));
+
+    return formattedEvolution;
   },
 
   // Obtener evaluaciones por empresa con normas asociadas - QUERY COMPUESTA 02
