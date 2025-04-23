@@ -1,6 +1,6 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { EvaluationService } from './evaluation.service';
-import { Roles } from '../../Shared/Auth/roles.decorator'
+import { Roles } from '../../Shared/decorators/roles.decorator'
 import { RolesGuard } from '../../Shared/Auth/roles.guard'
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
 
