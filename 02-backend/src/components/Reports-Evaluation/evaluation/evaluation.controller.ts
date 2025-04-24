@@ -32,8 +32,8 @@ export class EvaluationController {
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
-  @Get(':companyId/evolution')
-  getEvolution(@Param('companyId') companyId: string) {
-    return this.service.getEvolutionEvaluation(companyId);
+  @Get(':evaluationId/evolution')
+  getEvolution(@Param('evaluationId') evaluationId: string) {
+    return this.service.getEvolutionEvaluation(evaluationId);
   }
 }

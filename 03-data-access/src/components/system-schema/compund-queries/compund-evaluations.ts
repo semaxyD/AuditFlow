@@ -121,6 +121,8 @@ export const getQueries = {
 
     return formatted;
   },
+
+  
   //Query para la HU-008 insertar una evaluación hecha con todos sus datos
   createEvaluationWithDetails: async (
     prisma: PrismaClient,

@@ -7,7 +7,7 @@ export class EvaluationService {
 
   async getCompanies() { 
     try{
-        const query = await this.queryFilter.filterQuery('read', 'company-queries');
+        const query = await this.queryFilter.filterQuery('read', 'getAllCompanies');
         return query
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
@@ -25,17 +25,17 @@ export class EvaluationService {
 
   async getEvaluationDetail(evaluationId: string) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvaluacionDetalle');
+        const query = await this.queryFilter.filterQuery('read', 'getEvaluationDetail');
         return query(evaluationId);
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
-  async getEvolutionEvaluation(companyId: string) {
+  async getEvolutionEvaluation(evaluationId: string) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvolucionEvaluacion');
-        return query(companyId);
+        const query = await this.queryFilter.filterQuery('read', 'getEvolutionEvaluation');
+        return query(evaluationId);
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }

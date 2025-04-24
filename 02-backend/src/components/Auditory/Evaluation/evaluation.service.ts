@@ -11,8 +11,8 @@ export class EvaluationService {
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
-    const standardId = await this.validateEntityExistence(sectionIds, 'getCriteriosByIds', 'criterios');
-    await this.validateEntityExistence(questionIds, 'getPreguntasByIds', 'preguntas');
+    const normId = await this.validateEntityExistence('read', 'getCriterionsByIds',sectionIds);
+    await this.validateEntityExistence('read', 'getQuestionsByIds', questionIds);
     const user = await this.queryFilter.filterQuery('read', 'getUserCompanyById', userId); 
     const companyId = user.company_id;
 
@@ -51,7 +51,7 @@ export class EvaluationService {
       name: dto.name,
       description: dto.description,
       company_id: companyId,
-      standard_id: standardId,
+      norm_id: normId,
       completion_percentage: metrics.completionPercentage,
       maturity_level: metrics.maturityLevel,
       total_score: metrics.totalScore,
@@ -79,9 +79,9 @@ export class EvaluationService {
 
   // funcion helper para validacion de existencia de criterios y preguntas 
   private async validateEntityExistence(
-    ids: number[],
     queryName: string,
-    entityName: string
+    entityName: string,
+    ids: number[],
   ) {
     const existingEntities = await this.queryFilter.filterQuery('read', queryName, ids);
     const missingIds = ids.filter(id => !existingEntities.some((e: { id: number; }) => e.id === id));
@@ -94,15 +94,15 @@ export class EvaluationService {
 
     if (queryName === 'getCriteriosByIds') {
       const standardIds = existingEntities.map((e: any) => e.standard_id);
-      const uniqueStandardIds = [...new Set(standardIds)];
+      const uniqueNormIds = [...new Set(standardIds)];
   
-      if (uniqueStandardIds.length !== 1) {
+      if (uniqueNormIds.length !== 1) {
         throw new BadRequestException(
           'Los criterios pertenecen a múltiples estándares. Asegúrate de que todos los criterios pertenezcan al mismo estándar.',
         );
       }
   
-      return uniqueStandardIds[0]; // Retornamos el standard_id homogéneo
+      return uniqueNormIds[0]; // Retornamos el norm_id homogéneo
     }
 
   }
