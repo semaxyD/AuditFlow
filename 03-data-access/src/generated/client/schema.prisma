@@ -91,6 +91,7 @@ model EvaluationVersion {
   evaluation     Evaluation @relation(fields: [evaluation_id], references: [id])
   creator        User       @relation("VersionCreatedBy", fields: [created_by], references: [id])
   answers        Answer[]
+  score          Int?
 
   @@map("evaluation_version")
 }

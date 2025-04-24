@@ -164,7 +164,8 @@ exports.Prisma.EvaluationVersionScalarFieldEnum = {
   is_latest: 'is_latest',
   submitted_at: 'submitted_at',
   status: 'status',
-  version_number: 'version_number'
+  version_number: 'version_number',
+  score: 'score'
 };
 
 exports.Prisma.AnswerScalarFieldEnum = {
