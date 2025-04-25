@@ -128,13 +128,22 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.CompanyScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  direction: 'direction'
+  nit: 'nit',
+  address: 'address',
+  contact_name: 'contact_name',
+  contact_email: 'contact_email',
+  phone: 'phone'
 };
 
 exports.Prisma.NormScalarFieldEnum = {
   id: 'id',
   code: 'code',
   name: 'name'
+};
+
+exports.Prisma.CompanyEditorScalarFieldEnum = {
+  company_id: 'company_id',
+  user_id: 'user_id'
 };
 
 exports.Prisma.CriterionScalarFieldEnum = {
@@ -214,6 +223,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Company: 'Company',
   Norm: 'Norm',
+  CompanyEditor: 'CompanyEditor',
   Criterion: 'Criterion',
   Question: 'Question',
   Evaluation: 'Evaluation',
