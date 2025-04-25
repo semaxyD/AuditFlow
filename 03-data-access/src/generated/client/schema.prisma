@@ -19,21 +19,27 @@ model User {
   name            String
   email           String              @unique
   password        String
-  role            String              @default("evaluador")
+  role            String
   evaluations     Evaluation[]        @relation("EvaluationCreatedBy")
   versionsCreated EvaluationVersion[] @relation("VersionCreatedBy")
   answers         Answer[]            @relation("AnswerCreatedBy")
   evidences       Evidence[]          @relation("EvidenceCreatedBy")
   comments        Comment[]           @relation("CommentCreatedBy")
+  companyEditors  CompanyEditor[]
 
   @@map("user")
 }
 
 model Company {
-  id          Int          @id @default(autoincrement())
-  name        String
-  direction   String?
-  evaluations Evaluation[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  nit           Int
+  address       String?
+  contact_name  String?
+  contact_email String?
+  phone         String?
+  evaluations   Evaluation[]
+  editorUsers   CompanyEditor[]
 
   @@map("company")
 }
@@ -45,6 +51,16 @@ model Norm {
   criteria Criterion[]
 
   @@map("norm")
+}
+
+model CompanyEditor {
+  company    Company @relation(fields: [company_id], references: [id])
+  company_id Int
+  user       User    @relation(fields: [user_id], references: [id])
+  user_id    Int
+
+  @@id([company_id, user_id])
+  @@map("company_editor")
 }
 
 model Criterion {

@@ -29,6 +29,11 @@ export type Company = $Result.DefaultSelection<Prisma.$CompanyPayload>
  */
 export type Norm = $Result.DefaultSelection<Prisma.$NormPayload>
 /**
+ * Model CompanyEditor
+ * 
+ */
+export type CompanyEditor = $Result.DefaultSelection<Prisma.$CompanyEditorPayload>
+/**
  * Model Criterion
  * 
  */
@@ -218,6 +223,16 @@ export class PrismaClient<
     * ```
     */
   get norm(): Prisma.NormDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.companyEditor`: Exposes CRUD operations for the **CompanyEditor** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompanyEditors
+    * const companyEditors = await prisma.companyEditor.findMany()
+    * ```
+    */
+  get companyEditor(): Prisma.CompanyEditorDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.criterion`: Exposes CRUD operations for the **Criterion** model.
@@ -731,6 +746,7 @@ export namespace Prisma {
     User: 'User',
     Company: 'Company',
     Norm: 'Norm',
+    CompanyEditor: 'CompanyEditor',
     Criterion: 'Criterion',
     Question: 'Question',
     Evaluation: 'Evaluation',
@@ -756,7 +772,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "company" | "norm" | "criterion" | "question" | "evaluation" | "evaluationVersion" | "answer" | "comment" | "evidence"
+      modelProps: "user" | "company" | "norm" | "companyEditor" | "criterion" | "question" | "evaluation" | "evaluationVersion" | "answer" | "comment" | "evidence"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -979,6 +995,80 @@ export namespace Prisma {
           count: {
             args: Prisma.NormCountArgs<ExtArgs>
             result: $Utils.Optional<NormCountAggregateOutputType> | number
+          }
+        }
+      }
+      CompanyEditor: {
+        payload: Prisma.$CompanyEditorPayload<ExtArgs>
+        fields: Prisma.CompanyEditorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanyEditorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanyEditorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanyEditorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanyEditorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          findMany: {
+            args: Prisma.CompanyEditorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>[]
+          }
+          create: {
+            args: Prisma.CompanyEditorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          createMany: {
+            args: Prisma.CompanyEditorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanyEditorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanyEditorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          update: {
+            args: Prisma.CompanyEditorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanyEditorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanyEditorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanyEditorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanyEditorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanyEditorPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanyEditorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompanyEditor>
+          }
+          groupBy: {
+            args: Prisma.CompanyEditorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanyEditorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanyEditorCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanyEditorCountAggregateOutputType> | number
           }
         }
       }
@@ -1587,6 +1677,7 @@ export namespace Prisma {
     user?: UserOmit
     company?: CompanyOmit
     norm?: NormOmit
+    companyEditor?: CompanyEditorOmit
     criterion?: CriterionOmit
     question?: QuestionOmit
     evaluation?: EvaluationOmit
@@ -1693,6 +1784,7 @@ export namespace Prisma {
     answers: number
     evidences: number
     comments: number
+    companyEditors: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1701,6 +1793,7 @@ export namespace Prisma {
     answers?: boolean | UserCountOutputTypeCountAnswersArgs
     evidences?: boolean | UserCountOutputTypeCountEvidencesArgs
     comments?: boolean | UserCountOutputTypeCountCommentsArgs
+    companyEditors?: boolean | UserCountOutputTypeCountCompanyEditorsArgs
   }
 
   // Custom InputTypes
@@ -1749,6 +1842,13 @@ export namespace Prisma {
     where?: CommentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCompanyEditorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyEditorWhereInput
+  }
+
 
   /**
    * Count Type CompanyCountOutputType
@@ -1756,10 +1856,12 @@ export namespace Prisma {
 
   export type CompanyCountOutputType = {
     evaluations: number
+    editorUsers: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | CompanyCountOutputTypeCountEvaluationsArgs
+    editorUsers?: boolean | CompanyCountOutputTypeCountEditorUsersArgs
   }
 
   // Custom InputTypes
@@ -1778,6 +1880,13 @@ export namespace Prisma {
    */
   export type CompanyCountOutputTypeCountEvaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EvaluationWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountEditorUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyEditorWhereInput
   }
 
 
@@ -2183,6 +2292,7 @@ export namespace Prisma {
     answers?: boolean | User$answersArgs<ExtArgs>
     evidences?: boolean | User$evidencesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
+    companyEditors?: boolean | User$companyEditorsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2217,6 +2327,7 @@ export namespace Prisma {
     answers?: boolean | User$answersArgs<ExtArgs>
     evidences?: boolean | User$evidencesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
+    companyEditors?: boolean | User$companyEditorsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2230,6 +2341,7 @@ export namespace Prisma {
       answers: Prisma.$AnswerPayload<ExtArgs>[]
       evidences: Prisma.$EvidencePayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
+      companyEditors: Prisma.$CompanyEditorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2636,6 +2748,7 @@ export namespace Prisma {
     answers<T extends User$answersArgs<ExtArgs> = {}>(args?: Subset<T, User$answersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     evidences<T extends User$evidencesArgs<ExtArgs> = {}>(args?: Subset<T, User$evidencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    companyEditors<T extends User$companyEditorsArgs<ExtArgs> = {}>(args?: Subset<T, User$companyEditorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3178,6 +3291,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.companyEditors
+   */
+  export type User$companyEditorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    where?: CompanyEditorWhereInput
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    cursor?: CompanyEditorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyEditorScalarFieldEnum | CompanyEditorScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3210,56 +3347,84 @@ export namespace Prisma {
 
   export type CompanyAvgAggregateOutputType = {
     id: number | null
+    nit: number | null
   }
 
   export type CompanySumAggregateOutputType = {
     id: number | null
+    nit: number | null
   }
 
   export type CompanyMinAggregateOutputType = {
     id: number | null
     name: string | null
-    direction: string | null
+    nit: number | null
+    address: string | null
+    contact_name: string | null
+    contact_email: string | null
+    phone: string | null
   }
 
   export type CompanyMaxAggregateOutputType = {
     id: number | null
     name: string | null
-    direction: string | null
+    nit: number | null
+    address: string | null
+    contact_name: string | null
+    contact_email: string | null
+    phone: string | null
   }
 
   export type CompanyCountAggregateOutputType = {
     id: number
     name: number
-    direction: number
+    nit: number
+    address: number
+    contact_name: number
+    contact_email: number
+    phone: number
     _all: number
   }
 
 
   export type CompanyAvgAggregateInputType = {
     id?: true
+    nit?: true
   }
 
   export type CompanySumAggregateInputType = {
     id?: true
+    nit?: true
   }
 
   export type CompanyMinAggregateInputType = {
     id?: true
     name?: true
-    direction?: true
+    nit?: true
+    address?: true
+    contact_name?: true
+    contact_email?: true
+    phone?: true
   }
 
   export type CompanyMaxAggregateInputType = {
     id?: true
     name?: true
-    direction?: true
+    nit?: true
+    address?: true
+    contact_name?: true
+    contact_email?: true
+    phone?: true
   }
 
   export type CompanyCountAggregateInputType = {
     id?: true
     name?: true
-    direction?: true
+    nit?: true
+    address?: true
+    contact_name?: true
+    contact_email?: true
+    phone?: true
     _all?: true
   }
 
@@ -3352,7 +3517,11 @@ export namespace Prisma {
   export type CompanyGroupByOutputType = {
     id: number
     name: string
-    direction: string | null
+    nit: number
+    address: string | null
+    contact_name: string | null
+    contact_email: string | null
+    phone: string | null
     _count: CompanyCountAggregateOutputType | null
     _avg: CompanyAvgAggregateOutputType | null
     _sum: CompanySumAggregateOutputType | null
@@ -3377,32 +3546,50 @@ export namespace Prisma {
   export type CompanySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    direction?: boolean
+    nit?: boolean
+    address?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    phone?: boolean
     evaluations?: boolean | Company$evaluationsArgs<ExtArgs>
+    editorUsers?: boolean | Company$editorUsersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    direction?: boolean
+    nit?: boolean
+    address?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    phone?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    direction?: boolean
+    nit?: boolean
+    address?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    phone?: boolean
   }, ExtArgs["result"]["company"]>
 
   export type CompanySelectScalar = {
     id?: boolean
     name?: boolean
-    direction?: boolean
+    nit?: boolean
+    address?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    phone?: boolean
   }
 
-  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "direction", ExtArgs["result"]["company"]>
+  export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "nit" | "address" | "contact_name" | "contact_email" | "phone", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | Company$evaluationsArgs<ExtArgs>
+    editorUsers?: boolean | Company$editorUsersArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3412,11 +3599,16 @@ export namespace Prisma {
     name: "Company"
     objects: {
       evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
+      editorUsers: Prisma.$CompanyEditorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
-      direction: string | null
+      nit: number
+      address: string | null
+      contact_name: string | null
+      contact_email: string | null
+      phone: string | null
     }, ExtArgs["result"]["company"]>
     composites: {}
   }
@@ -3812,6 +4004,7 @@ export namespace Prisma {
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     evaluations<T extends Company$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    editorUsers<T extends Company$editorUsersArgs<ExtArgs> = {}>(args?: Subset<T, Company$editorUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3843,7 +4036,11 @@ export namespace Prisma {
   interface CompanyFieldRefs {
     readonly id: FieldRef<"Company", 'Int'>
     readonly name: FieldRef<"Company", 'String'>
-    readonly direction: FieldRef<"Company", 'String'>
+    readonly nit: FieldRef<"Company", 'Int'>
+    readonly address: FieldRef<"Company", 'String'>
+    readonly contact_name: FieldRef<"Company", 'String'>
+    readonly contact_email: FieldRef<"Company", 'String'>
+    readonly phone: FieldRef<"Company", 'String'>
   }
     
 
@@ -4253,6 +4450,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EvaluationScalarFieldEnum | EvaluationScalarFieldEnum[]
+  }
+
+  /**
+   * Company.editorUsers
+   */
+  export type Company$editorUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    where?: CompanyEditorWhereInput
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    cursor?: CompanyEditorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyEditorScalarFieldEnum | CompanyEditorScalarFieldEnum[]
   }
 
   /**
@@ -5349,6 +5570,1071 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: NormInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CompanyEditor
+   */
+
+  export type AggregateCompanyEditor = {
+    _count: CompanyEditorCountAggregateOutputType | null
+    _avg: CompanyEditorAvgAggregateOutputType | null
+    _sum: CompanyEditorSumAggregateOutputType | null
+    _min: CompanyEditorMinAggregateOutputType | null
+    _max: CompanyEditorMaxAggregateOutputType | null
+  }
+
+  export type CompanyEditorAvgAggregateOutputType = {
+    company_id: number | null
+    user_id: number | null
+  }
+
+  export type CompanyEditorSumAggregateOutputType = {
+    company_id: number | null
+    user_id: number | null
+  }
+
+  export type CompanyEditorMinAggregateOutputType = {
+    company_id: number | null
+    user_id: number | null
+  }
+
+  export type CompanyEditorMaxAggregateOutputType = {
+    company_id: number | null
+    user_id: number | null
+  }
+
+  export type CompanyEditorCountAggregateOutputType = {
+    company_id: number
+    user_id: number
+    _all: number
+  }
+
+
+  export type CompanyEditorAvgAggregateInputType = {
+    company_id?: true
+    user_id?: true
+  }
+
+  export type CompanyEditorSumAggregateInputType = {
+    company_id?: true
+    user_id?: true
+  }
+
+  export type CompanyEditorMinAggregateInputType = {
+    company_id?: true
+    user_id?: true
+  }
+
+  export type CompanyEditorMaxAggregateInputType = {
+    company_id?: true
+    user_id?: true
+  }
+
+  export type CompanyEditorCountAggregateInputType = {
+    company_id?: true
+    user_id?: true
+    _all?: true
+  }
+
+  export type CompanyEditorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyEditor to aggregate.
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyEditors to fetch.
+     */
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanyEditorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyEditors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyEditors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompanyEditors
+    **/
+    _count?: true | CompanyEditorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompanyEditorAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanyEditorSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanyEditorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanyEditorMaxAggregateInputType
+  }
+
+  export type GetCompanyEditorAggregateType<T extends CompanyEditorAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompanyEditor]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompanyEditor[P]>
+      : GetScalarType<T[P], AggregateCompanyEditor[P]>
+  }
+
+
+
+
+  export type CompanyEditorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyEditorWhereInput
+    orderBy?: CompanyEditorOrderByWithAggregationInput | CompanyEditorOrderByWithAggregationInput[]
+    by: CompanyEditorScalarFieldEnum[] | CompanyEditorScalarFieldEnum
+    having?: CompanyEditorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanyEditorCountAggregateInputType | true
+    _avg?: CompanyEditorAvgAggregateInputType
+    _sum?: CompanyEditorSumAggregateInputType
+    _min?: CompanyEditorMinAggregateInputType
+    _max?: CompanyEditorMaxAggregateInputType
+  }
+
+  export type CompanyEditorGroupByOutputType = {
+    company_id: number
+    user_id: number
+    _count: CompanyEditorCountAggregateOutputType | null
+    _avg: CompanyEditorAvgAggregateOutputType | null
+    _sum: CompanyEditorSumAggregateOutputType | null
+    _min: CompanyEditorMinAggregateOutputType | null
+    _max: CompanyEditorMaxAggregateOutputType | null
+  }
+
+  type GetCompanyEditorGroupByPayload<T extends CompanyEditorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanyEditorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanyEditorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanyEditorGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanyEditorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanyEditorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    user_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["companyEditor"]>
+
+  export type CompanyEditorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    user_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["companyEditor"]>
+
+  export type CompanyEditorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    company_id?: boolean
+    user_id?: boolean
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["companyEditor"]>
+
+  export type CompanyEditorSelectScalar = {
+    company_id?: boolean
+    user_id?: boolean
+  }
+
+  export type CompanyEditorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"company_id" | "user_id", ExtArgs["result"]["companyEditor"]>
+  export type CompanyEditorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CompanyEditorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CompanyEditorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CompanyEditorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompanyEditor"
+    objects: {
+      company: Prisma.$CompanyPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      company_id: number
+      user_id: number
+    }, ExtArgs["result"]["companyEditor"]>
+    composites: {}
+  }
+
+  type CompanyEditorGetPayload<S extends boolean | null | undefined | CompanyEditorDefaultArgs> = $Result.GetResult<Prisma.$CompanyEditorPayload, S>
+
+  type CompanyEditorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanyEditorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanyEditorCountAggregateInputType | true
+    }
+
+  export interface CompanyEditorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompanyEditor'], meta: { name: 'CompanyEditor' } }
+    /**
+     * Find zero or one CompanyEditor that matches the filter.
+     * @param {CompanyEditorFindUniqueArgs} args - Arguments to find a CompanyEditor
+     * @example
+     * // Get one CompanyEditor
+     * const companyEditor = await prisma.companyEditor.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanyEditorFindUniqueArgs>(args: SelectSubset<T, CompanyEditorFindUniqueArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompanyEditor that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanyEditorFindUniqueOrThrowArgs} args - Arguments to find a CompanyEditor
+     * @example
+     * // Get one CompanyEditor
+     * const companyEditor = await prisma.companyEditor.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanyEditorFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanyEditorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyEditor that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorFindFirstArgs} args - Arguments to find a CompanyEditor
+     * @example
+     * // Get one CompanyEditor
+     * const companyEditor = await prisma.companyEditor.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanyEditorFindFirstArgs>(args?: SelectSubset<T, CompanyEditorFindFirstArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanyEditor that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorFindFirstOrThrowArgs} args - Arguments to find a CompanyEditor
+     * @example
+     * // Get one CompanyEditor
+     * const companyEditor = await prisma.companyEditor.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanyEditorFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanyEditorFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompanyEditors that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompanyEditors
+     * const companyEditors = await prisma.companyEditor.findMany()
+     * 
+     * // Get first 10 CompanyEditors
+     * const companyEditors = await prisma.companyEditor.findMany({ take: 10 })
+     * 
+     * // Only select the `company_id`
+     * const companyEditorWithCompany_idOnly = await prisma.companyEditor.findMany({ select: { company_id: true } })
+     * 
+     */
+    findMany<T extends CompanyEditorFindManyArgs>(args?: SelectSubset<T, CompanyEditorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompanyEditor.
+     * @param {CompanyEditorCreateArgs} args - Arguments to create a CompanyEditor.
+     * @example
+     * // Create one CompanyEditor
+     * const CompanyEditor = await prisma.companyEditor.create({
+     *   data: {
+     *     // ... data to create a CompanyEditor
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanyEditorCreateArgs>(args: SelectSubset<T, CompanyEditorCreateArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompanyEditors.
+     * @param {CompanyEditorCreateManyArgs} args - Arguments to create many CompanyEditors.
+     * @example
+     * // Create many CompanyEditors
+     * const companyEditor = await prisma.companyEditor.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanyEditorCreateManyArgs>(args?: SelectSubset<T, CompanyEditorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompanyEditors and returns the data saved in the database.
+     * @param {CompanyEditorCreateManyAndReturnArgs} args - Arguments to create many CompanyEditors.
+     * @example
+     * // Create many CompanyEditors
+     * const companyEditor = await prisma.companyEditor.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompanyEditors and only return the `company_id`
+     * const companyEditorWithCompany_idOnly = await prisma.companyEditor.createManyAndReturn({
+     *   select: { company_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanyEditorCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanyEditorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompanyEditor.
+     * @param {CompanyEditorDeleteArgs} args - Arguments to delete one CompanyEditor.
+     * @example
+     * // Delete one CompanyEditor
+     * const CompanyEditor = await prisma.companyEditor.delete({
+     *   where: {
+     *     // ... filter to delete one CompanyEditor
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanyEditorDeleteArgs>(args: SelectSubset<T, CompanyEditorDeleteArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompanyEditor.
+     * @param {CompanyEditorUpdateArgs} args - Arguments to update one CompanyEditor.
+     * @example
+     * // Update one CompanyEditor
+     * const companyEditor = await prisma.companyEditor.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanyEditorUpdateArgs>(args: SelectSubset<T, CompanyEditorUpdateArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompanyEditors.
+     * @param {CompanyEditorDeleteManyArgs} args - Arguments to filter CompanyEditors to delete.
+     * @example
+     * // Delete a few CompanyEditors
+     * const { count } = await prisma.companyEditor.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanyEditorDeleteManyArgs>(args?: SelectSubset<T, CompanyEditorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyEditors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompanyEditors
+     * const companyEditor = await prisma.companyEditor.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanyEditorUpdateManyArgs>(args: SelectSubset<T, CompanyEditorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanyEditors and returns the data updated in the database.
+     * @param {CompanyEditorUpdateManyAndReturnArgs} args - Arguments to update many CompanyEditors.
+     * @example
+     * // Update many CompanyEditors
+     * const companyEditor = await prisma.companyEditor.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompanyEditors and only return the `company_id`
+     * const companyEditorWithCompany_idOnly = await prisma.companyEditor.updateManyAndReturn({
+     *   select: { company_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanyEditorUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanyEditorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompanyEditor.
+     * @param {CompanyEditorUpsertArgs} args - Arguments to update or create a CompanyEditor.
+     * @example
+     * // Update or create a CompanyEditor
+     * const companyEditor = await prisma.companyEditor.upsert({
+     *   create: {
+     *     // ... data to create a CompanyEditor
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompanyEditor we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanyEditorUpsertArgs>(args: SelectSubset<T, CompanyEditorUpsertArgs<ExtArgs>>): Prisma__CompanyEditorClient<$Result.GetResult<Prisma.$CompanyEditorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompanyEditors.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorCountArgs} args - Arguments to filter CompanyEditors to count.
+     * @example
+     * // Count the number of CompanyEditors
+     * const count = await prisma.companyEditor.count({
+     *   where: {
+     *     // ... the filter for the CompanyEditors we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanyEditorCountArgs>(
+      args?: Subset<T, CompanyEditorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanyEditorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompanyEditor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanyEditorAggregateArgs>(args: Subset<T, CompanyEditorAggregateArgs>): Prisma.PrismaPromise<GetCompanyEditorAggregateType<T>>
+
+    /**
+     * Group by CompanyEditor.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanyEditorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanyEditorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanyEditorGroupByArgs['orderBy'] }
+        : { orderBy?: CompanyEditorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanyEditorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanyEditorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompanyEditor model
+   */
+  readonly fields: CompanyEditorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompanyEditor.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanyEditorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompanyEditor model
+   */
+  interface CompanyEditorFieldRefs {
+    readonly company_id: FieldRef<"CompanyEditor", 'Int'>
+    readonly user_id: FieldRef<"CompanyEditor", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompanyEditor findUnique
+   */
+  export type CompanyEditorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyEditor to fetch.
+     */
+    where: CompanyEditorWhereUniqueInput
+  }
+
+  /**
+   * CompanyEditor findUniqueOrThrow
+   */
+  export type CompanyEditorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyEditor to fetch.
+     */
+    where: CompanyEditorWhereUniqueInput
+  }
+
+  /**
+   * CompanyEditor findFirst
+   */
+  export type CompanyEditorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyEditor to fetch.
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyEditors to fetch.
+     */
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyEditors.
+     */
+    cursor?: CompanyEditorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyEditors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyEditors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyEditors.
+     */
+    distinct?: CompanyEditorScalarFieldEnum | CompanyEditorScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyEditor findFirstOrThrow
+   */
+  export type CompanyEditorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyEditor to fetch.
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyEditors to fetch.
+     */
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanyEditors.
+     */
+    cursor?: CompanyEditorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyEditors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyEditors.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanyEditors.
+     */
+    distinct?: CompanyEditorScalarFieldEnum | CompanyEditorScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyEditor findMany
+   */
+  export type CompanyEditorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter, which CompanyEditors to fetch.
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanyEditors to fetch.
+     */
+    orderBy?: CompanyEditorOrderByWithRelationInput | CompanyEditorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompanyEditors.
+     */
+    cursor?: CompanyEditorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanyEditors from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanyEditors.
+     */
+    skip?: number
+    distinct?: CompanyEditorScalarFieldEnum | CompanyEditorScalarFieldEnum[]
+  }
+
+  /**
+   * CompanyEditor create
+   */
+  export type CompanyEditorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CompanyEditor.
+     */
+    data: XOR<CompanyEditorCreateInput, CompanyEditorUncheckedCreateInput>
+  }
+
+  /**
+   * CompanyEditor createMany
+   */
+  export type CompanyEditorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompanyEditors.
+     */
+    data: CompanyEditorCreateManyInput | CompanyEditorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanyEditor createManyAndReturn
+   */
+  export type CompanyEditorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompanyEditors.
+     */
+    data: CompanyEditorCreateManyInput | CompanyEditorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompanyEditor update
+   */
+  export type CompanyEditorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CompanyEditor.
+     */
+    data: XOR<CompanyEditorUpdateInput, CompanyEditorUncheckedUpdateInput>
+    /**
+     * Choose, which CompanyEditor to update.
+     */
+    where: CompanyEditorWhereUniqueInput
+  }
+
+  /**
+   * CompanyEditor updateMany
+   */
+  export type CompanyEditorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompanyEditors.
+     */
+    data: XOR<CompanyEditorUpdateManyMutationInput, CompanyEditorUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyEditors to update
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * Limit how many CompanyEditors to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyEditor updateManyAndReturn
+   */
+  export type CompanyEditorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * The data used to update CompanyEditors.
+     */
+    data: XOR<CompanyEditorUpdateManyMutationInput, CompanyEditorUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanyEditors to update
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * Limit how many CompanyEditors to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CompanyEditor upsert
+   */
+  export type CompanyEditorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CompanyEditor to update in case it exists.
+     */
+    where: CompanyEditorWhereUniqueInput
+    /**
+     * In case the CompanyEditor found by the `where` argument doesn't exist, create a new CompanyEditor with this data.
+     */
+    create: XOR<CompanyEditorCreateInput, CompanyEditorUncheckedCreateInput>
+    /**
+     * In case the CompanyEditor was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanyEditorUpdateInput, CompanyEditorUncheckedUpdateInput>
+  }
+
+  /**
+   * CompanyEditor delete
+   */
+  export type CompanyEditorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
+    /**
+     * Filter which CompanyEditor to delete.
+     */
+    where: CompanyEditorWhereUniqueInput
+  }
+
+  /**
+   * CompanyEditor deleteMany
+   */
+  export type CompanyEditorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanyEditors to delete
+     */
+    where?: CompanyEditorWhereInput
+    /**
+     * Limit how many CompanyEditors to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanyEditor without action
+   */
+  export type CompanyEditorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyEditor
+     */
+    select?: CompanyEditorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyEditor
+     */
+    omit?: CompanyEditorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyEditorInclude<ExtArgs> | null
   }
 
 
@@ -13327,7 +14613,11 @@ export namespace Prisma {
   export const CompanyScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    direction: 'direction'
+    nit: 'nit',
+    address: 'address',
+    contact_name: 'contact_name',
+    contact_email: 'contact_email',
+    phone: 'phone'
   };
 
   export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
@@ -13340,6 +14630,14 @@ export namespace Prisma {
   };
 
   export type NormScalarFieldEnum = (typeof NormScalarFieldEnum)[keyof typeof NormScalarFieldEnum]
+
+
+  export const CompanyEditorScalarFieldEnum: {
+    company_id: 'company_id',
+    user_id: 'user_id'
+  };
+
+  export type CompanyEditorScalarFieldEnum = (typeof CompanyEditorScalarFieldEnum)[keyof typeof CompanyEditorScalarFieldEnum]
 
 
   export const CriterionScalarFieldEnum: {
@@ -13529,6 +14827,7 @@ export namespace Prisma {
     answers?: AnswerListRelationFilter
     evidences?: EvidenceListRelationFilter
     comments?: CommentListRelationFilter
+    companyEditors?: CompanyEditorListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13542,6 +14841,7 @@ export namespace Prisma {
     answers?: AnswerOrderByRelationAggregateInput
     evidences?: EvidenceOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
+    companyEditors?: CompanyEditorOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13558,6 +14858,7 @@ export namespace Prisma {
     answers?: AnswerListRelationFilter
     evidences?: EvidenceListRelationFilter
     comments?: CommentListRelationFilter
+    companyEditors?: CompanyEditorListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13590,15 +14891,25 @@ export namespace Prisma {
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     id?: IntFilter<"Company"> | number
     name?: StringFilter<"Company"> | string
-    direction?: StringNullableFilter<"Company"> | string | null
+    nit?: IntFilter<"Company"> | number
+    address?: StringNullableFilter<"Company"> | string | null
+    contact_name?: StringNullableFilter<"Company"> | string | null
+    contact_email?: StringNullableFilter<"Company"> | string | null
+    phone?: StringNullableFilter<"Company"> | string | null
     evaluations?: EvaluationListRelationFilter
+    editorUsers?: CompanyEditorListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    direction?: SortOrderInput | SortOrder
+    nit?: SortOrder
+    address?: SortOrderInput | SortOrder
+    contact_name?: SortOrderInput | SortOrder
+    contact_email?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     evaluations?: EvaluationOrderByRelationAggregateInput
+    editorUsers?: CompanyEditorOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -13607,14 +14918,23 @@ export namespace Prisma {
     OR?: CompanyWhereInput[]
     NOT?: CompanyWhereInput | CompanyWhereInput[]
     name?: StringFilter<"Company"> | string
-    direction?: StringNullableFilter<"Company"> | string | null
+    nit?: IntFilter<"Company"> | number
+    address?: StringNullableFilter<"Company"> | string | null
+    contact_name?: StringNullableFilter<"Company"> | string | null
+    contact_email?: StringNullableFilter<"Company"> | string | null
+    phone?: StringNullableFilter<"Company"> | string | null
     evaluations?: EvaluationListRelationFilter
+    editorUsers?: CompanyEditorListRelationFilter
   }, "id">
 
   export type CompanyOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    direction?: SortOrderInput | SortOrder
+    nit?: SortOrder
+    address?: SortOrderInput | SortOrder
+    contact_name?: SortOrderInput | SortOrder
+    contact_email?: SortOrderInput | SortOrder
+    phone?: SortOrderInput | SortOrder
     _count?: CompanyCountOrderByAggregateInput
     _avg?: CompanyAvgOrderByAggregateInput
     _max?: CompanyMaxOrderByAggregateInput
@@ -13628,7 +14948,11 @@ export namespace Prisma {
     NOT?: CompanyScalarWhereWithAggregatesInput | CompanyScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Company"> | number
     name?: StringWithAggregatesFilter<"Company"> | string
-    direction?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    nit?: IntWithAggregatesFilter<"Company"> | number
+    address?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    contact_name?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    contact_email?: StringNullableWithAggregatesFilter<"Company"> | string | null
+    phone?: StringNullableWithAggregatesFilter<"Company"> | string | null
   }
 
   export type NormWhereInput = {
@@ -13676,6 +15000,52 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Norm"> | number
     code?: StringWithAggregatesFilter<"Norm"> | string
     name?: StringNullableWithAggregatesFilter<"Norm"> | string | null
+  }
+
+  export type CompanyEditorWhereInput = {
+    AND?: CompanyEditorWhereInput | CompanyEditorWhereInput[]
+    OR?: CompanyEditorWhereInput[]
+    NOT?: CompanyEditorWhereInput | CompanyEditorWhereInput[]
+    company_id?: IntFilter<"CompanyEditor"> | number
+    user_id?: IntFilter<"CompanyEditor"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CompanyEditorOrderByWithRelationInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+    company?: CompanyOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CompanyEditorWhereUniqueInput = Prisma.AtLeast<{
+    company_id_user_id?: CompanyEditorCompany_idUser_idCompoundUniqueInput
+    AND?: CompanyEditorWhereInput | CompanyEditorWhereInput[]
+    OR?: CompanyEditorWhereInput[]
+    NOT?: CompanyEditorWhereInput | CompanyEditorWhereInput[]
+    company_id?: IntFilter<"CompanyEditor"> | number
+    user_id?: IntFilter<"CompanyEditor"> | number
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "company_id_user_id">
+
+  export type CompanyEditorOrderByWithAggregationInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+    _count?: CompanyEditorCountOrderByAggregateInput
+    _avg?: CompanyEditorAvgOrderByAggregateInput
+    _max?: CompanyEditorMaxOrderByAggregateInput
+    _min?: CompanyEditorMinOrderByAggregateInput
+    _sum?: CompanyEditorSumOrderByAggregateInput
+  }
+
+  export type CompanyEditorScalarWhereWithAggregatesInput = {
+    AND?: CompanyEditorScalarWhereWithAggregatesInput | CompanyEditorScalarWhereWithAggregatesInput[]
+    OR?: CompanyEditorScalarWhereWithAggregatesInput[]
+    NOT?: CompanyEditorScalarWhereWithAggregatesInput | CompanyEditorScalarWhereWithAggregatesInput[]
+    company_id?: IntWithAggregatesFilter<"CompanyEditor"> | number
+    user_id?: IntWithAggregatesFilter<"CompanyEditor"> | number
   }
 
   export type CriterionWhereInput = {
@@ -14122,12 +15492,13 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -14135,12 +15506,13 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -14153,6 +15525,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -14166,6 +15539,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -14173,7 +15547,7 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -14193,45 +15567,77 @@ export namespace Prisma {
 
   export type CompanyCreateInput = {
     name: string
-    direction?: string | null
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
     evaluations?: EvaluationCreateNestedManyWithoutCompanyInput
+    editorUsers?: CompanyEditorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
     id?: number
     name: string
-    direction?: string | null
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCompanyInput
+    editorUsers?: CompanyEditorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUpdateManyWithoutCompanyNestedInput
+    editorUsers?: CompanyEditorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
+    editorUsers?: CompanyEditorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
     id?: number
     name: string
-    direction?: string | null
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
   }
 
   export type CompanyUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CompanyUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type NormCreateInput = {
@@ -14275,6 +15681,40 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CompanyEditorCreateInput = {
+    company: CompanyCreateNestedOneWithoutEditorUsersInput
+    user: UserCreateNestedOneWithoutCompanyEditorsInput
+  }
+
+  export type CompanyEditorUncheckedCreateInput = {
+    company_id: number
+    user_id: number
+  }
+
+  export type CompanyEditorUpdateInput = {
+    company?: CompanyUpdateOneRequiredWithoutEditorUsersNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyEditorsNestedInput
+  }
+
+  export type CompanyEditorUncheckedUpdateInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CompanyEditorCreateManyInput = {
+    company_id: number
+    user_id: number
+  }
+
+  export type CompanyEditorUpdateManyMutationInput = {
+
+  }
+
+  export type CompanyEditorUncheckedUpdateManyInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type CriterionCreateInput = {
@@ -14722,6 +16162,12 @@ export namespace Prisma {
     none?: CommentWhereInput
   }
 
+  export type CompanyEditorListRelationFilter = {
+    every?: CompanyEditorWhereInput
+    some?: CompanyEditorWhereInput
+    none?: CompanyEditorWhereInput
+  }
+
   export type EvaluationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14739,6 +16185,10 @@ export namespace Prisma {
   }
 
   export type CommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompanyEditorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14831,27 +16281,41 @@ export namespace Prisma {
   export type CompanyCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    direction?: SortOrder
+    nit?: SortOrder
+    address?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    phone?: SortOrder
   }
 
   export type CompanyAvgOrderByAggregateInput = {
     id?: SortOrder
+    nit?: SortOrder
   }
 
   export type CompanyMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    direction?: SortOrder
+    nit?: SortOrder
+    address?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    phone?: SortOrder
   }
 
   export type CompanyMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    direction?: SortOrder
+    nit?: SortOrder
+    address?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    phone?: SortOrder
   }
 
   export type CompanySumOrderByAggregateInput = {
     id?: SortOrder
+    nit?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14906,6 +16370,46 @@ export namespace Prisma {
 
   export type NormSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type CompanyScalarRelationFilter = {
+    is?: CompanyWhereInput
+    isNot?: CompanyWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type CompanyEditorCompany_idUser_idCompoundUniqueInput = {
+    company_id: number
+    user_id: number
+  }
+
+  export type CompanyEditorCountOrderByAggregateInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CompanyEditorAvgOrderByAggregateInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CompanyEditorMaxOrderByAggregateInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CompanyEditorMinOrderByAggregateInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CompanyEditorSumOrderByAggregateInput = {
+    company_id?: SortOrder
+    user_id?: SortOrder
   }
 
   export type NormScalarRelationFilter = {
@@ -14993,16 +16497,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type CompanyScalarRelationFilter = {
-    is?: CompanyWhereInput
-    isNot?: CompanyWhereInput
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type EvaluationCountOrderByAggregateInput = {
@@ -15342,6 +16836,13 @@ export namespace Prisma {
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
+  export type CompanyEditorCreateNestedManyWithoutUserInput = {
+    create?: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput> | CompanyEditorCreateWithoutUserInput[] | CompanyEditorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutUserInput | CompanyEditorCreateOrConnectWithoutUserInput[]
+    createMany?: CompanyEditorCreateManyUserInputEnvelope
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+  }
+
   export type EvaluationUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<EvaluationCreateWithoutCreatorInput, EvaluationUncheckedCreateWithoutCreatorInput> | EvaluationCreateWithoutCreatorInput[] | EvaluationUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCreatorInput | EvaluationCreateOrConnectWithoutCreatorInput[]
@@ -15375,6 +16876,13 @@ export namespace Prisma {
     connectOrCreate?: CommentCreateOrConnectWithoutCreatorInput | CommentCreateOrConnectWithoutCreatorInput[]
     createMany?: CommentCreateManyCreatorInputEnvelope
     connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type CompanyEditorUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput> | CompanyEditorCreateWithoutUserInput[] | CompanyEditorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutUserInput | CompanyEditorCreateOrConnectWithoutUserInput[]
+    createMany?: CompanyEditorCreateManyUserInputEnvelope
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15449,6 +16957,20 @@ export namespace Prisma {
     update?: CommentUpdateWithWhereUniqueWithoutCreatorInput | CommentUpdateWithWhereUniqueWithoutCreatorInput[]
     updateMany?: CommentUpdateManyWithWhereWithoutCreatorInput | CommentUpdateManyWithWhereWithoutCreatorInput[]
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type CompanyEditorUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput> | CompanyEditorCreateWithoutUserInput[] | CompanyEditorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutUserInput | CompanyEditorCreateOrConnectWithoutUserInput[]
+    upsert?: CompanyEditorUpsertWithWhereUniqueWithoutUserInput | CompanyEditorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CompanyEditorCreateManyUserInputEnvelope
+    set?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    disconnect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    delete?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    update?: CompanyEditorUpdateWithWhereUniqueWithoutUserInput | CompanyEditorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CompanyEditorUpdateManyWithWhereWithoutUserInput | CompanyEditorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -15529,6 +17051,20 @@ export namespace Prisma {
     deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
+  export type CompanyEditorUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput> | CompanyEditorCreateWithoutUserInput[] | CompanyEditorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutUserInput | CompanyEditorCreateOrConnectWithoutUserInput[]
+    upsert?: CompanyEditorUpsertWithWhereUniqueWithoutUserInput | CompanyEditorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CompanyEditorCreateManyUserInputEnvelope
+    set?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    disconnect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    delete?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    update?: CompanyEditorUpdateWithWhereUniqueWithoutUserInput | CompanyEditorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CompanyEditorUpdateManyWithWhereWithoutUserInput | CompanyEditorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
+  }
+
   export type EvaluationCreateNestedManyWithoutCompanyInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
@@ -15536,11 +17072,25 @@ export namespace Prisma {
     connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
   }
 
+  export type CompanyEditorCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput> | CompanyEditorCreateWithoutCompanyInput[] | CompanyEditorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutCompanyInput | CompanyEditorCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyEditorCreateManyCompanyInputEnvelope
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+  }
+
   export type EvaluationUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
     createMany?: EvaluationCreateManyCompanyInputEnvelope
     connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+  }
+
+  export type CompanyEditorUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput> | CompanyEditorCreateWithoutCompanyInput[] | CompanyEditorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutCompanyInput | CompanyEditorCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyEditorCreateManyCompanyInputEnvelope
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -15561,6 +17111,20 @@ export namespace Prisma {
     deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
   }
 
+  export type CompanyEditorUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput> | CompanyEditorCreateWithoutCompanyInput[] | CompanyEditorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutCompanyInput | CompanyEditorCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyEditorUpsertWithWhereUniqueWithoutCompanyInput | CompanyEditorUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyEditorCreateManyCompanyInputEnvelope
+    set?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    disconnect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    delete?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    update?: CompanyEditorUpdateWithWhereUniqueWithoutCompanyInput | CompanyEditorUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyEditorUpdateManyWithWhereWithoutCompanyInput | CompanyEditorUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
+  }
+
   export type EvaluationUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
@@ -15573,6 +17137,20 @@ export namespace Prisma {
     update?: EvaluationUpdateWithWhereUniqueWithoutCompanyInput | EvaluationUpdateWithWhereUniqueWithoutCompanyInput[]
     updateMany?: EvaluationUpdateManyWithWhereWithoutCompanyInput | EvaluationUpdateManyWithWhereWithoutCompanyInput[]
     deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
+  }
+
+  export type CompanyEditorUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput> | CompanyEditorCreateWithoutCompanyInput[] | CompanyEditorUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyEditorCreateOrConnectWithoutCompanyInput | CompanyEditorCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyEditorUpsertWithWhereUniqueWithoutCompanyInput | CompanyEditorUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyEditorCreateManyCompanyInputEnvelope
+    set?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    disconnect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    delete?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    connect?: CompanyEditorWhereUniqueInput | CompanyEditorWhereUniqueInput[]
+    update?: CompanyEditorUpdateWithWhereUniqueWithoutCompanyInput | CompanyEditorUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyEditorUpdateManyWithWhereWithoutCompanyInput | CompanyEditorUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
   }
 
   export type CriterionCreateNestedManyWithoutNormInput = {
@@ -15615,6 +17193,34 @@ export namespace Prisma {
     update?: CriterionUpdateWithWhereUniqueWithoutNormInput | CriterionUpdateWithWhereUniqueWithoutNormInput[]
     updateMany?: CriterionUpdateManyWithWhereWithoutNormInput | CriterionUpdateManyWithWhereWithoutNormInput[]
     deleteMany?: CriterionScalarWhereInput | CriterionScalarWhereInput[]
+  }
+
+  export type CompanyCreateNestedOneWithoutEditorUsersInput = {
+    create?: XOR<CompanyCreateWithoutEditorUsersInput, CompanyUncheckedCreateWithoutEditorUsersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutEditorUsersInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCompanyEditorsInput = {
+    create?: XOR<UserCreateWithoutCompanyEditorsInput, UserUncheckedCreateWithoutCompanyEditorsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyEditorsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CompanyUpdateOneRequiredWithoutEditorUsersNestedInput = {
+    create?: XOR<CompanyCreateWithoutEditorUsersInput, CompanyUncheckedCreateWithoutEditorUsersInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutEditorUsersInput
+    upsert?: CompanyUpsertWithoutEditorUsersInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutEditorUsersInput, CompanyUpdateWithoutEditorUsersInput>, CompanyUncheckedUpdateWithoutEditorUsersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCompanyEditorsNestedInput = {
+    create?: XOR<UserCreateWithoutCompanyEditorsInput, UserUncheckedCreateWithoutCompanyEditorsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyEditorsInput
+    upsert?: UserUpsertWithoutCompanyEditorsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompanyEditorsInput, UserUpdateWithoutCompanyEditorsInput>, UserUncheckedUpdateWithoutCompanyEditorsInput>
   }
 
   export type NormCreateNestedOneWithoutCriteriaInput = {
@@ -16405,6 +18011,24 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CompanyEditorCreateWithoutUserInput = {
+    company: CompanyCreateNestedOneWithoutEditorUsersInput
+  }
+
+  export type CompanyEditorUncheckedCreateWithoutUserInput = {
+    company_id: number
+  }
+
+  export type CompanyEditorCreateOrConnectWithoutUserInput = {
+    where: CompanyEditorWhereUniqueInput
+    create: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput>
+  }
+
+  export type CompanyEditorCreateManyUserInputEnvelope = {
+    data: CompanyEditorCreateManyUserInput | CompanyEditorCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EvaluationUpsertWithWhereUniqueWithoutCreatorInput = {
     where: EvaluationWhereUniqueInput
     update: XOR<EvaluationUpdateWithoutCreatorInput, EvaluationUncheckedUpdateWithoutCreatorInput>
@@ -16545,6 +18169,30 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Comment"> | Date | string
   }
 
+  export type CompanyEditorUpsertWithWhereUniqueWithoutUserInput = {
+    where: CompanyEditorWhereUniqueInput
+    update: XOR<CompanyEditorUpdateWithoutUserInput, CompanyEditorUncheckedUpdateWithoutUserInput>
+    create: XOR<CompanyEditorCreateWithoutUserInput, CompanyEditorUncheckedCreateWithoutUserInput>
+  }
+
+  export type CompanyEditorUpdateWithWhereUniqueWithoutUserInput = {
+    where: CompanyEditorWhereUniqueInput
+    data: XOR<CompanyEditorUpdateWithoutUserInput, CompanyEditorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CompanyEditorUpdateManyWithWhereWithoutUserInput = {
+    where: CompanyEditorScalarWhereInput
+    data: XOR<CompanyEditorUpdateManyMutationInput, CompanyEditorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CompanyEditorScalarWhereInput = {
+    AND?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
+    OR?: CompanyEditorScalarWhereInput[]
+    NOT?: CompanyEditorScalarWhereInput | CompanyEditorScalarWhereInput[]
+    company_id?: IntFilter<"CompanyEditor"> | number
+    user_id?: IntFilter<"CompanyEditor"> | number
+  }
+
   export type EvaluationCreateWithoutCompanyInput = {
     created_at?: Date | string
     creator: UserCreateNestedOneWithoutEvaluationsInput
@@ -16568,6 +18216,24 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CompanyEditorCreateWithoutCompanyInput = {
+    user: UserCreateNestedOneWithoutCompanyEditorsInput
+  }
+
+  export type CompanyEditorUncheckedCreateWithoutCompanyInput = {
+    user_id: number
+  }
+
+  export type CompanyEditorCreateOrConnectWithoutCompanyInput = {
+    where: CompanyEditorWhereUniqueInput
+    create: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyEditorCreateManyCompanyInputEnvelope = {
+    data: CompanyEditorCreateManyCompanyInput | CompanyEditorCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EvaluationUpsertWithWhereUniqueWithoutCompanyInput = {
     where: EvaluationWhereUniqueInput
     update: XOR<EvaluationUpdateWithoutCompanyInput, EvaluationUncheckedUpdateWithoutCompanyInput>
@@ -16582,6 +18248,22 @@ export namespace Prisma {
   export type EvaluationUpdateManyWithWhereWithoutCompanyInput = {
     where: EvaluationScalarWhereInput
     data: XOR<EvaluationUpdateManyMutationInput, EvaluationUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CompanyEditorUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyEditorWhereUniqueInput
+    update: XOR<CompanyEditorUpdateWithoutCompanyInput, CompanyEditorUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CompanyEditorCreateWithoutCompanyInput, CompanyEditorUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyEditorUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyEditorWhereUniqueInput
+    data: XOR<CompanyEditorUpdateWithoutCompanyInput, CompanyEditorUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompanyEditorUpdateManyWithWhereWithoutCompanyInput = {
+    where: CompanyEditorScalarWhereInput
+    data: XOR<CompanyEditorUpdateManyMutationInput, CompanyEditorUncheckedUpdateManyWithoutCompanyInput>
   }
 
   export type CriterionCreateWithoutNormInput = {
@@ -16628,6 +18310,130 @@ export namespace Prisma {
     id?: IntFilter<"Criterion"> | number
     description?: StringNullableFilter<"Criterion"> | string | null
     norm_id?: IntFilter<"Criterion"> | number
+  }
+
+  export type CompanyCreateWithoutEditorUsersInput = {
+    name: string
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    evaluations?: EvaluationCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutEditorUsersInput = {
+    id?: number
+    name: string
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutEditorUsersInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutEditorUsersInput, CompanyUncheckedCreateWithoutEditorUsersInput>
+  }
+
+  export type UserCreateWithoutCompanyEditorsInput = {
+    name: string
+    email: string
+    password: string
+    role: string
+    evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
+    versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
+    answers?: AnswerCreateNestedManyWithoutCreatorInput
+    evidences?: EvidenceCreateNestedManyWithoutCreatorInput
+    comments?: CommentCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutCompanyEditorsInput = {
+    id?: number
+    name: string
+    email: string
+    password: string
+    role: string
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
+    versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
+    answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
+    evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutCompanyEditorsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCompanyEditorsInput, UserUncheckedCreateWithoutCompanyEditorsInput>
+  }
+
+  export type CompanyUpsertWithoutEditorUsersInput = {
+    update: XOR<CompanyUpdateWithoutEditorUsersInput, CompanyUncheckedUpdateWithoutEditorUsersInput>
+    create: XOR<CompanyCreateWithoutEditorUsersInput, CompanyUncheckedCreateWithoutEditorUsersInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutEditorUsersInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutEditorUsersInput, CompanyUncheckedUpdateWithoutEditorUsersInput>
+  }
+
+  export type CompanyUpdateWithoutEditorUsersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutEditorUsersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type UserUpsertWithoutCompanyEditorsInput = {
+    update: XOR<UserUpdateWithoutCompanyEditorsInput, UserUncheckedUpdateWithoutCompanyEditorsInput>
+    create: XOR<UserCreateWithoutCompanyEditorsInput, UserUncheckedCreateWithoutCompanyEditorsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCompanyEditorsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCompanyEditorsInput, UserUncheckedUpdateWithoutCompanyEditorsInput>
+  }
+
+  export type UserUpdateWithoutCompanyEditorsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    evaluations?: EvaluationUpdateManyWithoutCreatorNestedInput
+    versionsCreated?: EvaluationVersionUpdateManyWithoutCreatorNestedInput
+    answers?: AnswerUpdateManyWithoutCreatorNestedInput
+    evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
+    comments?: CommentUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCompanyEditorsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    evaluations?: EvaluationUncheckedUpdateManyWithoutCreatorNestedInput
+    versionsCreated?: EvaluationVersionUncheckedUpdateManyWithoutCreatorNestedInput
+    answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
+    evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
   }
 
   export type NormCreateWithoutCriteriaInput = {
@@ -16801,13 +18607,23 @@ export namespace Prisma {
 
   export type CompanyCreateWithoutEvaluationsInput = {
     name: string
-    direction?: string | null
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    editorUsers?: CompanyEditorCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutEvaluationsInput = {
     id?: number
     name: string
-    direction?: string | null
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    editorUsers?: CompanyEditorUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutEvaluationsInput = {
@@ -16819,11 +18635,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEvaluationsInput = {
@@ -16831,11 +18648,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEvaluationsInput = {
@@ -16889,13 +18707,23 @@ export namespace Prisma {
 
   export type CompanyUpdateWithoutEvaluationsInput = {
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    editorUsers?: CompanyEditorUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutEvaluationsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    direction?: NullableStringFieldUpdateOperationsInput | string | null
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    editorUsers?: CompanyEditorUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutEvaluationsInput = {
@@ -16918,6 +18746,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluationsInput = {
@@ -16930,6 +18759,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EvaluationVersionUpsertWithWhereUniqueWithoutEvaluationInput = {
@@ -16970,11 +18800,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVersionsCreatedInput = {
@@ -16982,11 +18813,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVersionsCreatedInput = {
@@ -17069,6 +18901,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVersionsCreatedInput = {
@@ -17081,6 +18914,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerUpsertWithWhereUniqueWithoutEvaluationVersionInput = {
@@ -17170,11 +19004,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnswersInput = {
@@ -17182,11 +19017,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnswersInput = {
@@ -17309,6 +19145,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -17321,6 +19158,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EvidenceUpsertWithWhereUniqueWithoutAnswerInput = {
@@ -17343,11 +19181,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -17355,11 +19194,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -17413,6 +19253,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUpdateManyWithoutCreatorNestedInput
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -17425,6 +19266,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUncheckedUpdateManyWithoutCreatorNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerUpsertWithoutCommentsInput = {
@@ -17489,11 +19331,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEvidencesInput = {
@@ -17501,11 +19344,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    role?: string
+    role: string
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
     versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyEditors?: CompanyEditorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEvidencesInput = {
@@ -17565,6 +19409,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUpdateManyWithoutCreatorNestedInput
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvidencesInput = {
@@ -17577,6 +19422,7 @@ export namespace Prisma {
     versionsCreated?: EvaluationVersionUncheckedUpdateManyWithoutCreatorNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EvaluationCreateManyCreatorInput = {
@@ -17617,6 +19463,10 @@ export namespace Prisma {
     text: string
     answer_id: number
     created_at?: Date | string
+  }
+
+  export type CompanyEditorCreateManyUserInput = {
+    company_id: number
   }
 
   export type EvaluationUpdateWithoutCreatorInput = {
@@ -17742,10 +19592,26 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompanyEditorUpdateWithoutUserInput = {
+    company?: CompanyUpdateOneRequiredWithoutEditorUsersNestedInput
+  }
+
+  export type CompanyEditorUncheckedUpdateWithoutUserInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CompanyEditorUncheckedUpdateManyWithoutUserInput = {
+    company_id?: IntFieldUpdateOperationsInput | number
+  }
+
   export type EvaluationCreateManyCompanyInput = {
     id?: number
     created_by: number
     created_at?: Date | string
+  }
+
+  export type CompanyEditorCreateManyCompanyInput = {
+    user_id: number
   }
 
   export type EvaluationUpdateWithoutCompanyInput = {
@@ -17765,6 +19631,18 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyEditorUpdateWithoutCompanyInput = {
+    user?: UserUpdateOneRequiredWithoutCompanyEditorsNestedInput
+  }
+
+  export type CompanyEditorUncheckedUpdateWithoutCompanyInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CompanyEditorUncheckedUpdateManyWithoutCompanyInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type CriterionCreateManyNormInput = {
