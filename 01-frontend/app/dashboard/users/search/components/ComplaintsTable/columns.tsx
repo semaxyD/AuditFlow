@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Circle, Delete, Pencil, Trash } from "lucide-react";
-import "./UsersTable.css";
+import "./../../../../evaluations-list/components/EvaluationsTable/EvaluationsTable.css";
 import { User } from "./mock/users";
 
 export const columns: ColumnDef<User>[] = [
