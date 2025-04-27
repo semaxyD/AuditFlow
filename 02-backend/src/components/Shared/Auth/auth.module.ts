@@ -8,6 +8,7 @@ import { UserService } from '../../User-management/user/user.service';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
+        signOptions: {expiresIn: "12h"},
       }),
     }),
   ],

@@ -54,3 +54,11 @@ export async function getUserCompanyById(userId: number) {
   });
   return editor;
 }
+
+export async function validateUserEmail(email:string) {
+  const validate = await prisma.user.findUnique({
+    where: {email: email},
+  });
+  return validate;
+}
+

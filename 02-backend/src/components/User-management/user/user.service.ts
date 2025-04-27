@@ -3,11 +3,15 @@ import { QueryFilterService } from '@data-access/src/components/query-manager/qu
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '@data-access/src/prismaconfig/prisma-types';
+import { JwtService } from '@nestjs/jwt'
 
 
 @Injectable()
 export class UserService {
-  constructor(private readonly queryFilter: QueryFilterService) {}
+  constructor(
+    private readonly queryFilter: QueryFilterService,
+    private readonly jwtService: JwtService
+  ) {}
 
   //Crear users(Solo para Admins)
   async crearUsuario(data: any) {
@@ -37,7 +41,7 @@ export class UserService {
   }
   
 
-  async login(dto: LoginDto): Promise<{ message: string; userModel: Partial<User> }> {
+  async login(dto: LoginDto): Promise<{ message: string; access_token: string }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
     const user = await this.queryFilter.filterQuery('read', 'getUserByEmail', dto.email);
 
@@ -54,14 +58,19 @@ export class UserService {
       throw new NotFoundException('Contraseña incorrecta');
     }
 
-    // Si todo es correcto, se retorna el mensaje y el usuario sin su contraseña
+    //Generacion de token JWT
+    const payload = {
+      email: user.email,
+      id: user.id,
+      role: user.role,
+    };
+
+    const access_token = this.jwtService.sign(payload);
+
+    // Si todo es correcto, se retorna el mensaje y token jwt
     return {
       message: 'Inicio de sesión exitoso',
-      userModel: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
+      access_token,
     };
   }
   
