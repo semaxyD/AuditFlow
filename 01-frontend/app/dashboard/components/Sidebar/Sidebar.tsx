@@ -119,7 +119,7 @@ export function AppSidebar() {
                       <SidebarMenuSub>
                         <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                           <Link
-                            href="/dashboard/evaluation"
+                            href="/dashboard/evaluations-list"
                             className="flex items-center gap-2 group-hover/subitem:text-white"
                           >
                             <List className="w-4 h-4" />

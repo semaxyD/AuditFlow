@@ -22,18 +22,18 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { User } from "./mock/users";
+import { ListedEvaluation } from "../../mock/mock";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  users: User[];
+  evaluations: ListedEvaluation[];
 }
 
-export default function UsersTable<TData, TValue>({
+export default function EvaluationsTable<TData, TValue>({
   columns,
   data,
-  users,
+  evaluations,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -61,7 +61,7 @@ export default function UsersTable<TData, TValue>({
   return (
     <>
       <div className="mt-10">
-        {users && users.length > 0 && (
+        {evaluations && evaluations.length > 0 && (
           <>
             <div className="rounded-md border mt-3">
               <Table>
@@ -131,9 +131,9 @@ export default function UsersTable<TData, TValue>({
             </div>
           </>
         )}
-        {!users ||
-          (users.length === 0 && (
-            <p className="mt-5">No hay usuarios registradas</p>
+        {!evaluations ||
+          (evaluations.length === 0 && (
+            <p className="mt-5">No hay evaluaciones registradas</p>
           ))}
       </div>
     </>
