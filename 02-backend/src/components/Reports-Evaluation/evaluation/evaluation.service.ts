@@ -40,4 +40,16 @@ export class EvaluationService {
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
+
+  async getQuestionsByNorm(normId: number) {
+    try {
+      const query = await this.queryFilter.filterQuery('read', 'getQuestionsByNorm', normId);
+      return query;
+    } catch (error) {
+      console.error('Error fetching questions by norm:', error);
+      throw new InternalServerErrorException('Error fetching questions by norm');
+    }
+  }
+  
+  
 }
