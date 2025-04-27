@@ -26,7 +26,9 @@ export type Company = {
         question_id: number;
         question_text: string;
         response: string;
-      }[]; // Nuevas preguntas y respuestas
+        evidences: string[] | null;
+        comments: string[] | null;
+      }[];
     }[];
   }[];
 };
@@ -63,11 +65,19 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "Sí",
+                evidences: ["https://evidencia1.com"],
+                comments: [
+                  "Documentación entregada en reunión del 10 de abril.",
+                ],
               },
               {
                 question_id: 2,
                 question_text: "¿Existen protocolos de seguridad?",
                 response: "No",
+                evidences: null,
+                comments: [
+                  "No se presentaron manuales ni registros de capacitación.",
+                ],
               },
             ],
           },
@@ -83,11 +93,15 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "Sí",
+                evidences: ["https://evidencia2.com"],
+                comments: ["Se verificaron los certificados en sitio."],
               },
               {
                 question_id: 2,
                 question_text: "¿Existen protocolos de seguridad?",
                 response: "Sí",
+                evidences: [],
+                comments: null,
               },
             ],
           },
@@ -103,16 +117,22 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "Sí",
+                evidences: ["https://evidencia3.com"],
+                comments: ["Visita técnica realizada, cumple requisitos."],
               },
               {
                 question_id: 2,
                 question_text: "¿Existen protocolos de seguridad?",
                 response: "Sí",
+                evidences: ["https://foto-protocolos.com/protocolo1"],
+                comments: [],
               },
               {
                 question_id: 3,
                 question_text: "¿El sistema de gestión es efectivo?",
                 response: "Sí",
+                evidences: null,
+                comments: ["Se evidencia mejora continua en los procesos."],
               },
             ],
           },
@@ -151,11 +171,15 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa tiene un plan de reciclaje?",
                 response: "Sí",
+                evidences: ["https://plan-reciclaje-beta.com"],
+                comments: ["Plan verificado y en ejecución desde 2024."],
               },
               {
                 question_id: 2,
                 question_text: "¿La empresa cumple con las normas ambientales?",
                 response: "Sí",
+                evidences: [],
+                comments: ["Norma ISO 14001 certificada en 2023."],
               },
             ],
           },
@@ -171,17 +195,25 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa tiene un plan de reciclaje?",
                 response: "No",
+                evidences: null,
+                comments: ["Plan en revisión, falta aprobación de gerencia."],
               },
               {
                 question_id: 2,
                 question_text: "¿La empresa cumple con las normas ambientales?",
                 response: "Sí",
+                evidences: ["https://certificados-beta.com/norma-ambiental"],
+                comments: [],
               },
               {
                 question_id: 3,
                 question_text:
                   "¿Existen políticas de reducción de huella de carbono?",
                 response: "No",
+                evidences: [],
+                comments: [
+                  "Se recomienda diseñar un plan de acción a corto plazo.",
+                ],
               },
             ],
           },
@@ -220,6 +252,8 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "No",
+                evidences: [],
+                comments: ["Se identificaron deficiencias en infraestructura."],
               },
             ],
           },
@@ -235,6 +269,8 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "Sí",
+                evidences: ["https://evidencia-mejora-gamma.com"],
+                comments: ["Se realizaron adecuaciones de acuerdo a la norma."],
               },
             ],
           },
@@ -250,11 +286,15 @@ export const COMPANIES_MOCK: Company[] = [
                 question_id: 1,
                 question_text: "¿La empresa cumple con los requisitos básicos?",
                 response: "Sí",
+                evidences: ["https://certificados-gamma.com/certificado1"],
+                comments: [],
               },
               {
                 question_id: 2,
                 question_text: "¿Existen protocolos de seguridad?",
                 response: "Sí",
+                evidences: null,
+                comments: ["Protocolos actualizados a febrero 2025."],
               },
             ],
           },
