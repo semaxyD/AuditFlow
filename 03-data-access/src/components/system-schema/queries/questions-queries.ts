@@ -1,7 +1,7 @@
-import { prisma } from '../../../prismaconfig/prisma-client'
+import { Prisma } from '../../../prismaconfig/prisma-client'
 
 export async function getQuestionsByIds(ids: number[]) {
-  const questions = await prisma.question.findMany({
+  const questions = await Prisma.question.findMany({
     where: { id: { in: ids } },
     select: { id: true },
   });

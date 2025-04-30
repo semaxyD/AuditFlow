@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { EvaluationSubmissionDto } from "./evaluation-submission.dto"
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 
 @Injectable()
 export class EvaluationService {

@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
+
 
 @Injectable()
 export class EvaluationService {

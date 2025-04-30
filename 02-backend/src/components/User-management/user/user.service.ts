@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException, BadRequestException} from '@nestjs/common';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '@data-access/src/prismaconfig/prisma-types';
-import { JwtService } from '@nestjs/jwt'
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()

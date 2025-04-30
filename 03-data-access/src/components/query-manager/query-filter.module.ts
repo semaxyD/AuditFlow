@@ -4,6 +4,6 @@ import { QueryManagerService } from './query-manager.service';
 
 @Module({
     providers: [QueryFilterService,QueryManagerService],
-    exports: [QueryFilterService],
+    exports: [QueryFilterService,QueryManagerService],
 })
 export class QueryFilterModule {}

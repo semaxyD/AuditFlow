@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -12,21 +12,31 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
       secretOrKey: configService.get<string>('JWT_SECRET') || '', 
     });
 
-    if (!configService.get<string>('JWT_SECRET')) {
-      throw new Error('JWT_SECRET no está definido en el entorno');
+    const secret = configService.get<string>('JWT_SECRET');
+    if (!secret) {
+      console.error('JWT_SECRET no definido. Apagando servidor...');
+      process.exit(1);
     }
   }
+
+
 
   async validate(payload: any) {
     const user = await this.queryfilter.filterQuery('read','validateUserEmail', payload.email)
 
     if (!user) {
-      throw new Error('Token válido, pero usuario no encontrado en la base de datos');
+      throw new UnauthorizedException('Token válido, pero usuario no encontrado en la base de datos');
     }
 
-    return {id:user.id , email: user.email, role: user.role, name: user.name};
+    return {
+      id:user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name
+    };
   }
 }

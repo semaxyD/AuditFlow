@@ -16,18 +16,19 @@ export class QueryManagerService {
     const paths = [
       join(__dirname, '../system-schema/queries'),         // Queries de system-schema
       join(__dirname, '../system-schema/compound-queries'), // Queries compuestas de system-schema
-      join(__dirname, '../regulation-schema/queries'),     // Queries de regulation-schema
-      join(__dirname, '../regulation-schema/compound-queries') // Queries compuestas de regulation-schema
     ];
+
+    const extension = '.ts'
 
     // Cargar los archivos de todas las carpetas
     paths.forEach((queriesPath) => {
       const queryFiles = readdirSync(queriesPath);
 
       queryFiles.forEach((file) => {
-        if (file.endsWith('.ts')) {  // Filtramos solo archivos .ts
-          const queryName = file.replace('.ts', '');  // Quitamos la extensión .ts
-          import(join(queriesPath, file)).then((queryModule) => {
+        if (file.endsWith(extension) && !file.endsWith(".d.ts")) {  // Filtramos solo archivos .ts
+          const queryName = file.replace(extension, '');  // Quitamos la extensión .ts
+          const fullPath = `file://${join(queriesPath, file)}`;
+          import(fullPath).then((queryModule) => {
             this.queries[queryName] = queryModule;
           }).catch((err) => {
             console.error(`Error loading query module: ${queryName}`, err);
