@@ -17,8 +17,7 @@ export class UserService {
     const { name, email, password, role } = data;
   
     // llamado a las queries necesarias
-    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', data.email);
-    const crearUsuario = await this.queryFilter.filterQuery('createUser', 'user-queries');
+    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', email);
   
     if (buscarUsuarioPorEmail) {
       throw new BadRequestException('El correo ya está registrado');
@@ -26,13 +25,14 @@ export class UserService {
   
     const hashedPassword = await bcrypt.hash(password, 10);
   
-    const nuevoUsuario = await crearUsuario({
-        name,
-        email,
-        password: hashedPassword,
-        role,
-    });
-  
+    const nuevoUsuario = await this.queryFilter.filterQuery('createUser', 'user-queries',
+      {
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      });
+      
     return {
       message: 'Usuario registrado correctamente',
       id: nuevoUsuario.id,
