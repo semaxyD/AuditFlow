@@ -27,7 +27,7 @@ export async function getUserById(id: number) {
   return userById;
 }
 
-//Query para hu001-005 - Buscar un usaurio existente con el correo proporcionado
+//Query para hu001-005 - Buscar un usuario existente con el correo proporcionado
 export async function getUserByEmail(email: string) {
   const userByEmail = await Prisma.user.findUnique({
     where: { email },

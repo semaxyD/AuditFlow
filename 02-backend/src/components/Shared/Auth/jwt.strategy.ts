@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
 
   async validate(payload: any) {
-    const user = await this.queryfilter.filterQuery('read','validateUserEmail', payload.email)
+    const user = await this.queryfilter.filterQuery('validateUserEmail','user-queries', payload.email)
 
     if (!user) {
       throw new UnauthorizedException('Token válido, pero usuario no encontrado en la base de datos');

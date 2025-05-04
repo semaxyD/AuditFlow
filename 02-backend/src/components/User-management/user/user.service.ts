@@ -17,8 +17,8 @@ export class UserService {
     const { name, email, password, role } = data;
   
     // llamado a las queries necesarias
-    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('read', 'getUserByEmail', data.email);
-    const crearUsuario = await this.queryFilter.filterQuery('write', 'createUser');
+    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', data.email);
+    const crearUsuario = await this.queryFilter.filterQuery('createUser', 'user-queries');
   
     if (buscarUsuarioPorEmail) {
       throw new BadRequestException('El correo ya está registrado');
@@ -42,7 +42,7 @@ export class UserService {
 
   async login(dto: LoginDto): Promise<{ message: string; access_token: string }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
-    const user = await this.queryFilter.filterQuery('read', 'getUserByEmail', dto.email);
+    const user = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', dto.email);
 
     // Si no se encuentra el usuario, se lanza una excepción
     if (!user) {
@@ -76,10 +76,8 @@ export class UserService {
   // solo admins
   // método que devuelve los usuarios
   async buscarUsuarios() {
-    const buscarUsuarios = await this.queryFilter.filterQuery('read', 'searchUser');
+    const usuarios = await this.queryFilter.filterQuery('searchUser', 'user-queries');
 
-    const usuarios = await buscarUsuarios();
-  
     return {
       message: 'Usuarios encontrados correctamente',
       data: usuarios,
@@ -89,7 +87,7 @@ export class UserService {
   // devuelve los campos del usuario por id
   async obtenerUsuarioPorId(id: number) {
   
-  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('read', 'getUserById');
+  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('getUserById', 'user-queries');
 
   const usuario = await obtenerUsuarioPorId(id)
 
