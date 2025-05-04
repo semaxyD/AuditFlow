@@ -19,7 +19,7 @@ export class UserController {
 
 
   // Endpoints Hu005
-  @Post('login') // Ruta para el login de validacion(no de autenticacion)
+  @Post('login') // Ruta para el login de validacion
   async login(@Body() loginDto: LoginDto) {
     return this.userService.login(loginDto);
   }

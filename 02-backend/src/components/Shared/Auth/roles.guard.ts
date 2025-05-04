@@ -2,6 +2,7 @@ import {
     Injectable,
     CanActivate,
     ExecutionContext,
+    UnauthorizedException,
   } from '@nestjs/common';
   import { Reflector } from '@nestjs/core';
   import { ROLES_KEY } from '../decorators/roles.decorator';
@@ -23,8 +24,10 @@ import {
       const request = context.switchToHttp().getRequest();
       const user = request.user;
 
-      if(!user || !user.role){
-        return false;
+
+
+      if(!user?.role){
+        throw new UnauthorizedException("No tienes permiso para acceder a este recurso,role vacio")
       }
   
       // Verificamos si el usuario tiene uno de los roles requeridos

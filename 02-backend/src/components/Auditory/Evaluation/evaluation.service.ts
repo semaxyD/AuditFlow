@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { EvaluationSubmissionDto } from "./evaluation-submission.dto"
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 
 @Injectable()
 export class EvaluationService {
@@ -11,9 +11,9 @@ export class EvaluationService {
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
-    const normId = await this.validateEntityExistence('read', 'getCriterionsByIds',sectionIds);
-    await this.validateEntityExistence('read', 'getQuestionsByIds', questionIds);
-    const user = await this.queryFilter.filterQuery('read', 'getUserCompanyById', userId); 
+    const normId = await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries',sectionIds);
+    await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
+    const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
     const companyId = user.company_id;
 
     // Validar respuestas, puntajes y evidencias:
@@ -70,7 +70,7 @@ export class EvaluationService {
       })),
     };
 
-    const result = await this.queryFilter.filterQuery('insert', 'createEvaluationWithDetails', evaluationData);
+    const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
     return result; // Podrías retornar el ID o el resumen según lo que desees mostrar al frontend
 
 
@@ -79,20 +79,20 @@ export class EvaluationService {
 
   // funcion helper para validacion de existencia de criterios y preguntas 
   private async validateEntityExistence(
+    queryFunction: string,
     queryName: string,
-    entityName: string,
     ids: number[],
   ) {
-    const existingEntities = await this.queryFilter.filterQuery('read', queryName, ids);
+    const existingEntities = await this.queryFilter.filterQuery(queryFunction, queryName, ids);
     const missingIds = ids.filter(id => !existingEntities.some((e: { id: number; }) => e.id === id));
 
     if (missingIds.length > 0) {
       throw new BadRequestException(
-        `Los siguientes ${entityName} no existen: ${missingIds.join(', ')}`,
+        `Los siguientes ${queryName} no existen: ${missingIds.join(', ')}`,
       );
     }
 
-    if (queryName === 'getCriteriosByIds') {
+    if (queryFunction === 'getCriteriosByIds') {
       const standardIds = existingEntities.map((e: any) => e.standard_id);
       const uniqueNormIds = [...new Set(standardIds)];
   
