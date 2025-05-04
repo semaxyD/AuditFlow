@@ -195,7 +195,7 @@ export const getQueries = {
 // Query para la hu-008 obtener las preguntas por norma
   getQuestionsByNorm: async (normId: number) => {
     try {
-      const normWithCriteria = await prisma.norm.findUnique({
+      const normWithCriteria = await Prisma.norm.findUnique({
         where: { id: normId },
         select: {
           criteria: {
