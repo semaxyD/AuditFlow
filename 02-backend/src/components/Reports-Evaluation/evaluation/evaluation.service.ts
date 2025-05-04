@@ -44,13 +44,44 @@ export class EvaluationService {
 
   async getQuestionsByNorm(normId: number) {
     try {
-      const query = await this.queryFilter.filterQuery('read', 'getQuestionsByNorm', normId);
-      return query;
+      const numericId = Number(normId);
+  
+      const sections = await this.queryFilter.filterQuery(
+        'getQuestionsByNorm',
+        'compound-evaluations',
+        numericId
+      );
+  
+      const totalQuestions = sections.reduce(
+        (acc, section) => acc + section.questions.length,
+        0
+      );
+  
+      const response = {
+        name: 'Evaluación generada', // hardcodeado
+        description: 'Evaluación basada en norma seleccionada', //pendiente... no hay description en schema
+        totalQuestions,
+        sections: sections.map((section) => ({
+          id: section.id,
+          title: section.title,
+          questions: section.questions.map((q) => ({
+            id: q.id,
+            question: q.text,
+          })),
+        })),
+      };
+  
+      // temporal... ver exactamente como se va a enviar al frontend
+      console.log('JSON Final para el frontend:\n', JSON.stringify(response, null, 2));
+  
+      return response;
     } catch (error) {
       console.error('Error fetching questions by norm:', error);
       throw new InternalServerErrorException('Error fetching questions by norm');
     }
   }
+  
+  
   
   
 }
