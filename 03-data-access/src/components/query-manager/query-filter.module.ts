@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { QueryFilterService } from './query-filter.service';
-import { QueryManagerService } from './query-manager.service';
+import { QueryLoaderService } from './query-loader.service';
+import { QueryExecutorService } from './query-executor.service';
 
 @Module({
-    providers: [QueryFilterService,QueryManagerService],
-    exports: [QueryFilterService],
+    providers: [QueryFilterService,QueryLoaderService,QueryExecutorService],
+    exports: [QueryFilterService,QueryLoaderService,QueryExecutorService],
 })
 export class QueryFilterModule {}

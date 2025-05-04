@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
+
 
 @Injectable()
 export class EvaluationService {
@@ -7,7 +8,7 @@ export class EvaluationService {
 
   async getCompanies() { 
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getAllCompanies');
+        const query = await this.queryFilter.filterQuery('getAllCompanies', 'company-queries');
         return query
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
@@ -16,7 +17,7 @@ export class EvaluationService {
 
   async getEvaluationsByCompany(companyId: string) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvaluationsByCompany');
+        const query = await this.queryFilter.filterQuery('getEvaluationsByCompany', 'compound-evaluations');
         return query(companyId);
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
@@ -25,7 +26,7 @@ export class EvaluationService {
 
   async getEvaluationDetail(evaluationId: string) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvaluationDetail');
+        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations');
         return query(evaluationId);
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
@@ -34,7 +35,7 @@ export class EvaluationService {
 
   async getEvolutionEvaluation(evaluationId: string) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvolutionEvaluation');
+        const query = await this.queryFilter.filterQuery('getEvolutionEvaluation', 'compound-evaluations');
         return query(evaluationId);
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');

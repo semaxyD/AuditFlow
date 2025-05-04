@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException, BadRequestException} from '@nestjs/common';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
-import { User } from '@data-access/src/prismaconfig/prisma-types';
-import { JwtService } from '@nestjs/jwt'
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
@@ -18,8 +17,7 @@ export class UserService {
     const { name, email, password, role } = data;
   
     // llamado a las queries necesarias
-    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('read', 'getUserByEmail', data.email);
-    const crearUsuario = await this.queryFilter.filterQuery('write', 'createUser');
+    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', email);
   
     if (buscarUsuarioPorEmail) {
       throw new BadRequestException('El correo ya está registrado');
@@ -27,13 +25,14 @@ export class UserService {
   
     const hashedPassword = await bcrypt.hash(password, 10);
   
-    const nuevoUsuario = await crearUsuario({
-        name,
-        email,
-        password: hashedPassword,
-        role,
-    });
-  
+    const nuevoUsuario = await this.queryFilter.filterQuery('createUser', 'user-queries',
+      {
+      name,
+      email,
+      password: hashedPassword,
+      role,
+      });
+      
     return {
       message: 'Usuario registrado correctamente',
       id: nuevoUsuario.id,
@@ -43,7 +42,7 @@ export class UserService {
 
   async login(dto: LoginDto): Promise<{ message: string; access_token: string }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
-    const user = await this.queryFilter.filterQuery('read', 'getUserByEmail', dto.email);
+    const user = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', dto.email);
 
     // Si no se encuentra el usuario, se lanza una excepción
     if (!user) {
@@ -77,10 +76,8 @@ export class UserService {
   // solo admins
   // método que devuelve los usuarios
   async buscarUsuarios() {
-    const buscarUsuarios = await this.queryFilter.filterQuery('read', 'searchUser');
+    const usuarios = await this.queryFilter.filterQuery('searchUser', 'user-queries');
 
-    const usuarios = await buscarUsuarios();
-  
     return {
       message: 'Usuarios encontrados correctamente',
       data: usuarios,
@@ -90,7 +87,7 @@ export class UserService {
   // devuelve los campos del usuario por id
   async obtenerUsuarioPorId(id: number) {
   
-  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('read', 'getUserById');
+  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('getUserById', 'user-queries');
 
   const usuario = await obtenerUsuarioPorId(id)
 

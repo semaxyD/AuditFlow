@@ -10,11 +10,6 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": ".",
-    "paths": {
-      "@data-access/*": ["../03-data-access/*"]
-      
-      
-    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -23,6 +18,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src"],
-  
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

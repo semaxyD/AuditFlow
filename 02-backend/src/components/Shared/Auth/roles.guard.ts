@@ -24,6 +24,8 @@ import {
       const request = context.switchToHttp().getRequest();
       const user = request.user;
 
+
+
       if(!user?.role){
         throw new UnauthorizedException("No tienes permiso para acceder a este recurso,role vacio")
       }
