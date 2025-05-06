@@ -192,6 +192,43 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
       return { evaluation, version };
     });
   }
+  export async function getQuestionsByNorm(normId: number) {
+    try {
+      const normWithCriteria = await Prisma.norm.findUnique({
+        where: { id: normId },
+        select: {
+          criteria: {
+            select: {
+              id: true,
+              description: true,
+              questions: {
+                select: {
+                  id: true,
+                  text: true,
+                },
+              },
+            },
+          },
+        },
+      });
+  
+      if (!normWithCriteria) {
+        throw new Error(`Norm with id ${normId} not found.`);
+      }
+  
+      return normWithCriteria.criteria.map((criterion) => ({
+        id: criterion.id,
+        title: criterion.description || 'Sección sin nombre',
+        questions: criterion.questions.map((question) => ({
+          id: question.id,
+          text: question.text,
+        })),
+      }));
+    } catch (error) {
+      console.error('Error fetching questions by normId:', error);
+      throw new Error('Failed to fetch questions');
+    }
+  }
 
 
 interface EvaluationData {
@@ -207,4 +244,3 @@ interface EvaluationData {
     }[];
   }[];
 }
-

@@ -18,7 +18,9 @@ export class QueryExecutorService {
         throw new Error(`Query collection '${collection}' no encontrada. Collections disponibles: ${Object.keys(queries).join(', ')}`);
     }
 
-    const queryFunc = module[queryName];
+    const base = module.getQueries || module;
+    const queryFunc = base[queryName];
+
 
     if (!queryFunc || typeof queryFunc !== 'function') {
       console.error(`❌ Query '${queryName}' no encontrada en '${collection}'. Funciones disponibles: ${Object.keys(module).join(', ')}`);
