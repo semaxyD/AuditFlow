@@ -48,6 +48,7 @@ export class EvaluationService {
     console.log("resumen de metricas calculadas: ", metrics);
 
     const evaluationData = {
+      userId: userId,
       name: dto.name,
       description: dto.description,
       company_id: companyId,

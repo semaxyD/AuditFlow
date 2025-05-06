@@ -3,6 +3,7 @@ import { EvaluationService } from './evaluation.service';
 import { Roles } from '../../Shared/decorators/roles.decorator'
 import { RolesGuard } from '../../Shared/Auth/roles.guard'
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
+import { CurrentUser } from 'src/components/Shared/decorators/current-user.decorator';
 
 @Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
 export class EvaluationController {
@@ -36,4 +37,23 @@ export class EvaluationController {
   getEvolution(@Param('evaluationId',ParseIntPipe) evaluationId: number) {
     return this.service.getEvolutionEvaluation(evaluationId);
   }
+
+  // Endpoints Hu009
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_externo')
+  @Get(':companyId/myEvaluations')
+  getMyEvaluations(
+    @Param('companyId', ParseIntPipe) companyId: number,@CurrentUser() user: {id: number}) {
+    return this.service.getExternalAuditorEvaluationsByCompany(companyId,user.id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno')
+  @Get('evaluation/:evaluationId/details')
+  getEvaluationDetails(
+    @Param('evaluationId', ParseIntPipe) evaluationId: number, @CurrentUser() user: {id: number}) {
+    return this.service.getExternalAuditorEvaluationDetails(evaluationId, user.id);
+  }
+
+
 }

@@ -20,7 +20,7 @@ export class EvaluationService {
         const query = await this.queryFilter.filterQuery('getEvaluationsByCompany', 'compound-evaluations',companyId);
         return query;
     }catch(error){
-        throw new InternalServerErrorException('Error fetching evaluations');
+        throw new InternalServerErrorException('Error fetching evaluations',error);
     }
   }
 
@@ -29,7 +29,7 @@ export class EvaluationService {
         const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations',evaluationId);
         return query;
     }catch(error){
-        throw new InternalServerErrorException('Error fetching evaluations');
+        throw new InternalServerErrorException('Error fetching evaluations',error);
     }
   }
 
@@ -38,7 +38,34 @@ export class EvaluationService {
         const query = await this.queryFilter.filterQuery('getEvolutionEvaluation', 'compound-evaluations',evaluationId);
         return query;
     }catch(error){
-        throw new InternalServerErrorException('Error fetching evaluations');
+        throw new InternalServerErrorException('Error fetching evaluations',error);
     }
   }
+
+  async getExternalAuditorEvaluationsByCompany(companyId:number, userId:number){
+    try{
+      const data = {
+        companyId,
+        userId
+      };
+      const query = await this.queryFilter.filterQuery('getExternalAuditorEvaluationsByCompany','compound-evaluations',data);
+      return query;
+    }catch(error){
+        throw new InternalServerErrorException('Error fetching evaluations by external auditor');
+    }
+  }
+
+  async getExternalAuditorEvaluationDetails(evaluationId: number, userId: number) {
+    try {
+      const data = { 
+        evaluationId, 
+        userId 
+      };
+      const query = await this.queryFilter.filterQuery('getEvaluationDetailsByExternalAuditorId', 'compound-evaluations', data);
+      return query;
+    } catch (error) {
+      throw new InternalServerErrorException('Error fetching evaluation details by external auditor');
+    }
+  }
+
 }
