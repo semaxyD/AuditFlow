@@ -86,18 +86,17 @@ export class UserService {
 
   // devuelve los campos del usuario por id
   async obtenerUsuarioPorId(id: number) {
+
   
-  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('getUserById', 'user-queries');
+  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('getUserById', 'user-queries',id);
 
-  const usuario = await obtenerUsuarioPorId(id)
-
-  if (!usuario) {
+  if (!obtenerUsuarioPorId) {
     throw new NotFoundException('Usuario no encontrado');
   }
 
   return {
     message: 'Usuario cargado correctamente',
-    data: usuario,
+    data: obtenerUsuarioPorId,
     };
   
   }

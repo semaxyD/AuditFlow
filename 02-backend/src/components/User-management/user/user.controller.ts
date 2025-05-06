@@ -1,5 +1,5 @@
 // src/components/user-management/user/user.controller.ts
-import { Body, Controller, Post, UseGuards, Get,Req } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get,Req, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el guardia JWT
@@ -46,9 +46,9 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get(':id')
-  async obtenerUsuario(@Param('id') id: string) {
+  async obtenerUsuario(@Param('id',ParseIntPipe) id: number) {
   //  Solo accesible si el token es válido y el rol es ADMIN
-  return this.userService.obtenerUsuarioPorId(+id); 
+  return this.userService.obtenerUsuarioPorId(id); 
 }
 
 }

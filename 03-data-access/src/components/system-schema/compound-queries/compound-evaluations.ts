@@ -1,8 +1,7 @@
 import { Prisma } from '../../../prismaconfig/prisma-client';
 
-export const getQueries = {
   // Obtener detalles de evaluación QUERY COMPUESTA 04
-  getEvaluationDetail: async (evaluationId: number) => {
+  export async function getEvaluationDetail(evaluationId: number) {
     const answersByQuestion = await Prisma.$queryRaw`
       SELECT DISTINCT ON (q.id)
         q.id AS "question_id",
@@ -23,9 +22,10 @@ export const getQueries = {
     `;
 
     return answersByQuestion;
-  },
+  }
+
   // Obtener evolución de la evaluación  QUERY COMPUESTA 03
-  getEvolutionEvaluation: async (evaluationId: number) => {
+  export async function getEvolutionEvaluation(evaluationId: number) {
     const evolution = await Prisma.evaluationVersion.findMany({
       where: { evaluation_id: evaluationId },
       orderBy: {
@@ -56,10 +56,10 @@ export const getQueries = {
     }));
 
     return formattedEvolution;
-  },
+  }
 
   // Obtener evaluaciones por empresa con normas asociadas - QUERY COMPUESTA 02
-  getEvaluationsByCompany: async (companyId: number) => {
+  export async function getEvaluationsByCompany(companyId: number) {
     const evaluations = await Prisma.evaluation.findMany({
       where: {
         company_id: companyId,
@@ -119,14 +119,14 @@ export const getQueries = {
     });
 
     return formatted;
-  },
+  }
   
   
   //Query para la HU-008 insertar una evaluación hecha con todos sus datos
-  createEvaluationWithDetails: async (
+  export async function createEvaluationWithDetails(
     data: EvaluationData,
     userId: number
-  ) => {
+  ){
     return await Prisma.$transaction(async (tx: { evaluation: { create: (arg0: { data: { company_id: number; created_by: number; created_at: Date; }; }) => any; }; evaluationVersion: { create: (arg0: { data: { evaluation_id: any; created_by: number; version_number: number; is_latest: boolean; created_at: Date; }; }) => any; }; answer: { create: (arg0: { data: { version_id: any; question_id: number; score: number; response: string; created_by: number; created_at: Date; }; }) => any; }; comment: { create: (arg0: { data: { text: string; created_by: number; answer_id: any; created_at: Date; }; }) => any; }; evidence: { createMany: (arg0: { data: { answer_id: any; url: string; created_by: number; created_at: Date; }[]; }) => any; }; }) => {
       // 1. Crear la evaluación
       const evaluation = await tx.evaluation.create({
@@ -191,9 +191,8 @@ export const getQueries = {
 
       return { evaluation, version };
     });
-  },
+  }
 
-};
 
 interface EvaluationData {
   company_id: number;

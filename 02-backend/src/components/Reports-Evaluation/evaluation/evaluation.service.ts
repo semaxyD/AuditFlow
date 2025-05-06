@@ -11,32 +11,32 @@ export class EvaluationService {
         const query = await this.queryFilter.filterQuery('getAllCompanies', 'company-queries');
         return query
     }catch(error){
-        throw new InternalServerErrorException('Error fetching evaluations');
+        throw new InternalServerErrorException('Error fetching evaluations',error);
     }
   }
 
-  async getEvaluationsByCompany(companyId: string) {
+  async getEvaluationsByCompany(companyId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('getEvaluationsByCompany', 'compound-evaluations');
-        return query(companyId);
+        const query = await this.queryFilter.filterQuery('getEvaluationsByCompany', 'compound-evaluations',companyId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
-  async getEvaluationDetail(evaluationId: string) {
+  async getEvaluationDetail(evaluationId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations');
-        return query(evaluationId);
+        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations',evaluationId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
-  async getEvolutionEvaluation(evaluationId: string) {
+  async getEvolutionEvaluation(evaluationId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('getEvolutionEvaluation', 'compound-evaluations');
-        return query(evaluationId);
+        const query = await this.queryFilter.filterQuery('getEvolutionEvaluation', 'compound-evaluations',evaluationId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
