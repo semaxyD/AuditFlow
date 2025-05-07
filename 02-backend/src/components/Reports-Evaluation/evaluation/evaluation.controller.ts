@@ -37,11 +37,4 @@ export class EvaluationController {
     return this.service.getEvolutionEvaluation(evaluationId);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  @Get('questions/:normId')
-  getQuestionsByNorm(@Param('normId') normId: string) {
-    return this.service.getQuestionsByNorm(Number(normId));
-}
-
 }

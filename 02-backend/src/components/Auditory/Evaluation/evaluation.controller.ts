@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
 import { RolesGuard } from '../../Shared/Auth/roles.guard';
 import { Roles } from '../../Shared/decorators/roles.decorator';
@@ -9,6 +9,13 @@ import { EvaluationService } from './evaluation.service';
 @Controller('auditory')
 export class EvaluationController{
     constructor(private readonly evaluationService: EvaluationService) {
+    }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('admin')
+    @Get('questions/:normId')
+    getQuestionsByNorm(@Param('normId') normId: string) {
+      return this.evaluationService.getQuestionsByNorm(Number(normId));
     }
 
     @UseGuards(JwtAuthGuard,RolesGuard)
