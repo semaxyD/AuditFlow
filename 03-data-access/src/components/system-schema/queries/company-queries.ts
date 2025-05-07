@@ -6,9 +6,11 @@ export async function getAllCompanies() {
     select: {
       id: true,
       name: true,
+      address: true,
+      phone: true,
+      contact_name: true,
+      contact_email: true,
     },
   });
   return companies;
 }
-
-
