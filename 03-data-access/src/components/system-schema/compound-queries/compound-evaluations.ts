@@ -1,13 +1,9 @@
 import { Prisma } from "../../../prismaconfig/prisma-client";
 
-// Obtener detalles de evaluación QUERY COMPUESTA 04
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 export async function getEvaluationDetail(
   ids: { evaluationId: number; versionId: number }
 ) {
-  const rows = await prisma.$queryRaw<{ result: any }[]>`
+  const rows = await Prisma.$queryRaw<{ result: any }[]>`
     WITH base AS (
       SELECT DISTINCT ON (q.id)
         q.id               AS question_id,
@@ -62,7 +58,7 @@ export async function getEvaluationDetail(
         e.observations,
         e.id AS evaluation_id
       FROM evaluation e
-      WHERE e.id = ${evaluationId}
+      WHERE e.id = ${ids.evaluationId}
       LIMIT 1
     ),
     questions AS (
