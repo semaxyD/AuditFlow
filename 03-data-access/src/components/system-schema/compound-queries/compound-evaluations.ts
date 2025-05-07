@@ -192,6 +192,21 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
       return { evaluation, version };
     });
   }
+
+  interface EvaluationData {
+    company_id: number;
+    sections: {
+      criterion_id: number;
+      questions: {
+        question_id: number;
+        score: number;
+        answer: string;
+        observations?: string;
+        evidence: { url: string }[];
+      }[];
+    }[];
+  }
+
   export async function getQuestionsByNorm(normId: number) {
     try {
       const normWithCriteria = await Prisma.norm.findUnique({
@@ -229,18 +244,3 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
       throw new Error('Failed to fetch questions');
     }
   }
-
-
-interface EvaluationData {
-  company_id: number;
-  sections: {
-    criterion_id: number;
-    questions: {
-      question_id: number;
-      score: number;
-      answer: string;
-      observations?: string;
-      evidence: { url: string }[];
-    }[];
-  }[];
-}

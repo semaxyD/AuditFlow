@@ -12,7 +12,7 @@ export class EvaluationController{
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('admin')
+    @Roles('auditor_interno')
     @Get('questions/:normId')
     getQuestionsByNorm(@Param('normId') normId: string) {
       return this.evaluationService.getQuestionsByNorm(Number(normId));
