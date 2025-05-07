@@ -21,7 +21,7 @@ import {
   
     @IsOptional()
     @IsString()
-    observations?: string;
+    comments?: string;
   
     @IsNumber()
     score: number;
@@ -48,5 +48,10 @@ import {
     @ValidateNested({ each: true })
     @Type(() => SectionSubmissionDto)
     sections: SectionSubmissionDto[];
+
+    @IsOptional()
+    @IsString()
+    observations?: string;
+
   }
   

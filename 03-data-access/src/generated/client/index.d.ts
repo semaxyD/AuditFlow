@@ -8867,6 +8867,7 @@ export namespace Prisma {
     company_id: number | null
     created_by: number | null
     created_at: Date | null
+    observations: string | null
   }
 
   export type EvaluationMaxAggregateOutputType = {
@@ -8874,6 +8875,7 @@ export namespace Prisma {
     company_id: number | null
     created_by: number | null
     created_at: Date | null
+    observations: string | null
   }
 
   export type EvaluationCountAggregateOutputType = {
@@ -8881,6 +8883,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at: number
+    observations: number
     _all: number
   }
 
@@ -8902,6 +8905,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    observations?: true
   }
 
   export type EvaluationMaxAggregateInputType = {
@@ -8909,6 +8913,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    observations?: true
   }
 
   export type EvaluationCountAggregateInputType = {
@@ -8916,6 +8921,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    observations?: true
     _all?: true
   }
 
@@ -9010,6 +9016,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at: Date
+    observations: string | null
     _count: EvaluationCountAggregateOutputType | null
     _avg: EvaluationAvgAggregateOutputType | null
     _sum: EvaluationSumAggregateOutputType | null
@@ -9036,6 +9043,7 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
     versions?: boolean | Evaluation$versionsArgs<ExtArgs>
@@ -9047,6 +9055,7 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluation"]>
@@ -9056,6 +9065,7 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluation"]>
@@ -9065,9 +9075,10 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    observations?: boolean
   }
 
-  export type EvaluationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "company_id" | "created_by" | "created_at", ExtArgs["result"]["evaluation"]>
+  export type EvaluationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "company_id" | "created_by" | "created_at" | "observations", ExtArgs["result"]["evaluation"]>
   export type EvaluationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -9095,6 +9106,7 @@ export namespace Prisma {
       company_id: number
       created_by: number
       created_at: Date
+      observations: string | null
     }, ExtArgs["result"]["evaluation"]>
     composites: {}
   }
@@ -9525,6 +9537,7 @@ export namespace Prisma {
     readonly company_id: FieldRef<"Evaluation", 'Int'>
     readonly created_by: FieldRef<"Evaluation", 'Int'>
     readonly created_at: FieldRef<"Evaluation", 'DateTime'>
+    readonly observations: FieldRef<"Evaluation", 'String'>
   }
     
 
@@ -14662,7 +14675,8 @@ export namespace Prisma {
     id: 'id',
     company_id: 'company_id',
     created_by: 'created_by',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    observations: 'observations'
   };
 
   export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
@@ -15156,6 +15170,7 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    observations?: StringNullableFilter<"Evaluation"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     versions?: EvaluationVersionListRelationFilter
@@ -15166,6 +15181,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    observations?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     creator?: UserOrderByWithRelationInput
     versions?: EvaluationVersionOrderByRelationAggregateInput
@@ -15179,6 +15195,7 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    observations?: StringNullableFilter<"Evaluation"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     versions?: EvaluationVersionListRelationFilter
@@ -15189,6 +15206,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    observations?: SortOrderInput | SortOrder
     _count?: EvaluationCountOrderByAggregateInput
     _avg?: EvaluationAvgOrderByAggregateInput
     _max?: EvaluationMaxOrderByAggregateInput
@@ -15204,6 +15222,7 @@ export namespace Prisma {
     company_id?: IntWithAggregatesFilter<"Evaluation"> | number
     created_by?: IntWithAggregatesFilter<"Evaluation"> | number
     created_at?: DateTimeWithAggregatesFilter<"Evaluation"> | Date | string
+    observations?: StringNullableWithAggregatesFilter<"Evaluation"> | string | null
   }
 
   export type EvaluationVersionWhereInput = {
@@ -15803,6 +15822,7 @@ export namespace Prisma {
 
   export type EvaluationCreateInput = {
     created_at?: Date | string
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     creator: UserCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
@@ -15813,11 +15833,13 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
   export type EvaluationUpdateInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
@@ -15828,6 +15850,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -15836,10 +15859,12 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
   }
 
   export type EvaluationUpdateManyMutationInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EvaluationUncheckedUpdateManyInput = {
@@ -15847,6 +15872,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EvaluationVersionCreateInput = {
@@ -16504,6 +16530,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    observations?: SortOrder
   }
 
   export type EvaluationAvgOrderByAggregateInput = {
@@ -16517,6 +16544,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    observations?: SortOrder
   }
 
   export type EvaluationMinOrderByAggregateInput = {
@@ -16524,6 +16552,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    observations?: SortOrder
   }
 
   export type EvaluationSumOrderByAggregateInput = {
@@ -17880,6 +17909,7 @@ export namespace Prisma {
 
   export type EvaluationCreateWithoutCreatorInput = {
     created_at?: Date | string
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
   }
@@ -17888,6 +17918,7 @@ export namespace Prisma {
     id?: number
     company_id: number
     created_at?: Date | string
+    observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
@@ -18053,6 +18084,7 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    observations?: StringNullableFilter<"Evaluation"> | string | null
   }
 
   export type EvaluationVersionUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -18195,6 +18227,7 @@ export namespace Prisma {
 
   export type EvaluationCreateWithoutCompanyInput = {
     created_at?: Date | string
+    observations?: string | null
     creator: UserCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
   }
@@ -18203,6 +18236,7 @@ export namespace Prisma {
     id?: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
@@ -18780,6 +18814,7 @@ export namespace Prisma {
 
   export type EvaluationCreateWithoutVersionsInput = {
     created_at?: Date | string
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     creator: UserCreateNestedOneWithoutEvaluationsInput
   }
@@ -18789,6 +18824,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
   }
 
   export type EvaluationCreateOrConnectWithoutVersionsInput = {
@@ -18870,6 +18906,7 @@ export namespace Prisma {
 
   export type EvaluationUpdateWithoutVersionsInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
   }
@@ -18879,6 +18916,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpsertWithoutVersionsCreatedInput = {
@@ -19429,6 +19467,7 @@ export namespace Prisma {
     id?: number
     company_id: number
     created_at?: Date | string
+    observations?: string | null
   }
 
   export type EvaluationVersionCreateManyCreatorInput = {
@@ -19471,6 +19510,7 @@ export namespace Prisma {
 
   export type EvaluationUpdateWithoutCreatorInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
   }
@@ -19479,6 +19519,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19486,6 +19527,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EvaluationVersionUpdateWithoutCreatorInput = {
@@ -19608,6 +19650,7 @@ export namespace Prisma {
     id?: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
   }
 
   export type CompanyEditorCreateManyCompanyInput = {
@@ -19616,6 +19659,7 @@ export namespace Prisma {
 
   export type EvaluationUpdateWithoutCompanyInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
   }
@@ -19624,6 +19668,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19631,6 +19676,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CompanyEditorUpdateWithoutCompanyInput = {

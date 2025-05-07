@@ -98,13 +98,14 @@ export class EvaluationService {
       max_score: metrics.maxScore,
       answered_questions: metrics.answeredQuestions,
       total_questions: metrics.totalQuestions,
+      observations: dto.observations ?? '',
       sections: dto.sections.map(section => ({
         criterion_id: section.id,
         questions: section.questions.map(q => ({
           question_id: q.id,
           answer: q.answer,
           evidence: q.evidence,
-          observations: q.observations ?? '',
+          comments: q.comments ?? '',
           score: q.score,
         })),
       })),
