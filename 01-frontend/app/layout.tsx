@@ -6,8 +6,8 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Sistema ISO 14001",
-  description: "Sistema de gestión ambiental ISO 14001",
+  title: "AuditFlow",
+  description: "AuditFlow",
 };
 
 export default function RootLayout({
