@@ -91,6 +91,34 @@ export const MOCK_EVALUATIONS = [
           },
         ],
       },
+      {
+        id: 3,
+        title: "Requisitos generales",
+        questions: [
+          {
+            id: 101,
+            question:
+              "¿La organización ha establecido y mantenido un sistema de gestión ambiental consistente con los requisitos contenidos en la norma ISO 14001?",
+            response: "N/A",
+            observations: "No aplica",
+            evidence: ["https://example.com/evidence1"],
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: "Requisitos generales",
+        questions: [
+          {
+            id: 101,
+            question:
+              "¿La organización ha establecido y mantenido un sistema de gestión ambiental consistente con los requisitos contenidos en la norma ISO 14001?",
+            response: "N/A",
+            observations: "No aplica",
+            evidence: ["https://example.com/evidence1"],
+          },
+        ],
+      },
     ],
   },
   {

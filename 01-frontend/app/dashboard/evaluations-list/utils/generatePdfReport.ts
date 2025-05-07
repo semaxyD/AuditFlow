@@ -1,31 +1,67 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import Chart from "chart.js/auto";
 
-export const generateEvaluationReport = (evaluation: any) => {
+export const generateEvaluationReport = async (evaluation: any) => {
+  const ctx = (
+    document.getElementById("chartCanvas") as HTMLCanvasElement
+  ).getContext("2d");
+
+  const labels = evaluation.sections.map((s: any) => s.title);
+  const data = evaluation.sections.map((s: any) => s.questions.length);
+
+  if (!ctx) {
+    throw new Error("Failed to get 2D context for chart rendering.");
+  }
+
+  const chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Cantidad de preguntas por sección",
+          data,
+          backgroundColor: "#4CAF50",
+        },
+      ],
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        legend: { display: false },
+        title: { display: true, text: "Resumen de Secciones" },
+      },
+    },
+  });
+
+  // Esperar que el gráfico se renderice
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  const chartImage = chart.toBase64Image();
+
   const doc = new jsPDF();
   const margin = 14;
   const pageWidth = doc.internal.pageSize.getWidth();
 
-  // Title
+  // Título y datos
   doc.setFontSize(18);
-  doc.setFont("helvetica", "bold");
   doc.text(evaluation.name, pageWidth / 2, 20, { align: "center" });
 
-  // Meta Info
   doc.setFontSize(11);
-  doc.setFont("helvetica", "normal");
   doc.text(`Fecha: ${evaluation.date}`, margin, 35);
   doc.text(`Estado: ${evaluation.status}`, margin, 42);
   doc.text(`Puntaje: ${evaluation.score}`, margin, 49);
-  doc.text(`Total de preguntas: ${evaluation.totalQuestions}`, margin, 56);
-  doc.text(`Retroalimentación: ${evaluation.evaluationFeedback}`, margin, 63);
 
-  let yOffset = 75;
+  // Insertar gráfico
+  doc.addImage(chartImage, "PNG", margin, 60, pageWidth - 2 * margin, 80);
 
-  // Sections
+  let yOffset = 150;
+
+  // Tablas por sección
   evaluation.sections.forEach((section: any, index: number) => {
+    doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
     doc.text(`${index + 1}. ${section.title}`, margin, yOffset);
     yOffset += 6;
 
@@ -41,27 +77,15 @@ export const generateEvaluationReport = (evaluation: any) => {
       body: tableData,
       startY: yOffset,
       margin: { left: margin, right: margin },
-      styles: {
-        fontSize: 9,
-        cellPadding: 3,
-        textColor: "#333",
-        font: "helvetica",
-      },
-      headStyles: {
-        fillColor: [230, 230, 230],
-        textColor: "#000",
-        fontStyle: "bold",
-      },
-      alternateRowStyles: {
-        fillColor: [245, 245, 245],
-      },
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [230, 230, 230] },
+      alternateRowStyles: { fillColor: [245, 245, 245] },
       didDrawPage: (data) => {
-        if (data.cursor) {
-          yOffset = data.cursor.y + 10;
-        }
+        yOffset = data.cursor ? data.cursor.y + 10 : yOffset;
       },
     });
   });
 
+  chart.destroy(); // Limpia el gráfico del canvas
   doc.save(`${evaluation.name}.pdf`);
 };
