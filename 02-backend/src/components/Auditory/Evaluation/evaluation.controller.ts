@@ -11,8 +11,9 @@ export class EvaluationController{
     constructor(private readonly evaluationService: EvaluationService) {
     }
 
+
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('auditor_interno')
+    @Roles('auditor_interno','auditor_externo')
     @Get('questions/:normId')
     getQuestionsByNorm(@Param('normId') normId: string) {
       return this.evaluationService.getQuestionsByNorm(Number(normId));

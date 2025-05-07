@@ -226,7 +226,9 @@ interface EvidenceData {
   url: string;
 }
 
-//Query para traer preguntas de la HU008
+//Query para traer los id de las normas disponibles de la HU008 - Por crear
+
+//Query para traer preguntas de la HU008 - Por cambiar
 export async function getQuestionsByNorm(normId: number) {
   try {
     const normWithCriteria = await Prisma.norm.findUnique({
