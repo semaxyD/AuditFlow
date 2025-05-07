@@ -48,7 +48,7 @@ export class EvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_interno')
+  @Roles('auditor_externo')
   @Get('evaluation/:evaluationId/details')
   getEvaluationDetails(
     @Param('evaluationId', ParseIntPipe) evaluationId: number, @CurrentUser() user: {id: number}) {
