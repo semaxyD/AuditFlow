@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
-import { RolesGuard } from '../../Shared/Auth/roles.guard';
-import { Roles } from '../../Shared/decorators/roles.decorator';
-import { CurrentUser } from 'src/components/Shared/decorators/current-user.decorator';
+import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
+import { RolesGuard } from '../../Middleware/Auth/roles.guard';
+import { Roles } from '../../Middleware/decorators/roles.decorator';
+import { CurrentUser } from 'src/components/Middleware/decorators/current-user.decorator';
 import { CreateEvaluationDto } from './evaluation.dto';
 import { EvaluationService } from './evaluation.service';
 
@@ -12,7 +12,7 @@ export class EvaluationController{
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('admin')
+    @Roles('auditor_interno')
     @Get('questions/:normId')
     getQuestionsByNorm(@Param('normId') normId: string) {
       return this.evaluationService.getQuestionsByNorm(Number(normId));

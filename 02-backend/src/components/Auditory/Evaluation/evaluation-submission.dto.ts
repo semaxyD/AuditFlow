@@ -2,6 +2,7 @@ export class EvaluationSubmissionDto {
     name: string;
     description: string;
     sections: SectionSubmissionDto[];
+    observations?: string;
   }
   
   export class SectionSubmissionDto {
@@ -13,7 +14,7 @@ export class EvaluationSubmissionDto {
     id: number; // ID de la pregunta (versión en la tabla de la bd)
     answer: string;
     evidence: string[]; // URLs de archivos
-    observations?: string;
+    comments?: string;
     score: number;
   }
   

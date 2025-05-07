@@ -123,17 +123,67 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
   
   
   //Query para la HU-008 insertar una evaluación hecha con todos sus datos
-  export async function createEvaluationWithDetails(
-    data: EvaluationData,
-    userId: number
-  ){
-    return await Prisma.$transaction(async (tx: { evaluation: { create: (arg0: { data: { company_id: number; created_by: number; created_at: Date; }; }) => any; }; evaluationVersion: { create: (arg0: { data: { evaluation_id: any; created_by: number; version_number: number; is_latest: boolean; created_at: Date; }; }) => any; }; answer: { create: (arg0: { data: { version_id: any; question_id: number; score: number; response: string; created_by: number; created_at: Date; }; }) => any; }; comment: { create: (arg0: { data: { text: string; created_by: number; answer_id: any; created_at: Date; }; }) => any; }; evidence: { createMany: (arg0: { data: { answer_id: any; url: string; created_by: number; created_at: Date; }[]; }) => any; }; }) => {
+  export async function createEvaluationWithDetails(data: EvaluationData,userId: number){
+    return await Prisma.$transaction(async (tx: { evaluation: {
+      create: (arg0: {
+        data: { 
+          company_id: number; 
+          created_by: number; 
+          created_at: Date; 
+          observations:string | null | undefined;
+        }; 
+      }) => any; 
+    }; 
+    evaluationVersion: {
+      create: (arg0: { 
+        data: { 
+          evaluation_id: any; 
+          created_by: number;
+          version_number: number; 
+          is_latest: boolean; 
+          created_at: Date; 
+        }; 
+      }) => any; 
+    }; 
+    answer: { 
+      create: (arg0: { 
+        data: { 
+          version_id: any; 
+          question_id: number; 
+          score: number; 
+          response: string; 
+          created_by: number; 
+          created_at: Date; 
+        }; 
+      }) => any; 
+    }; 
+    comment: { 
+      create: (arg0: { 
+        data: { 
+          text: string; 
+          created_by: number; 
+          answer_id: any; 
+          created_at: Date; 
+        }; 
+      }) => any; 
+    }; 
+    evidence: { 
+      createMany: (arg0: { 
+        data: { 
+          answer_id: any; 
+          url: string; 
+          created_by: number; 
+          created_at: Date; 
+        }[]; 
+      }) => any; 
+    }; }) => {
       // 1. Crear la evaluación
       const evaluation = await tx.evaluation.create({
         data: {
           company_id: data.company_id,
           created_by: userId,
           created_at: new Date(),
+          observations: data.observations?.trim() || null,
         },
       });
 
@@ -163,11 +213,11 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
             },
           });
 
-          // 3.2 Crear observaciones (si existen)
-          if (question.observations?.trim()) {
+          // 3.2 Crear comments (si existen)
+          if (question.comments?.trim()) {
             await tx.comment.create({
               data: {
-                text: question.observations.trim(),
+                text: question.comments.trim(),
                 created_by: userId,
                 answer_id: createdAnswer.id,
                 created_at: new Date(),
@@ -192,6 +242,22 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
       return { evaluation, version };
     });
   }
+
+  interface EvaluationData {
+    company_id: number;
+    observations?: string;
+    sections: {
+      criterion_id: number;
+      questions: {
+        question_id: number;
+        score: number;
+        answer: string;
+        comments?: string;
+        evidence: { url: string }[];
+      }[];
+    }[];
+  }
+
   export async function getQuestionsByNorm(normId: number) {
     try {
       const normWithCriteria = await Prisma.norm.findUnique({
@@ -229,18 +295,3 @@ import { Prisma } from '../../../prismaconfig/prisma-client';
       throw new Error('Failed to fetch questions');
     }
   }
-
-
-interface EvaluationData {
-  company_id: number;
-  sections: {
-    criterion_id: number;
-    questions: {
-      question_id: number;
-      score: number;
-      answer: string;
-      observations?: string;
-      evidence: { url: string }[];
-    }[];
-  }[];
-}

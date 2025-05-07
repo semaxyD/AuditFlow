@@ -2,9 +2,9 @@
 import { Body, Controller, Post, UseGuards, Get,Req, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
-import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard'; // Importar el guardia JWT
-import { Roles } from '../../Shared/decorators/roles.decorator';
-import { RolesGuard } from '../../Shared/Auth/roles.guard';
+import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar el guardia JWT
+import { Roles } from '../../Middleware/decorators/roles.decorator';
+import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { Param } from '@nestjs/common';
 
 @Controller('user') // Ruta base: http://localhost:3001/user
