@@ -11,7 +11,8 @@ export async function getEvaluationDetail(evaluationId: number) {
       a.response,
       a.created_by,
       a.created_at,
-      ev.id AS "version_id"
+      ev.id AS "version_id",
+      e.observations
     FROM question q
     JOIN criterion c ON q.criterion_id = c.id
     JOIN norm n ON c.norm_id = n.id
@@ -291,6 +292,7 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
       ev.id AS "version_id",
       ev.created_at AS "version_created_at",
       e.id AS "evaluation_id",
+      e.observations,
       u.id AS "creator_id",
       u.name AS "creator_name",
       evid.id AS "evidence_id",
