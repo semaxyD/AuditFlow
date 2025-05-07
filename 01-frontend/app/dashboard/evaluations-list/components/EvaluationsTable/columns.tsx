@@ -2,10 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Circle, Delete, Eye, Pencil, Trash } from "lucide-react";
+import {
+  ArrowUpDown,
+  Circle,
+  Delete,
+  Eye,
+  FileText,
+  Pencil,
+  Sheet,
+  Trash,
+} from "lucide-react";
 import "./EvaluationsTable.css";
 import { ListedEvaluation } from "../../mock/mock";
 import Link from "next/link";
+import { generateEvaluationReport } from "../../utils/generatePdfReport";
 
 export const columns: ColumnDef<ListedEvaluation>[] = [
   {
@@ -84,6 +94,16 @@ export const columns: ColumnDef<ListedEvaluation>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 justify-end">
+          <Button
+            variant="outline"
+            size="icon"
+            title="Descargar reporte"
+            onClick={() => {
+              generateEvaluationReport(row.original);
+            }}
+          >
+            <FileText />
+          </Button>
           <Button variant="outline" size="icon" title="Editar evaluación">
             <Pencil />
           </Button>
