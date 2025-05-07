@@ -25,9 +25,9 @@ export class EvaluationController {
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
-  @Get('evaluations/:evaluationId/detail')
-  getEvaluationDetail(@Param('evaluationId',ParseIntPipe) evaluationId: number) {
-    return this.service.getEvaluationDetail(evaluationId);
+  @Get(':evaluationId/version/:versionId')
+  getEvaluationDetail(@Param('evaluationId',ParseIntPipe) evaluationId: number, @Param('versionId',ParseIntPipe) versionId: number) {
+    return this.service.getEvaluationDetail(evaluationId,versionId);
   }
 
   @UseGuards(JwtAuthGuard,RolesGuard)

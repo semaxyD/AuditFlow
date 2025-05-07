@@ -2,8 +2,7 @@ import { Prisma } from "../../../prismaconfig/prisma-client";
 
 // Obtener detalles de evaluación QUERY COMPUESTA 04
 export async function getEvaluationDetail(
-  evaluationId: number,
-  versionId: number
+  ids: { evaluationId: number; versionId: number }
 ) {
   const answersByQuestion = await Prisma.$queryRaw`
     WITH base AS (
@@ -23,8 +22,8 @@ export async function getEvaluationDetail(
       LEFT JOIN answer a     ON a.question_id = q.id
       LEFT JOIN evaluation_version ev
                              ON a.version_id = ev.id
-      WHERE ev.evaluation_id = ${evaluationId}
-        AND ev.id            <= ${versionId}
+      WHERE ev.evaluation_id = ${ids.evaluationId}
+        AND ev.id            <= ${ids.versionId}
       ORDER BY q.id, ev.id DESC, a.created_at DESC
     )
     SELECT
