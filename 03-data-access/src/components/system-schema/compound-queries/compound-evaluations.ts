@@ -1,10 +1,13 @@
 import { Prisma } from "../../../prismaconfig/prisma-client";
 
 // Obtener detalles de evaluación QUERY COMPUESTA 04
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
 export async function getEvaluationDetail(
   ids: { evaluationId: number; versionId: number }
 ) {
-  const answersByQuestion = await Prisma.$queryRaw`
+  const rows = await prisma.$queryRaw<{ result: any }[]>`
     WITH base AS (
       SELECT DISTINCT ON (q.id)
         q.id               AS question_id,
@@ -15,7 +18,8 @@ export async function getEvaluationDetail(
         a.response,
         a.created_by,
         a.created_at,
-        ev.id              AS version_id
+        ev.id              AS version_id,
+        ev.evaluation_id   AS evaluation_id
       FROM question q
       JOIN criterion c       ON q.criterion_id = c.id
       JOIN norm n            ON c.norm_id = n.id
@@ -25,38 +29,65 @@ export async function getEvaluationDetail(
       WHERE ev.evaluation_id = ${ids.evaluationId}
         AND ev.id            <= ${ids.versionId}
       ORDER BY q.id, ev.id DESC, a.created_at DESC
+    ),
+    answers AS (
+      SELECT
+        b.evaluation_id,
+        b.question_id,
+        b.text,
+        b.criterion_description,
+        b.norm_code,
+        b.response,
+        b.created_by,
+        b.created_at,
+        b.version_id,
+        ARRAY_AGG(DISTINCT e.url)   FILTER (WHERE e.id IS NOT NULL) AS evidences,
+        ARRAY_AGG(DISTINCT cm.text) FILTER (WHERE cm.id IS NOT NULL) AS comments
+      FROM base b
+      LEFT JOIN evidence e ON e.answer_id = b.answer_id
+      LEFT JOIN comment  cm ON cm.answer_id = b.answer_id
+      GROUP BY
+        b.evaluation_id,
+        b.question_id,
+        b.text,
+        b.criterion_description,
+        b.norm_code,
+        b.response,
+        b.created_by,
+        b.created_at,
+        b.version_id
+    ),
+    obs AS (
+      SELECT
+        e.observations,
+        e.id AS evaluation_id
+      FROM evaluation e
+      WHERE e.id = ${evaluationId}
+      LIMIT 1
+    ),
+    questions AS (
+      SELECT
+        evaluation_id,
+        jsonb_agg(
+          to_jsonb(answers) - 'evaluation_id'
+          ORDER BY answers.question_id
+        ) AS questions
+      FROM answers
+      GROUP BY evaluation_id
     )
     SELECT
-      b.question_id,
-      b.text,
-      b.criterion_description,
-      b.norm_code,
-      b.response,
-      b.created_by,
-      b.created_at,
-      b.version_id,
-      -- Agrupamos evidencias en un array, sin duplicados
-      ARRAY_AGG(DISTINCT e.url) FILTER (WHERE e.id IS NOT NULL)
-        AS evidences,
-      -- Agrupamos comentarios en un array, sin duplicados
-      ARRAY_AGG(DISTINCT cm.text) FILTER (WHERE cm.id IS NOT NULL)
-        AS comments
-    FROM base b
-    LEFT JOIN evidence e ON e.answer_id = b.answer_id
-    LEFT JOIN comment  cm ON cm.answer_id = b.answer_id
-    GROUP BY
-      b.question_id,
-      b.text,
-      b.criterion_description,
-      b.norm_code,
-      b.response,
-      b.created_by,
-      b.created_at,
-      b.version_id
-    ORDER BY b.question_id;
+      jsonb_build_array(
+        jsonb_build_object(
+          'observations', obs.observations,
+          'questions',   questions.questions
+        )
+      ) AS result
+    FROM obs
+    JOIN questions ON questions.evaluation_id = obs.evaluation_id
   `;
 
-  return answersByQuestion;
+  // Devuelves directamente el JSON parseado
+  return rows[0]?.result ?? [];
 }
 
 // Obtener evolución de la evaluación  QUERY COMPUESTA 03
