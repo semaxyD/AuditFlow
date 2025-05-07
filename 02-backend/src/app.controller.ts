@@ -13,6 +13,6 @@ export class AppController {
   @Get('/ping') // Ruta GET en '/ping'
   ping() {
     // Esto sirve para probar que el backend está corriendo bien
-    return { message: 'Backend está funcionando correctamente' };
+    return { message: 'Backend está funcionando correctamente Wii' };
   }
 }

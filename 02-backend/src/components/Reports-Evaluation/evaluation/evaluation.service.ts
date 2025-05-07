@@ -1,5 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
+
 
 @Injectable()
 export class EvaluationService {
@@ -7,37 +8,38 @@ export class EvaluationService {
 
   async getCompanies() { 
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getAllCompanies');
+        const query = await this.queryFilter.filterQuery('getAllCompanies', 'company-queries');
         return query
     }catch(error){
-        throw new InternalServerErrorException('Error fetching evaluations');
+        throw new InternalServerErrorException('Error fetching evaluations',error);
     }
   }
 
-  async getEvaluationsByCompany(companyId: string) {
+  async getEvaluationsByCompany(companyId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvaluationsByCompany');
-        return query(companyId);
+        const query = await this.queryFilter.filterQuery('getEvaluationsByCompany', 'compound-evaluations',companyId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
-  async getEvaluationDetail(evaluationId: string) {
+  async getEvaluationDetail(evaluationId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvaluationDetail');
-        return query(evaluationId);
+        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations',evaluationId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
-  async getEvolutionEvaluation(evaluationId: string) {
+  async getEvolutionEvaluation(evaluationId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('read', 'getEvolutionEvaluation');
-        return query(evaluationId);
+        const query = await this.queryFilter.filterQuery('getEvolutionEvaluation', 'compound-evaluations',evaluationId);
+        return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
+  
 }

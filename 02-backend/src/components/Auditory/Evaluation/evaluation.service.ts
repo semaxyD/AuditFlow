@@ -1,19 +1,59 @@
 import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { EvaluationSubmissionDto } from "./evaluation-submission.dto"
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
+import { QueryFilterService } from '../../../imports-barrel';
 
 @Injectable()
 export class EvaluationService {
   constructor(private readonly queryFilter: QueryFilterService) {}
+
+  async getQuestionsByNorm(normId: number) {
+    try {
+      const numericId = Number(normId);
+  
+      const sections = await this.queryFilter.filterQuery(
+        'getQuestionsByNorm',
+        'compound-evaluations',
+        numericId
+      );
+  
+      const totalQuestions = sections.reduce(
+        (acc, section) => acc + section.questions.length,
+        0
+      );
+  
+      const response = {
+        name: 'Evaluación generada', // hardcodeado
+        description: 'Evaluación basada en norma seleccionada', //pendiente... no hay description en schema
+        totalQuestions,
+        sections: sections.map((section) => ({
+          id: section.id,
+          title: section.title,
+          questions: section.questions.map((q) => ({
+            id: q.id,
+            question: q.text,
+          })),
+        })),
+      };
+  
+      // temporal... ver exactamente como se va a enviar al frontend
+      console.log('JSON Final para el frontend:\n', JSON.stringify(response, null, 2));
+  
+      return response;
+    } catch (error) {
+      console.error('Error fetching questions by norm:', error);
+      throw new InternalServerErrorException('Error fetching questions by norm');
+    }
+  }
+
 
   async submitEvaluation(dto: EvaluationSubmissionDto, userId: number) {
     const sectionIds = dto.sections.map(s => s.id);
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
-    const normId = await this.validateEntityExistence('read', 'getCriterionsByIds',sectionIds);
-    await this.validateEntityExistence('read', 'getQuestionsByIds', questionIds);
-    const user = await this.queryFilter.filterQuery('read', 'getUserCompanyById', userId); 
+    const normId = await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries',sectionIds);
+    await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
+    const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
     const companyId = user.company_id;
 
     // Validar respuestas, puntajes y evidencias:
@@ -70,7 +110,7 @@ export class EvaluationService {
       })),
     };
 
-    const result = await this.queryFilter.filterQuery('insert', 'createEvaluationWithDetails', evaluationData);
+    const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
     return result; // Podrías retornar el ID o el resumen según lo que desees mostrar al frontend
 
 
@@ -79,20 +119,20 @@ export class EvaluationService {
 
   // funcion helper para validacion de existencia de criterios y preguntas 
   private async validateEntityExistence(
+    queryFunction: string,
     queryName: string,
-    entityName: string,
     ids: number[],
   ) {
-    const existingEntities = await this.queryFilter.filterQuery('read', queryName, ids);
+    const existingEntities = await this.queryFilter.filterQuery(queryFunction, queryName, ids);
     const missingIds = ids.filter(id => !existingEntities.some((e: { id: number; }) => e.id === id));
 
     if (missingIds.length > 0) {
       throw new BadRequestException(
-        `Los siguientes ${entityName} no existen: ${missingIds.join(', ')}`,
+        `Los siguientes ${queryName} no existen: ${missingIds.join(', ')}`,
       );
     }
 
-    if (queryName === 'getCriteriosByIds') {
+    if (queryFunction === 'getCriteriosByIds') {
       const standardIds = existingEntities.map((e: any) => e.standard_id);
       const uniqueNormIds = [...new Set(standardIds)];
   

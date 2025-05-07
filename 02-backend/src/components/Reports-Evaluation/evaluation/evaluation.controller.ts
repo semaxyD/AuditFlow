@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { EvaluationService } from './evaluation.service';
 import { Roles } from '../../Shared/decorators/roles.decorator'
 import { RolesGuard } from '../../Shared/Auth/roles.guard'
@@ -19,21 +19,22 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
   @Get(':companyId/evaluations')
-  getEvaluations(@Param('companyId') companyId: string) {
+  getEvaluations(@Param('companyId',ParseIntPipe) companyId: number) {
     return this.service.getEvaluationsByCompany(companyId);
   }
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
   @Get('evaluations/:evaluationId/detail')
-  getEvaluationDetail(@Param('evaluationId') evaluationId: string) {
+  getEvaluationDetail(@Param('evaluationId',ParseIntPipe) evaluationId: number) {
     return this.service.getEvaluationDetail(evaluationId);
   }
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
   @Get(':evaluationId/evolution')
-  getEvolution(@Param('evaluationId') evaluationId: string) {
+  getEvolution(@Param('evaluationId',ParseIntPipe) evaluationId: number) {
     return this.service.getEvolutionEvaluation(evaluationId);
   }
+
 }
