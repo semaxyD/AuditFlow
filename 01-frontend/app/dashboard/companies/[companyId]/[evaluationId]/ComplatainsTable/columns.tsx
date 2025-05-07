@@ -1,22 +1,12 @@
-"use client";
+// ComplaintsTable/columns.tsx
 
-import { Button } from "@/components/ui/button";
+import type { Version } from "../../../ComplaintsTable/types/company";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, Star, Trash } from "lucide-react";
+import { Eye, Trash } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
-export type EvaluationVersion = {
-  version_id: number;
-  create_by: string;
-  created_at: string;
-  is_latest: boolean;
-  score: number;
-  company_id: number;
-  evaluation_id: number;
-  version_number: number;
-};
-
-export const versionColumns: ColumnDef<EvaluationVersion>[] = [
+export const versionColumns: ColumnDef<Version>[] = [
   {
     accessorKey: "version_number",
     header: "Versión",
@@ -31,23 +21,19 @@ export const versionColumns: ColumnDef<EvaluationVersion>[] = [
   {
     accessorKey: "created_at",
     header: "Fecha de creación",
-    cell: ({ row }) => {
-      const date = new Date(row.original.created_at);
-      return date.toLocaleDateString("es-CO", {
+    cell: ({ row }) =>
+      new Date(row.original.created_at).toLocaleDateString("es-CO", {
         year: "numeric",
         month: "long",
         day: "numeric",
-      });
-    },
+      }),
   },
   {
     accessorKey: "is_latest",
     header: "¿Última?",
     cell: ({ row }) =>
       row.original.is_latest ? (
-        <div className="text-teal-700 font-semibold flex items-center gap-1">
-          <Star className="h-4 w-4" /> Sí
-        </div>
+        <span className="text-teal-700 font-semibold">Sí</span>
       ) : (
         <span className="text-muted-foreground">No</span>
       ),
@@ -55,33 +41,27 @@ export const versionColumns: ColumnDef<EvaluationVersion>[] = [
   {
     accessorKey: "score",
     header: "Puntaje",
-    cell: ({ row }) => {
-      const score = row.original.score; // asumimos un número entre 0 y 100
-
-      return (
-        <div className="w-full max-w-[120px]">
-          <div className="h-2 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-teal-700 transition-all"
-              style={{ width: `${score}%` }}
-            />
-          </div>
-          <div className="text-xs text-right mt-1">{score}</div>
+    cell: ({ row }) => (
+      <div className="w-full max-w-[120px]">
+        <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <div
+            className="h-full bg-teal-700 transition-all"
+            style={{ width: `${row.original.score}%` }}
+          />
         </div>
-      );
-    },
+        <div className="text-xs text-right mt-1">{row.original.score}</div>
+      </div>
+    ),
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const evaluationId = row.original.evaluation_id;
-      const companyId = row.original.company_id;
-      const version_id = row.original.version_id;
+      const { company_id, version_id } = row.original;
       return (
         <div className="flex gap-2 justify-end">
           <Link
-            href={`/dashboard/companies/${companyId}/${evaluationId}/${version_id}`}
+            href={`/dashboard/companies/${company_id}/versions/${version_id}`}
           >
             <Button variant="outline" size="sm">
               <Eye className="w-4 h-4" />

@@ -23,7 +23,7 @@ export const columns: ColumnDef<Company>[] = [
     },
   },
   {
-    accessorKey: "nit",
+    accessorKey: "id",
     header: "NIT",
   },
   {
@@ -35,11 +35,11 @@ export const columns: ColumnDef<Company>[] = [
     header: "Teléfono",
   },
   {
-    accessorKey: "contactName",
+    accessorKey: "contact_name",
     header: "Contacto",
   },
   {
-    accessorKey: "contactEmail",
+    accessorKey: "contact_email",
     header: "Correo de contacto",
   },
   {

@@ -22,7 +22,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { Company } from "./mock/companies";
+import { Company } from "./types/company";
 
 interface CompaniesTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

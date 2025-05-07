@@ -1,20 +1,20 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
           // Aquí se implementará la llamada al backend para autenticación
-          const response = await fetch('http://localhost:3001/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          const response = await fetch("http://localhost:3001/user/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(credentials),
           });
 
@@ -25,19 +25,19 @@ const handler = NextAuth({
           }
           return null;
         } catch (error) {
-          console.error('Error de autenticación:', error);
+          console.error("Error de autenticación:", error);
           return null;
         }
       },
     }),
   ],
   pages: {
-    signIn: '/login',
-    newUser: '/register',
+    signIn: "/login",
+    newUser: "/register",
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
 });
 
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };
