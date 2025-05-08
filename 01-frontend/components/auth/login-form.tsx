@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import Email from "next-auth/providers/email";
 
 const formSchema = z.object({
   email: z.string().email("Correo electrónico inválido"),
@@ -43,6 +44,7 @@ export function LoginForm() {
 
     const res = await signIn("credentials", {
       redirect: false,
+      email: data.email,
       password: data.password,
     });
 
@@ -53,6 +55,8 @@ export function LoginForm() {
     }
 
     setIsLoading(false);
+    console.log("email", data.email);
+    console.log("password", data.password);
   };
 
   return (
