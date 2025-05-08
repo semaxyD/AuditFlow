@@ -61,7 +61,7 @@ export const versionColumns: ColumnDef<Version>[] = [
       return (
         <div className="flex gap-2 justify-end">
           <Link
-            href={`/dashboard/companies/${company_id}/versions/${version_id}`}
+            href={`/dashboard/companies/${company_id}/version/${version_id}`}
           >
             <Button variant="outline" size="sm">
               <Eye className="w-4 h-4" />

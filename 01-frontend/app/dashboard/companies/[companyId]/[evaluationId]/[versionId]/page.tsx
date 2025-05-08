@@ -1,6 +1,6 @@
 "use client";
 
-import { COMPANIES_MOCK } from "../../../ComplaintsTable/mock/companies"; // Adjust path as needed
+import { useState, useEffect } from "react";
 import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -16,7 +16,6 @@ import { CompanyHeader } from "./components/CompanyHeader";
 import { EvaluationInfoCard } from "./components/EvaluationInfoCard";
 import { QuestionsList } from "./components/QuestionsList";
 
-// Register Chart.js components
 ChartJS.register(
   Title,
   Tooltip,
@@ -27,73 +26,62 @@ ChartJS.register(
 );
 
 export default function EvaluationPage({
-  params,
+  params: { companyId, versionId },
 }: {
-  params: { companyId: string; evaluationId: string; versionId: string };
+  params: { companyId: string; versionId: string };
 }) {
-  const { companyId, evaluationId, versionId } = params;
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [observations, setObservations] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Find the company
-  const company = COMPANIES_MOCK.find((c) => c.id.toString() === companyId);
+  useEffect(() => {
+    console.log("🆔 Params recibidos:", { companyId, versionId });
 
-  if (!company) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <p className="text-center text-muted-foreground">
-              Empresa no encontrada.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+    const url = `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
+    console.log("⏳ Haciendo fetch a:", url);
 
-  // Find the evaluation
-  const evaluation = company.evaluations.find(
-    (evalItem) => evalItem.evaluation_id.toString() === evaluationId
-  );
+    const token = localStorage.getItem("token") || "";
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log("📥 Raw response:", res);
+        if (!res.ok) {
+          return res.text().then((text) => {
+            console.error(`❌ Error ${res.status}: ${text}`);
+            throw new Error(`Error ${res.status}: ${res.statusText}`);
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("✅ JSON recibido:", data);
+        // data llega como [{ questions: [...], observations: "..." }]
+        const item = data[0];
+        setQuestions(item.questions);
+        setObservations(item.observations || "");
+      })
+      .catch((err) => {
+        console.error("🛑 Fetch falló:", err);
+        setError(err.message);
+      })
+      .finally(() => setLoading(false));
+  }, [companyId, versionId]);
 
-  if (!evaluation) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <p className="text-center text-muted-foreground">
-              Evaluación no encontrada.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  if (loading) return <p className="p-6">Cargando evaluación…</p>;
+  if (error)
+    return <p className="p-6 text-red-600">Error al cargar: {error}</p>;
 
-  // Find the specific version
-  const version = evaluation.versions.find(
-    (v) => v.version_id.toString() === versionId
-  );
-
-  if (!version) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <p className="text-center text-muted-foreground">
-              Versión no encontrada.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const yesCount = version.questions.filter((q) => q.response === "Sí").length;
-  const noCount = version.questions.filter((q) => q.response === "No").length;
-  const totalQuestions = version.questions.length;
+  // Cálculo de 'Sí' y 'No'
+  const yesCount = questions.filter((q) => q.response === "Sí").length;
+  const noCount = questions.filter((q) => q.response === "No").length;
+  const totalQuestions = questions.length;
   const compliancePercentage = Math.round((yesCount / totalQuestions) * 100);
 
-  // Donut chart data
   const data = {
     labels: ["Sí", "No"],
     datasets: [
@@ -115,16 +103,14 @@ export default function EvaluationPage({
         position: "bottom" as const,
         labels: {
           padding: 20,
-          font: {
-            size: 14,
-          },
+          font: { size: 14 },
         },
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
-            const percentage = Math.round((context.raw / totalQuestions) * 100);
-            return `${context.label}: ${context.raw} (${percentage}%)`;
+          label: (ctx: any) => {
+            const pct = Math.round((ctx.raw / totalQuestions) * 100);
+            return `${ctx.label}: ${ctx.raw} (${pct}%)`;
           },
         },
       },
@@ -132,22 +118,23 @@ export default function EvaluationPage({
     cutout: "70%",
   };
 
-  // Format date
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("es-ES", {
+  const formatDate = (d: string) =>
+    new Date(d).toLocaleDateString("es-ES", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  };
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
-      <CompanyHeader name={company.name} nit={company.nit} />
+      <CompanyHeader name="Nombre Empresa" nit="123456789" />
 
       <EvaluationInfoCard
-        norm={evaluation.norm}
-        version={version}
+        norm="NORM_CODE"
+        version={{
+          version_id: Number(versionId),
+          created_at: questions[0]?.created_at,
+        }}
         yesCount={yesCount}
         noCount={noCount}
         totalQuestions={totalQuestions}
@@ -157,10 +144,19 @@ export default function EvaluationPage({
         formatDate={formatDate}
       />
 
+      {/* Observaciones */}
+      {observations && (
+        <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow">
+          <h3 className="text-lg font-medium mb-2">Observaciones</h3>
+          <p>{observations}</p>
+        </div>
+      )}
+
       <h2 className="text-2xl font-semibold text-teal-700 mb-6">
         Preguntas y Respuestas
       </h2>
-      <QuestionsList questions={version.questions} />
+
+      <QuestionsList questions={questions} />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-// app/dashboard/companies/[companyId]/versions/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -10,34 +9,34 @@ import type {
 import VersionTable from "./ComplatainsTable/TableVersions";
 import { versionColumns } from "./ComplatainsTable/columns";
 
-export default function CompanyVersionPage({
-  params,
+export default function CompanyEvaluationVersionsPage({
+  params: { companyId, evaluationId },
 }: {
-  params: { companyId: string };
+  params: { companyId: string; evaluationId: string };
 }) {
-  const { companyId } = params;
-  const [company, setCompany] = useState<Company | null>(null);
   const [versions, setVersions] = useState<Version[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("🆔 Params recibidos:", { companyId, evaluationId });
+
     const token = window.localStorage.getItem("token") || "";
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     };
 
-    // Llamada al endpoint de versiones
-    fetch(`http://localhost:3001/reports-evaluation/${companyId}/evolution`, {
-      headers,
-    })
+    // Endpoint para obtener el historial de versiones de UNA evaluación concreta
+    fetch(
+      `http://localhost:3001/reports-evaluation/${evaluationId}/evolution`,
+      { headers }
+    )
       .then((res) => {
         if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
         return res.json() as Promise<ApiVersion[]>;
       })
       .then((apiData) => {
-        // Mapea la respuesta al tipo Version
         const mapped = apiData.map<Version>((v) => ({
           version_id: v.id,
           create_by: v.creator_name,
@@ -51,21 +50,18 @@ export default function CompanyVersionPage({
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [companyId]);
+  }, [companyId, evaluationId]);
 
-  if (loading) return <p className="p-6">Cargando versiones…</p>;
+  if (loading) return <p className="p-6">Cargando historial de versiones…</p>;
   if (error)
     return (
       <p className="p-6 text-red-600">Error al cargar versiones: {error}</p>
     );
 
-  // (Opcional) si necesitas datos básicos de la empresa, haz aquí otro fetch
-  // a /companies/${companyId} y setéalo en `company`.
-
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-teal-700">
-        Versiones de la empresa {companyId}
+        Versiones de la evaluación {evaluationId} de la empresa {companyId}
       </h1>
       <div className="bg-white rounded-lg shadow p-6 pt-2 mt-4">
         <h2 className="text-xl mt-6 font-semibold">Historial de versiones</h2>
