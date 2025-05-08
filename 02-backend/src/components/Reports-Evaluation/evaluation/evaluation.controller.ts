@@ -41,7 +41,7 @@ export class EvaluationController {
   // Endpoints Hu009
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_externo')
-  @Get(':companyId/myEvaluations')
+  @Get('myCompanies')
   getMyCompanies(
     @CurrentUser() user: {id: number}) {
     return this.service.getExternalAuditorCompaniesById(user.id);

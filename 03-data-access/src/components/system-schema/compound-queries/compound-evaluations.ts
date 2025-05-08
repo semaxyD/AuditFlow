@@ -233,6 +233,11 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
     where: {
       company_id: data.companyId,
       created_by: data.userId,
+      versions: {
+        some: {
+          version_number: data.version,
+        }
+      }
     },
     select: {
       id: true,
@@ -241,6 +246,9 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
         select: { name: true },
       },
       versions: {
+        where: {
+          version_number: data.version,
+        },
         select: {
           answers: {
             select: {
@@ -327,6 +335,7 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
     JOIN "user" u ON e.created_by = u.id
     WHERE e.id = ${data.evaluationId}
       AND e.created_by = ${data.userId}
+      AND ev.version_number = ${data.version}
     ORDER BY q.id, ev.created_at DESC, a.created_at DESC
   `;
 
