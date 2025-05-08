@@ -7,4 +7,3 @@ export async function getQuestionsByIds(ids: number[]) {
   });
   return questions;
 }
-    

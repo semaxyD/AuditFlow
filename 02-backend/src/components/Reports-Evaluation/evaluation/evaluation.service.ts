@@ -42,11 +42,21 @@ export class EvaluationService {
     }
   }
 
+  async getExternalAuditorCompaniesById(userId: number) { 
+    try{
+        const query = await this.queryFilter.filterQuery('getAllCompaniesByUser', 'company-queries',userId);
+        return query
+    }catch(error){
+        throw new InternalServerErrorException('Error fetching evaluations',error);
+    }
+  }
+
   async getExternalAuditorEvaluationsByCompany(companyId:number, userId:number){
     try{
       const data = {
         companyId,
-        userId
+        userId,
+        version: 2
       };
       const query = await this.queryFilter.filterQuery('getExternalAuditorEvaluationsByCompany','compound-evaluations',data);
       return query;
@@ -59,7 +69,8 @@ export class EvaluationService {
     try {
       const data = { 
         evaluationId, 
-        userId 
+        userId,
+        version: 2
       };
       const query = await this.queryFilter.filterQuery('getEvaluationDetailsByExternalAuditorId', 'compound-evaluations', data);
       return query;

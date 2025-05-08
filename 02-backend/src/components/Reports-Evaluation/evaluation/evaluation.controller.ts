@@ -42,6 +42,14 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_externo')
   @Get(':companyId/myEvaluations')
+  getMyCompanies(
+    @CurrentUser() user: {id: number}) {
+    return this.service.getExternalAuditorCompaniesById(user.id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_externo')
+  @Get(':companyId/myEvaluations')
   getMyEvaluations(
     @Param('companyId', ParseIntPipe) companyId: number,@CurrentUser() user: {id: number}) {
     return this.service.getExternalAuditorEvaluationsByCompany(companyId,user.id);

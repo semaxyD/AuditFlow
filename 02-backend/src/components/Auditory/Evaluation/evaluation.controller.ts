@@ -17,6 +17,14 @@ export class EvaluationController{
     constructor(private readonly evaluationService: EvaluationService) {
     }
 
+    //Endpoints para HU008 y HU010
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('auditor_interno','auditor_externo')
+    @Get('allNorms')
+    getIdByNorms() {
+      return this.evaluationService.getIdByNorm();
+    }
+
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('auditor_interno','auditor_externo')
     @Get('questions/:normId')

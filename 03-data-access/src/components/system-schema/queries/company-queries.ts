@@ -14,3 +14,5 @@ export async function getAllCompanies() {
   });
   return companies;
 }
+
+

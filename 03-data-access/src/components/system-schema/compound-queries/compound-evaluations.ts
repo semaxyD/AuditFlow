@@ -227,47 +227,6 @@ interface EvidenceData {
   url: string;
 }
 
-//Query para traer los id de las normas disponibles de la HU008 - Por crear
-
-//Query para traer preguntas de la HU008 - Por cambiar
-export async function getQuestionsByNorm(normId: number) {
-  try {
-    const normWithCriteria = await Prisma.norm.findUnique({
-      where: { id: normId },
-      select: {
-        criteria: {
-          select: {
-            id: true,
-            description: true,
-            questions: {
-              select: {
-                id: true,
-                text: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!normWithCriteria) {
-      throw new Error(`Norm with id ${normId} not found.`);
-    }
-
-    return normWithCriteria.criteria.map((criterion) => ({
-      id: criterion.id,
-      title: criterion.description || 'Sección sin nombre',
-      questions: criterion.questions.map((question) => ({
-        id: question.id,
-        text: question.text,
-      })),
-    }));
-  } catch (error) {
-    console.error('Error fetching questions by normId:', error);
-    throw new Error('Failed to fetch questions');
-  }
-}
-
 //Query 1 para la HU009,Obtener evaluaciones hechas o asignadas al auditor externo
 export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
   const evaluations = await Prisma.evaluation.findMany({
@@ -333,10 +292,11 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
 interface dataId {
   userId: number;
   companyId: number;
+  version: number;
 }
 
 //Query 2 para la HU009,Obtener los detalles de la evaluacion seleccionada
-export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number }) {
+export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number; version: number }) {
   const details = await Prisma.$queryRaw`
     SELECT DISTINCT ON (q.id)
       q.id AS "question_id",
@@ -352,7 +312,6 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
       ev.id AS "version_id",
       ev.created_at AS "version_created_at",
       e.id AS "evaluation_id",
-      e.observations,
       u.id AS "creator_id",
       u.name AS "creator_name",
       evid.id AS "evidence_id",
