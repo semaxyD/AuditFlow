@@ -46,7 +46,7 @@ export class EvaluationService {
   }
 
 
-  async submitEvaluation(dto: EvaluationSubmissionDto, userId: number) {
+  async submitEvaluation(dto: EvaluationSubmissionDto, userId: number,type: number) {
     const sectionIds = dto.sections.map(s => s.id);
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
@@ -87,35 +87,62 @@ export class EvaluationService {
     const metrics = this.calculateEvaluationMetrics(dto);
     console.log("resumen de metricas calculadas: ", metrics);
 
-    const evaluationData = {
-      userId: userId,
-      name: dto.name,
-      description: dto.description,
-      company_id: companyId,
-      norm_id: normId,
-      completion_percentage: metrics.completionPercentage,
-      maturity_level: metrics.maturityLevel,
-      total_score: metrics.totalScore,
-      max_score: metrics.maxScore,
-      answered_questions: metrics.answeredQuestions,
-      total_questions: metrics.totalQuestions,
-      observations: dto.observations ?? '',
-      sections: dto.sections.map(section => ({
-        criterion_id: section.id,
-        questions: section.questions.map(q => ({
-          question_id: q.id,
-          answer: q.answer,
-          evidence: q.evidence,
-          comments: q.comments ?? '',
-          score: q.score,
+      const evaluationData = {
+        userId: userId,
+        name: dto.name,
+        description: dto.description,
+        company_id: companyId,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        observations: dto.observations ?? '',
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
         })),
-      })),
-    };
+      };
 
-    const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
-    return result; // Podrías retornar el ID o el resumen según lo que desees mostrar al frontend
+      const evaluationData2 = {
+        userId: userId,
+        name: dto.name,
+        description: dto.description,
+        company_id: companyId,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
+        })),
+      };
 
-
+    if(type == 1){
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
+      return result;
+    }else{
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData2);
+      return result;
+    }
   }
 
 

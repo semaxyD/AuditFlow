@@ -11,6 +11,7 @@ export class EvaluationController{
     constructor(private readonly evaluationService: EvaluationService) {
     }
 
+    type: number;
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('auditor_interno','auditor_externo')
@@ -23,6 +24,16 @@ export class EvaluationController{
     @Roles('auditor_interno')
     @Post('/save')
     submitEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: {id: number},){
-        return this.evaluationService.submitEvaluation(body,user.id);
+      this.type = 1;
+      return this.evaluationService.submitEvaluation(body,user.id,this.type);
     }
+
+    @UseGuards(JwtAuthGuard,RolesGuard)
+    @Roles('auditor_externo')
+    @Post('/saveExternal')
+    submitExternalEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: {id: number}) {
+      this.type = 2;
+      return this.evaluationService.submitEvaluation(body, user.id,this.type);
+    }
+
 }
