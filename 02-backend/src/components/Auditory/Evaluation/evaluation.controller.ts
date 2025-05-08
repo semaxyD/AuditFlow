@@ -6,12 +6,16 @@ import { CurrentUser } from 'src/components/Middleware/decorators/current-user.d
 import { CreateEvaluationDto } from './evaluation.dto';
 import { EvaluationService } from './evaluation.service';
 
+// Enum local, solo usado en este controller
+enum AuditorType {
+  Interno = 1,
+  Externo = 2,
+}
+
 @Controller('auditory')
 export class EvaluationController{
     constructor(private readonly evaluationService: EvaluationService) {
     }
-
-    type: number;
 
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('auditor_interno','auditor_externo')
@@ -24,16 +28,16 @@ export class EvaluationController{
     @Roles('auditor_interno')
     @Post('/save')
     submitEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: {id: number},){
-      this.type = 1;
-      return this.evaluationService.submitEvaluation(body,user.id,this.type);
+      const type = AuditorType.Interno;
+      return this.evaluationService.submitEvaluation(body,user.id,type);
     }
 
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Roles('auditor_externo')
     @Post('/saveExternal')
-    submitExternalEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: {id: number}) {
-      this.type = 2;
-      return this.evaluationService.submitEvaluation(body, user.id,this.type);
+    submitExternalEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: {id: number}){
+      const type = AuditorType.Externo;
+      return this.evaluationService.submitEvaluation(body, user.id,type);
     }
 
 }

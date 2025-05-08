@@ -131,14 +131,14 @@ type TxClient = {
   evidence: typeof Prisma.evidence;
 };
 
-// Query para la HU-008: insertar una evaluación hecha con todos sus datos
-export async function createEvaluationWithDetails(data: EvaluationData, userId: number) {
+// Query para la HU-008 y HU-010: insertar una evaluación hecha con todos sus datos
+export async function createEvaluationWithDetails(data: EvaluationData) {
   return await Prisma.$transaction(async (tx: TxClient) => {
     // 1. Crear la evaluación base
     const evaluation = await tx.evaluation.create({
       data: {
         company_id: data.company_id,
-        created_by: userId,
+        created_by: data.userId,
         created_at: new Date(),
         observations: data.observations?.trim() || null,
       },
@@ -148,7 +148,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
     const version = await tx.evaluationVersion.create({
       data: {
         evaluation_id: evaluation.id,
-        created_by: userId,
+        created_by: data.userId,
         version_number: 1,
         is_latest: true,
         created_at: new Date(),
@@ -165,7 +165,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
             question_id: question.question_id,
             score: question.score,
             response: question.answer,
-            created_by: userId,
+            created_by: data.userId,
             created_at: new Date(),
           },
         });
@@ -176,7 +176,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
           await tx.comment.create({
             data: {
               text: trimmedObs,
-              created_by: userId,
+              created_by: data.userId,
               answer_id: createdAnswer.id,
               created_at: new Date(),
             },
@@ -189,7 +189,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
             data: question.evidence.map((e) => ({
               answer_id: createdAnswer.id,
               url: e.url,
-              created_by: userId,
+              created_by: data.userId,
               created_at: new Date(),
             })),
           });
@@ -205,6 +205,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
 //Interfaces de datos usado en la HU008
 export interface EvaluationData {
   company_id: number;
+  userId: number,
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
   sections: SectionData[];
 }
