@@ -17,6 +17,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import {
+  Building2,
   ChevronDown,
   FilePlus2,
   Home,
@@ -40,6 +41,7 @@ const items = [
     url: "/dashboard/settings",
     icon: Settings,
   },
+  { title: "Compañías", url: "/dashboard/companies", icon: Building2 },
 ];
 
 export function AppSidebar() {

@@ -64,7 +64,7 @@ export default function DashboardLayout({
       <AppSidebar />
 
       {/* Contenido principal */}
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-6 overflow-x-hidden">
         <SidebarTrigger />
         <div className="mx-auto max-w-7xl">{children}</div>
       </main>
