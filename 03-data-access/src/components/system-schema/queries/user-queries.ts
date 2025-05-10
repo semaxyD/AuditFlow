@@ -41,9 +41,24 @@ export async function createUser(data: {
   email: string;
   password: string;
   role: string;
+  companyIds: number[];
 }) {
-  const userCreate = await Prisma.user.create({ data });
-  return userCreate;
+  return await Prisma.user.create({ 
+    data: {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: data.role,
+      companyEditors: {
+        create: data.companyIds.map(companyId => ({
+          company: {connect: {id: companyId} },
+        })),
+      },
+    },
+    include: {
+      companyEditors: true,
+    }
+  });
 }
 
 //Query para hu008 - Buscar el id de la compañia a la cual el user esta asociado

@@ -14,3 +14,15 @@ export async function getAllCompanies() {
   });
   return companies;
 }
+
+// Función para obtener lista de las empresas
+export async function getListCompanies() {
+  const companies = await Prisma.company.findMany({
+    select: {
+      id: true,
+      name: true,
+      phone: true,
+    },
+  });
+  return companies;
+}

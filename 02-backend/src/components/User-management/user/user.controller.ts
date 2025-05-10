@@ -11,6 +11,11 @@ import { Param } from '@nestjs/common';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get('companiesList') //Ruta para conseguir los ID's de las compañias disponibles
+  async CompaniesList(){
+    return this.userService.CompaniesList();
+  }
+
 
   @Post('create') // Ruta para crear un nuevo usuario
   async crearUsuario(@Body() body: any) {

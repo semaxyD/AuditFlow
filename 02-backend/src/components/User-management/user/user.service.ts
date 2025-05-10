@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException} from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException} from '@nestjs/common';
 import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
 import * as bcrypt from 'bcrypt';
@@ -12,15 +12,33 @@ export class UserService {
     private readonly jwtService: JwtService
   ) {}
 
+  async CompaniesList() {
+  try{
+      const companies = await this.queryFilter.filterQuery('getListCompanies', 'company-queries');
+      return companies
+    }catch(error){
+      throw new InternalServerErrorException('Error fetching evaluations',error);
+    };
+  }
+
   //Crear users(Solo para Admins)
   async crearUsuario(data: any) {
-    const { name, email, password, role } = data;
+    const { name, email, password, role, companyIds } = data;
   
-    // llamado a las queries necesarias
     const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', email);
   
     if (buscarUsuarioPorEmail) {
       throw new BadRequestException('El correo ya está registrado');
+    }
+
+    if(role === 'auditor_interno'){
+      if (!companyIds || companyIds.length !== 1) {
+      throw new BadRequestException('El auditor interno debe estar asociado a una única empresa');
+      }
+    } else if (role === 'auditor_externo') {
+      if (!companyIds || companyIds.length < 1) {
+        throw new BadRequestException('El auditor externo debe estar asociado al menos a una empresa');
+      }
     }
   
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,6 +49,7 @@ export class UserService {
       email,
       password: hashedPassword,
       role,
+      companyIds: role == 'admin' ? [] : companyIds,
       });
       
     return {
