@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Correo electrónico inválido"),
@@ -41,12 +41,29 @@ export function LoginForm() {
     setIsLoading(true);
     setErrorMessage("");
 
+    // 1) Intentamos el login con NextAuth
     const res = await signIn("credentials", {
       redirect: false,
+      email: data.email,
       password: data.password,
     });
 
     if (res?.ok) {
+      // 2) Recuperamos la sesión desde el endpoint de NextAuth
+      const r = await fetch("/api/auth/session");
+      const sessionData = await r.json();
+      console.log("⚡ sessionData from /api/auth/session:", sessionData);
+
+      // 3) Extraemos y guardamos el token
+      const token = sessionData?.user?.accessToken;
+      if (token) {
+        window.localStorage.setItem("token", token);
+        console.log("✅ Token guardado en localStorage:", token);
+      } else {
+        console.warn("❌ No vino accessToken en sessionData.user");
+      }
+
+      // 4) Redirigimos al dashboard
       router.push("/dashboard");
     } else {
       setErrorMessage("Correo o contraseña incorrectos");

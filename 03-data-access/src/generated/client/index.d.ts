@@ -1896,10 +1896,12 @@ export namespace Prisma {
 
   export type NormCountOutputType = {
     criteria: number
+    evaluations: number
   }
 
   export type NormCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criteria?: boolean | NormCountOutputTypeCountCriteriaArgs
+    evaluations?: boolean | NormCountOutputTypeCountEvaluationsArgs
   }
 
   // Custom InputTypes
@@ -1918,6 +1920,13 @@ export namespace Prisma {
    */
   export type NormCountOutputTypeCountCriteriaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CriterionWhereInput
+  }
+
+  /**
+   * NormCountOutputType without action
+   */
+  export type NormCountOutputTypeCountEvaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EvaluationWhereInput
   }
 
 
@@ -4678,6 +4687,7 @@ export namespace Prisma {
     code?: boolean
     name?: boolean
     criteria?: boolean | Norm$criteriaArgs<ExtArgs>
+    evaluations?: boolean | Norm$evaluationsArgs<ExtArgs>
     _count?: boolean | NormCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["norm"]>
 
@@ -4702,6 +4712,7 @@ export namespace Prisma {
   export type NormOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name", ExtArgs["result"]["norm"]>
   export type NormInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criteria?: boolean | Norm$criteriaArgs<ExtArgs>
+    evaluations?: boolean | Norm$evaluationsArgs<ExtArgs>
     _count?: boolean | NormCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type NormIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4711,6 +4722,7 @@ export namespace Prisma {
     name: "Norm"
     objects: {
       criteria: Prisma.$CriterionPayload<ExtArgs>[]
+      evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5111,6 +5123,7 @@ export namespace Prisma {
   export interface Prisma__NormClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     criteria<T extends Norm$criteriaArgs<ExtArgs> = {}>(args?: Subset<T, Norm$criteriaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CriterionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    evaluations<T extends Norm$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, Norm$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5552,6 +5565,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CriterionScalarFieldEnum | CriterionScalarFieldEnum[]
+  }
+
+  /**
+   * Norm.evaluations
+   */
+  export type Norm$evaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Evaluation
+     */
+    select?: EvaluationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Evaluation
+     */
+    omit?: EvaluationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationInclude<ExtArgs> | null
+    where?: EvaluationWhereInput
+    orderBy?: EvaluationOrderByWithRelationInput | EvaluationOrderByWithRelationInput[]
+    cursor?: EvaluationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EvaluationScalarFieldEnum | EvaluationScalarFieldEnum[]
   }
 
   /**
@@ -8854,12 +8891,14 @@ export namespace Prisma {
     id: number | null
     company_id: number | null
     created_by: number | null
+    norm_id: number | null
   }
 
   export type EvaluationSumAggregateOutputType = {
     id: number | null
     company_id: number | null
     created_by: number | null
+    norm_id: number | null
   }
 
   export type EvaluationMinAggregateOutputType = {
@@ -8867,6 +8906,7 @@ export namespace Prisma {
     company_id: number | null
     created_by: number | null
     created_at: Date | null
+    norm_id: number | null
     observations: string | null
   }
 
@@ -8875,6 +8915,7 @@ export namespace Prisma {
     company_id: number | null
     created_by: number | null
     created_at: Date | null
+    norm_id: number | null
     observations: string | null
   }
 
@@ -8883,7 +8924,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at: number
-    observations: number
+    norm_id: number
     _all: number
   }
 
@@ -8892,12 +8933,14 @@ export namespace Prisma {
     id?: true
     company_id?: true
     created_by?: true
+    norm_id?: true
   }
 
   export type EvaluationSumAggregateInputType = {
     id?: true
     company_id?: true
     created_by?: true
+    norm_id?: true
   }
 
   export type EvaluationMinAggregateInputType = {
@@ -8905,6 +8948,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    norm_id?: true
     observations?: true
   }
 
@@ -8913,6 +8957,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    norm_id?: true
     observations?: true
   }
 
@@ -8921,6 +8966,7 @@ export namespace Prisma {
     company_id?: true
     created_by?: true
     created_at?: true
+    norm_id?: true
     observations?: true
     _all?: true
   }
@@ -9016,6 +9062,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at: Date
+    norm_id: number
     observations: string | null
     _count: EvaluationCountAggregateOutputType | null
     _avg: EvaluationAvgAggregateOutputType | null
@@ -9043,9 +9090,11 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    norm_id?: boolean
     observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
     versions?: boolean | Evaluation$versionsArgs<ExtArgs>
     _count?: boolean | EvaluationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluation"]>
@@ -9055,9 +9104,11 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    norm_id?: boolean
     observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluation"]>
 
   export type EvaluationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9065,9 +9116,11 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    norm_id?: boolean
     observations?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["evaluation"]>
 
   export type EvaluationSelectScalar = {
@@ -9075,23 +9128,27 @@ export namespace Prisma {
     company_id?: boolean
     created_by?: boolean
     created_at?: boolean
+    norm_id?: boolean
     observations?: boolean
   }
 
-  export type EvaluationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "company_id" | "created_by" | "created_at" | "observations", ExtArgs["result"]["evaluation"]>
+  export type EvaluationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "company_id" | "created_by" | "created_at" | "norm_id" | "observations", ExtArgs["result"]["evaluation"]>
   export type EvaluationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
     versions?: boolean | Evaluation$versionsArgs<ExtArgs>
     _count?: boolean | EvaluationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EvaluationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
   }
   export type EvaluationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
   }
 
   export type $EvaluationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9099,6 +9156,7 @@ export namespace Prisma {
     objects: {
       company: Prisma.$CompanyPayload<ExtArgs>
       creator: Prisma.$UserPayload<ExtArgs>
+      norm: Prisma.$NormPayload<ExtArgs>
       versions: Prisma.$EvaluationVersionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -9106,6 +9164,7 @@ export namespace Prisma {
       company_id: number
       created_by: number
       created_at: Date
+      norm_id: number
       observations: string | null
     }, ExtArgs["result"]["evaluation"]>
     composites: {}
@@ -9503,6 +9562,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    norm<T extends NormDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NormDefaultArgs<ExtArgs>>): Prisma__NormClient<$Result.GetResult<Prisma.$NormPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     versions<T extends Evaluation$versionsArgs<ExtArgs> = {}>(args?: Subset<T, Evaluation$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9537,7 +9597,7 @@ export namespace Prisma {
     readonly company_id: FieldRef<"Evaluation", 'Int'>
     readonly created_by: FieldRef<"Evaluation", 'Int'>
     readonly created_at: FieldRef<"Evaluation", 'DateTime'>
-    readonly observations: FieldRef<"Evaluation", 'String'>
+    readonly norm_id: FieldRef<"Evaluation", 'Int'>
   }
     
 
@@ -14676,7 +14736,7 @@ export namespace Prisma {
     company_id: 'company_id',
     created_by: 'created_by',
     created_at: 'created_at',
-    observations: 'observations'
+    norm_id: 'norm_id'
   };
 
   export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
@@ -14977,6 +15037,7 @@ export namespace Prisma {
     code?: StringFilter<"Norm"> | string
     name?: StringNullableFilter<"Norm"> | string | null
     criteria?: CriterionListRelationFilter
+    evaluations?: EvaluationListRelationFilter
   }
 
   export type NormOrderByWithRelationInput = {
@@ -14984,6 +15045,7 @@ export namespace Prisma {
     code?: SortOrder
     name?: SortOrderInput | SortOrder
     criteria?: CriterionOrderByRelationAggregateInput
+    evaluations?: EvaluationOrderByRelationAggregateInput
   }
 
   export type NormWhereUniqueInput = Prisma.AtLeast<{
@@ -14994,6 +15056,7 @@ export namespace Prisma {
     code?: StringFilter<"Norm"> | string
     name?: StringNullableFilter<"Norm"> | string | null
     criteria?: CriterionListRelationFilter
+    evaluations?: EvaluationListRelationFilter
   }, "id">
 
   export type NormOrderByWithAggregationInput = {
@@ -15170,9 +15233,11 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    norm_id?: IntFilter<"Evaluation"> | number
     observations?: StringNullableFilter<"Evaluation"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    norm?: XOR<NormScalarRelationFilter, NormWhereInput>
     versions?: EvaluationVersionListRelationFilter
   }
 
@@ -15181,9 +15246,11 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    norm_id?: SortOrder
     observations?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
     creator?: UserOrderByWithRelationInput
+    norm?: NormOrderByWithRelationInput
     versions?: EvaluationVersionOrderByRelationAggregateInput
   }
 
@@ -15195,9 +15262,11 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    norm_id?: IntFilter<"Evaluation"> | number
     observations?: StringNullableFilter<"Evaluation"> | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    norm?: XOR<NormScalarRelationFilter, NormWhereInput>
     versions?: EvaluationVersionListRelationFilter
   }, "id">
 
@@ -15206,6 +15275,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    norm_id?: SortOrder
     observations?: SortOrderInput | SortOrder
     _count?: EvaluationCountOrderByAggregateInput
     _avg?: EvaluationAvgOrderByAggregateInput
@@ -15222,7 +15292,7 @@ export namespace Prisma {
     company_id?: IntWithAggregatesFilter<"Evaluation"> | number
     created_by?: IntWithAggregatesFilter<"Evaluation"> | number
     created_at?: DateTimeWithAggregatesFilter<"Evaluation"> | Date | string
-    observations?: StringNullableWithAggregatesFilter<"Evaluation"> | string | null
+    norm_id?: IntWithAggregatesFilter<"Evaluation"> | number
   }
 
   export type EvaluationVersionWhereInput = {
@@ -15663,6 +15733,7 @@ export namespace Prisma {
     code: string
     name?: string | null
     criteria?: CriterionCreateNestedManyWithoutNormInput
+    evaluations?: EvaluationCreateNestedManyWithoutNormInput
   }
 
   export type NormUncheckedCreateInput = {
@@ -15670,12 +15741,14 @@ export namespace Prisma {
     code: string
     name?: string | null
     criteria?: CriterionUncheckedCreateNestedManyWithoutNormInput
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutNormInput
   }
 
   export type NormUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUpdateManyWithoutNormNestedInput
+    evaluations?: EvaluationUpdateManyWithoutNormNestedInput
   }
 
   export type NormUncheckedUpdateInput = {
@@ -15683,6 +15756,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUncheckedUpdateManyWithoutNormNestedInput
+    evaluations?: EvaluationUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type NormCreateManyInput = {
@@ -15825,6 +15899,7 @@ export namespace Prisma {
     observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     creator: UserCreateNestedOneWithoutEvaluationsInput
+    norm: NormCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
   }
 
@@ -15833,7 +15908,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
-    observations?: string | null
+    norm_id: number
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
@@ -15842,6 +15917,7 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
+    norm?: NormUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -15850,7 +15926,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    norm_id?: IntFieldUpdateOperationsInput | number
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -15859,7 +15935,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
-    observations?: string | null
+    norm_id: number
   }
 
   export type EvaluationUpdateManyMutationInput = {
@@ -15872,7 +15948,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    norm_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type EvaluationVersionCreateInput = {
@@ -16530,6 +16606,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    norm_id?: SortOrder
     observations?: SortOrder
   }
 
@@ -16537,6 +16614,7 @@ export namespace Prisma {
     id?: SortOrder
     company_id?: SortOrder
     created_by?: SortOrder
+    norm_id?: SortOrder
   }
 
   export type EvaluationMaxOrderByAggregateInput = {
@@ -16544,6 +16622,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    norm_id?: SortOrder
     observations?: SortOrder
   }
 
@@ -16552,6 +16631,7 @@ export namespace Prisma {
     company_id?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
+    norm_id?: SortOrder
     observations?: SortOrder
   }
 
@@ -16559,6 +16639,7 @@ export namespace Prisma {
     id?: SortOrder
     company_id?: SortOrder
     created_by?: SortOrder
+    norm_id?: SortOrder
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -17189,11 +17270,25 @@ export namespace Prisma {
     connect?: CriterionWhereUniqueInput | CriterionWhereUniqueInput[]
   }
 
+  export type EvaluationCreateNestedManyWithoutNormInput = {
+    create?: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput> | EvaluationCreateWithoutNormInput[] | EvaluationUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationCreateOrConnectWithoutNormInput | EvaluationCreateOrConnectWithoutNormInput[]
+    createMany?: EvaluationCreateManyNormInputEnvelope
+    connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+  }
+
   export type CriterionUncheckedCreateNestedManyWithoutNormInput = {
     create?: XOR<CriterionCreateWithoutNormInput, CriterionUncheckedCreateWithoutNormInput> | CriterionCreateWithoutNormInput[] | CriterionUncheckedCreateWithoutNormInput[]
     connectOrCreate?: CriterionCreateOrConnectWithoutNormInput | CriterionCreateOrConnectWithoutNormInput[]
     createMany?: CriterionCreateManyNormInputEnvelope
     connect?: CriterionWhereUniqueInput | CriterionWhereUniqueInput[]
+  }
+
+  export type EvaluationUncheckedCreateNestedManyWithoutNormInput = {
+    create?: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput> | EvaluationCreateWithoutNormInput[] | EvaluationUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationCreateOrConnectWithoutNormInput | EvaluationCreateOrConnectWithoutNormInput[]
+    createMany?: EvaluationCreateManyNormInputEnvelope
+    connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
   }
 
   export type CriterionUpdateManyWithoutNormNestedInput = {
@@ -17210,6 +17305,20 @@ export namespace Prisma {
     deleteMany?: CriterionScalarWhereInput | CriterionScalarWhereInput[]
   }
 
+  export type EvaluationUpdateManyWithoutNormNestedInput = {
+    create?: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput> | EvaluationCreateWithoutNormInput[] | EvaluationUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationCreateOrConnectWithoutNormInput | EvaluationCreateOrConnectWithoutNormInput[]
+    upsert?: EvaluationUpsertWithWhereUniqueWithoutNormInput | EvaluationUpsertWithWhereUniqueWithoutNormInput[]
+    createMany?: EvaluationCreateManyNormInputEnvelope
+    set?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    disconnect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    delete?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    update?: EvaluationUpdateWithWhereUniqueWithoutNormInput | EvaluationUpdateWithWhereUniqueWithoutNormInput[]
+    updateMany?: EvaluationUpdateManyWithWhereWithoutNormInput | EvaluationUpdateManyWithWhereWithoutNormInput[]
+    deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
+  }
+
   export type CriterionUncheckedUpdateManyWithoutNormNestedInput = {
     create?: XOR<CriterionCreateWithoutNormInput, CriterionUncheckedCreateWithoutNormInput> | CriterionCreateWithoutNormInput[] | CriterionUncheckedCreateWithoutNormInput[]
     connectOrCreate?: CriterionCreateOrConnectWithoutNormInput | CriterionCreateOrConnectWithoutNormInput[]
@@ -17222,6 +17331,20 @@ export namespace Prisma {
     update?: CriterionUpdateWithWhereUniqueWithoutNormInput | CriterionUpdateWithWhereUniqueWithoutNormInput[]
     updateMany?: CriterionUpdateManyWithWhereWithoutNormInput | CriterionUpdateManyWithWhereWithoutNormInput[]
     deleteMany?: CriterionScalarWhereInput | CriterionScalarWhereInput[]
+  }
+
+  export type EvaluationUncheckedUpdateManyWithoutNormNestedInput = {
+    create?: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput> | EvaluationCreateWithoutNormInput[] | EvaluationUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationCreateOrConnectWithoutNormInput | EvaluationCreateOrConnectWithoutNormInput[]
+    upsert?: EvaluationUpsertWithWhereUniqueWithoutNormInput | EvaluationUpsertWithWhereUniqueWithoutNormInput[]
+    createMany?: EvaluationCreateManyNormInputEnvelope
+    set?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    disconnect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    delete?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+    update?: EvaluationUpdateWithWhereUniqueWithoutNormInput | EvaluationUpdateWithWhereUniqueWithoutNormInput[]
+    updateMany?: EvaluationUpdateManyWithWhereWithoutNormInput | EvaluationUpdateManyWithWhereWithoutNormInput[]
+    deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
   }
 
   export type CompanyCreateNestedOneWithoutEditorUsersInput = {
@@ -17376,6 +17499,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type NormCreateNestedOneWithoutEvaluationsInput = {
+    create?: XOR<NormCreateWithoutEvaluationsInput, NormUncheckedCreateWithoutEvaluationsInput>
+    connectOrCreate?: NormCreateOrConnectWithoutEvaluationsInput
+    connect?: NormWhereUniqueInput
+  }
+
   export type EvaluationVersionCreateNestedManyWithoutEvaluationInput = {
     create?: XOR<EvaluationVersionCreateWithoutEvaluationInput, EvaluationVersionUncheckedCreateWithoutEvaluationInput> | EvaluationVersionCreateWithoutEvaluationInput[] | EvaluationVersionUncheckedCreateWithoutEvaluationInput[]
     connectOrCreate?: EvaluationVersionCreateOrConnectWithoutEvaluationInput | EvaluationVersionCreateOrConnectWithoutEvaluationInput[]
@@ -17408,6 +17537,14 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutEvaluationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEvaluationsInput, UserUpdateWithoutEvaluationsInput>, UserUncheckedUpdateWithoutEvaluationsInput>
+  }
+
+  export type NormUpdateOneRequiredWithoutEvaluationsNestedInput = {
+    create?: XOR<NormCreateWithoutEvaluationsInput, NormUncheckedCreateWithoutEvaluationsInput>
+    connectOrCreate?: NormCreateOrConnectWithoutEvaluationsInput
+    upsert?: NormUpsertWithoutEvaluationsInput
+    connect?: NormWhereUniqueInput
+    update?: XOR<XOR<NormUpdateToOneWithWhereWithoutEvaluationsInput, NormUpdateWithoutEvaluationsInput>, NormUncheckedUpdateWithoutEvaluationsInput>
   }
 
   export type EvaluationVersionUpdateManyWithoutEvaluationNestedInput = {
@@ -17911,6 +18048,7 @@ export namespace Prisma {
     created_at?: Date | string
     observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
+    norm: NormCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
   }
 
@@ -17918,6 +18056,7 @@ export namespace Prisma {
     id?: number
     company_id: number
     created_at?: Date | string
+    norm_id: number
     observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
@@ -18084,6 +18223,7 @@ export namespace Prisma {
     company_id?: IntFilter<"Evaluation"> | number
     created_by?: IntFilter<"Evaluation"> | number
     created_at?: DateTimeFilter<"Evaluation"> | Date | string
+    norm_id?: IntFilter<"Evaluation"> | number
     observations?: StringNullableFilter<"Evaluation"> | string | null
   }
 
@@ -18229,6 +18369,7 @@ export namespace Prisma {
     created_at?: Date | string
     observations?: string | null
     creator: UserCreateNestedOneWithoutEvaluationsInput
+    norm: NormCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
   }
 
@@ -18236,6 +18377,7 @@ export namespace Prisma {
     id?: number
     created_by: number
     created_at?: Date | string
+    norm_id: number
     observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
@@ -18321,6 +18463,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EvaluationCreateWithoutNormInput = {
+    created_at?: Date | string
+    company: CompanyCreateNestedOneWithoutEvaluationsInput
+    creator: UserCreateNestedOneWithoutEvaluationsInput
+    versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
+  }
+
+  export type EvaluationUncheckedCreateWithoutNormInput = {
+    id?: number
+    company_id: number
+    created_by: number
+    created_at?: Date | string
+    versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
+  }
+
+  export type EvaluationCreateOrConnectWithoutNormInput = {
+    where: EvaluationWhereUniqueInput
+    create: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput>
+  }
+
+  export type EvaluationCreateManyNormInputEnvelope = {
+    data: EvaluationCreateManyNormInput | EvaluationCreateManyNormInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CriterionUpsertWithWhereUniqueWithoutNormInput = {
     where: CriterionWhereUniqueInput
     update: XOR<CriterionUpdateWithoutNormInput, CriterionUncheckedUpdateWithoutNormInput>
@@ -18344,6 +18511,22 @@ export namespace Prisma {
     id?: IntFilter<"Criterion"> | number
     description?: StringNullableFilter<"Criterion"> | string | null
     norm_id?: IntFilter<"Criterion"> | number
+  }
+
+  export type EvaluationUpsertWithWhereUniqueWithoutNormInput = {
+    where: EvaluationWhereUniqueInput
+    update: XOR<EvaluationUpdateWithoutNormInput, EvaluationUncheckedUpdateWithoutNormInput>
+    create: XOR<EvaluationCreateWithoutNormInput, EvaluationUncheckedCreateWithoutNormInput>
+  }
+
+  export type EvaluationUpdateWithWhereUniqueWithoutNormInput = {
+    where: EvaluationWhereUniqueInput
+    data: XOR<EvaluationUpdateWithoutNormInput, EvaluationUncheckedUpdateWithoutNormInput>
+  }
+
+  export type EvaluationUpdateManyWithWhereWithoutNormInput = {
+    where: EvaluationScalarWhereInput
+    data: XOR<EvaluationUpdateManyMutationInput, EvaluationUncheckedUpdateManyWithoutNormInput>
   }
 
   export type CompanyCreateWithoutEditorUsersInput = {
@@ -18473,12 +18656,14 @@ export namespace Prisma {
   export type NormCreateWithoutCriteriaInput = {
     code: string
     name?: string | null
+    evaluations?: EvaluationCreateNestedManyWithoutNormInput
   }
 
   export type NormUncheckedCreateWithoutCriteriaInput = {
     id?: number
     code: string
     name?: string | null
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutNormInput
   }
 
   export type NormCreateOrConnectWithoutCriteriaInput = {
@@ -18521,12 +18706,14 @@ export namespace Prisma {
   export type NormUpdateWithoutCriteriaInput = {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUpdateManyWithoutNormNestedInput
   }
 
   export type NormUncheckedUpdateWithoutCriteriaInput = {
     id?: IntFieldUpdateOperationsInput | number
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type QuestionUpsertWithWhereUniqueWithoutCriterionInput = {
@@ -18695,6 +18882,24 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutEvaluationsInput, UserUncheckedCreateWithoutEvaluationsInput>
   }
 
+  export type NormCreateWithoutEvaluationsInput = {
+    code: string
+    name?: string | null
+    criteria?: CriterionCreateNestedManyWithoutNormInput
+  }
+
+  export type NormUncheckedCreateWithoutEvaluationsInput = {
+    id?: number
+    code: string
+    name?: string | null
+    criteria?: CriterionUncheckedCreateNestedManyWithoutNormInput
+  }
+
+  export type NormCreateOrConnectWithoutEvaluationsInput = {
+    where: NormWhereUniqueInput
+    create: XOR<NormCreateWithoutEvaluationsInput, NormUncheckedCreateWithoutEvaluationsInput>
+  }
+
   export type EvaluationVersionCreateWithoutEvaluationInput = {
     created_at?: Date | string
     is_latest?: boolean
@@ -18796,6 +19001,30 @@ export namespace Prisma {
     companyEditors?: CompanyEditorUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type NormUpsertWithoutEvaluationsInput = {
+    update: XOR<NormUpdateWithoutEvaluationsInput, NormUncheckedUpdateWithoutEvaluationsInput>
+    create: XOR<NormCreateWithoutEvaluationsInput, NormUncheckedCreateWithoutEvaluationsInput>
+    where?: NormWhereInput
+  }
+
+  export type NormUpdateToOneWithWhereWithoutEvaluationsInput = {
+    where?: NormWhereInput
+    data: XOR<NormUpdateWithoutEvaluationsInput, NormUncheckedUpdateWithoutEvaluationsInput>
+  }
+
+  export type NormUpdateWithoutEvaluationsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    criteria?: CriterionUpdateManyWithoutNormNestedInput
+  }
+
+  export type NormUncheckedUpdateWithoutEvaluationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    criteria?: CriterionUncheckedUpdateManyWithoutNormNestedInput
+  }
+
   export type EvaluationVersionUpsertWithWhereUniqueWithoutEvaluationInput = {
     where: EvaluationVersionWhereUniqueInput
     update: XOR<EvaluationVersionUpdateWithoutEvaluationInput, EvaluationVersionUncheckedUpdateWithoutEvaluationInput>
@@ -18817,6 +19046,7 @@ export namespace Prisma {
     observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     creator: UserCreateNestedOneWithoutEvaluationsInput
+    norm: NormCreateNestedOneWithoutEvaluationsInput
   }
 
   export type EvaluationUncheckedCreateWithoutVersionsInput = {
@@ -18824,7 +19054,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
-    observations?: string | null
+    norm_id: number
   }
 
   export type EvaluationCreateOrConnectWithoutVersionsInput = {
@@ -18909,6 +19139,7 @@ export namespace Prisma {
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
+    norm?: NormUpdateOneRequiredWithoutEvaluationsNestedInput
   }
 
   export type EvaluationUncheckedUpdateWithoutVersionsInput = {
@@ -18916,6 +19147,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    norm_id?: IntFieldUpdateOperationsInput | number
     observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -19467,7 +19699,7 @@ export namespace Prisma {
     id?: number
     company_id: number
     created_at?: Date | string
-    observations?: string | null
+    norm_id: number
   }
 
   export type EvaluationVersionCreateManyCreatorInput = {
@@ -19512,6 +19744,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
+    norm?: NormUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19519,7 +19752,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    norm_id?: IntFieldUpdateOperationsInput | number
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19527,7 +19760,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    norm_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type EvaluationVersionUpdateWithoutCreatorInput = {
@@ -19650,6 +19883,7 @@ export namespace Prisma {
     id?: number
     created_by: number
     created_at?: Date | string
+    norm_id: number
     observations?: string | null
   }
 
@@ -19661,6 +19895,7 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
+    norm?: NormUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19668,6 +19903,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    norm_id?: IntFieldUpdateOperationsInput | number
     observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
@@ -19676,6 +19912,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    norm_id?: IntFieldUpdateOperationsInput | number
     observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -19696,6 +19933,13 @@ export namespace Prisma {
     description?: string | null
   }
 
+  export type EvaluationCreateManyNormInput = {
+    id?: number
+    company_id: number
+    created_by: number
+    created_at?: Date | string
+  }
+
   export type CriterionUpdateWithoutNormInput = {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     questions?: QuestionUpdateManyWithoutCriterionNestedInput
@@ -19710,6 +19954,28 @@ export namespace Prisma {
   export type CriterionUncheckedUpdateManyWithoutNormInput = {
     id?: IntFieldUpdateOperationsInput | number
     description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EvaluationUpdateWithoutNormInput = {
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
+    creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
+    versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
+  }
+
+  export type EvaluationUncheckedUpdateWithoutNormInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    created_by?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
+  }
+
+  export type EvaluationUncheckedUpdateManyWithoutNormInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    created_by?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionCreateManyCriterionInput = {

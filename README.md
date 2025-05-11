@@ -68,9 +68,9 @@
 
 - `main` → Solo recibe código estable (deploys finales)
 - `develop` → Rama principal de desarrollo (base de todas las features)
-- `feature/` → Ramas específicas para cada funcionalidad
-- `bugfix/` → Ramas para corregir errores específicos
-- `hotfix/` → Ramas para arreglos urgentes en producción
+- `feature/` → Ramas específicas para cada funcionalidad (se crean solo al momento de empezar a implementar una feature)
+- `bugfix/` → Ramas para corregir errores específicos (se crean solo al momento de corregir un bug)
+- `hotfix/` → Ramas para arreglos urgentes en producción (se crea solo al momento de añadir un hotfix)
 
 Ejemplo de uso en features:
 
