@@ -24,9 +24,14 @@ export class ReportEvaluationService {
     }
   }
 
-  async getEvaluationDetail(evaluationId: number) {
+  async getEvaluationDetail(evaluationId: number, versionId: number) {
     try{
-        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations',evaluationId);
+        const ids = {
+          evaluationId,
+          versionId
+        }
+
+        const query = await this.queryFilter.filterQuery('getEvaluationDetail', 'compound-evaluations',ids);
         return query;
     }catch(error){
         throw new InternalServerErrorException('Error fetching evaluations',error);
