@@ -6,37 +6,29 @@ import { QueryFilterService } from '../../../imports-barrel';
 export class EvaluationService {
   constructor(private readonly queryFilter: QueryFilterService) {}
 
+  async getIdByNorm() { 
+    try{
+        const query = await this.queryFilter.filterQuery('getAllNormsBasicInfo', 'norm-queries');
+        return query
+    }catch(error){
+        throw new InternalServerErrorException('Error fetching evaluations',error);
+    }
+  }
+
   async getQuestionsByNorm(normId: number) {
     try {
       const numericId = Number(normId);
   
       const sections = await this.queryFilter.filterQuery(
         'getQuestionsByNorm',
-        'compound-evaluations',
+        'criterion-queries',
         numericId
       );
   
-      const totalQuestions = sections.reduce(
-        (acc, section) => acc + section.questions.length,
-        0
-      );
-  
       const response = {
-        name: 'Evaluación generada', // hardcodeado
-        description: 'Evaluación basada en norma seleccionada', //pendiente... no hay description en schema
-        totalQuestions,
-        sections: sections.map((section) => ({
-          id: section.id,
-          title: section.title,
-          questions: section.questions.map((q) => ({
-            id: q.id,
-            question: q.text,
-          })),
-        })),
+        name: 'Preguntas por criterios Generadas', // hardcodeado
+        sections
       };
-  
-      // temporal... ver exactamente como se va a enviar al frontend
-      console.log('JSON Final para el frontend:\n', JSON.stringify(response, null, 2));
   
       return response;
     } catch (error) {
@@ -46,15 +38,18 @@ export class EvaluationService {
   }
 
 
-  async submitEvaluation(dto: EvaluationSubmissionDto, userId: number) {
+  async submitEvaluation(companyIdSelect: number,dto: EvaluationSubmissionDto, userId: number,type: number) {
     const sectionIds = dto.sections.map(s => s.id);
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
     const normId = await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries',sectionIds);
     await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
-    const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
-    const companyId = user.company_id;
+    let companyId = 0;
+    if(type == 1){
+      const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
+      return companyId = user.company_id;
+    }
 
     // Validar respuestas, puntajes y evidencias:
     for (const section of dto.sections) {
@@ -87,35 +82,62 @@ export class EvaluationService {
     const metrics = this.calculateEvaluationMetrics(dto);
     console.log("resumen de metricas calculadas: ", metrics);
 
-    const evaluationData = {
-      userId: userId,
-      name: dto.name,
-      description: dto.description,
-      company_id: companyId,
-      norm_id: normId,
-      completion_percentage: metrics.completionPercentage,
-      maturity_level: metrics.maturityLevel,
-      total_score: metrics.totalScore,
-      max_score: metrics.maxScore,
-      answered_questions: metrics.answeredQuestions,
-      total_questions: metrics.totalQuestions,
-      observations: dto.observations ?? '',
-      sections: dto.sections.map(section => ({
-        criterion_id: section.id,
-        questions: section.questions.map(q => ({
-          question_id: q.id,
-          answer: q.answer,
-          evidence: q.evidence,
-          comments: q.comments ?? '',
-          score: q.score,
+      const evaluationData = {
+        userId: userId,
+        name: dto.name,
+        description: dto.description,
+        company_id: companyId,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        observations: dto.observations ?? '',
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
         })),
-      })),
-    };
+      };
 
-    const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
-    return result; // Podrías retornar el ID o el resumen según lo que desees mostrar al frontend
+      const evaluationData2 = {
+        userId: userId,
+        name: dto.name,
+        description: dto.description,
+        company_id: companyIdSelect,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
+        })),
+      };
 
-
+    if(type == 1){
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
+      return result;
+    }else{
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData2);
+      return result;
+    }
   }
 
 

@@ -26,3 +26,24 @@ export async function getListCompanies() {
   });
   return companies;
 }
+export async function getAllCompaniesByUser(userId: number) {
+  return await Prisma.company.findMany({
+    where: {
+      editorUsers: {
+        some: {
+          user_id: userId,
+        },
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      address: true,
+      phone: true,
+      contact_name: true,
+      contact_email: true,
+    },
+  });
+}
+
+

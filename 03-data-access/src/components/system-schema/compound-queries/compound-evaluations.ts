@@ -131,14 +131,14 @@ type TxClient = {
   evidence: typeof Prisma.evidence;
 };
 
-// Query para la HU-008: insertar una evaluación hecha con todos sus datos
-export async function createEvaluationWithDetails(data: EvaluationData, userId: number) {
+// Query para la HU-008 y HU-010: insertar una evaluación hecha con todos sus datos
+export async function createEvaluationWithDetails(data: EvaluationData) {
   return await Prisma.$transaction(async (tx: TxClient) => {
     // 1. Crear la evaluación base
     const evaluation = await tx.evaluation.create({
       data: {
         company_id: data.company_id,
-        created_by: userId,
+        created_by: data.userId,
         created_at: new Date(),
         observations: data.observations?.trim() || null,
       },
@@ -148,7 +148,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
     const version = await tx.evaluationVersion.create({
       data: {
         evaluation_id: evaluation.id,
-        created_by: userId,
+        created_by: data.userId,
         version_number: 1,
         is_latest: true,
         created_at: new Date(),
@@ -165,7 +165,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
             question_id: question.question_id,
             score: question.score,
             response: question.answer,
-            created_by: userId,
+            created_by: data.userId,
             created_at: new Date(),
           },
         });
@@ -176,7 +176,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
           await tx.comment.create({
             data: {
               text: trimmedObs,
-              created_by: userId,
+              created_by: data.userId,
               answer_id: createdAnswer.id,
               created_at: new Date(),
             },
@@ -189,7 +189,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
             data: question.evidence.map((e) => ({
               answer_id: createdAnswer.id,
               url: e.url,
-              created_by: userId,
+              created_by: data.userId,
               created_at: new Date(),
             })),
           });
@@ -205,6 +205,7 @@ export async function createEvaluationWithDetails(data: EvaluationData, userId: 
 //Interfaces de datos usado en la HU008
 export interface EvaluationData {
   company_id: number;
+  userId: number,
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
   sections: SectionData[];
 }
@@ -226,51 +227,17 @@ interface EvidenceData {
   url: string;
 }
 
-//Query para traer preguntas de la HU008
-export async function getQuestionsByNorm(normId: number) {
-  try {
-    const normWithCriteria = await Prisma.norm.findUnique({
-      where: { id: normId },
-      select: {
-        criteria: {
-          select: {
-            id: true,
-            description: true,
-            questions: {
-              select: {
-                id: true,
-                text: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (!normWithCriteria) {
-      throw new Error(`Norm with id ${normId} not found.`);
-    }
-
-    return normWithCriteria.criteria.map((criterion) => ({
-      id: criterion.id,
-      title: criterion.description || 'Sección sin nombre',
-      questions: criterion.questions.map((question) => ({
-        id: question.id,
-        text: question.text,
-      })),
-    }));
-  } catch (error) {
-    console.error('Error fetching questions by normId:', error);
-    throw new Error('Failed to fetch questions');
-  }
-}
-
 //Query 1 para la HU009,Obtener evaluaciones hechas o asignadas al auditor externo
 export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
   const evaluations = await Prisma.evaluation.findMany({
     where: {
       company_id: data.companyId,
       created_by: data.userId,
+      versions: {
+        some: {
+          version_number: data.version,
+        }
+      }
     },
     select: {
       id: true,
@@ -279,6 +246,9 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
         select: { name: true },
       },
       versions: {
+        where: {
+          version_number: data.version,
+        },
         select: {
           answers: {
             select: {
@@ -330,10 +300,11 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
 interface dataId {
   userId: number;
   companyId: number;
+  version: number;
 }
 
 //Query 2 para la HU009,Obtener los detalles de la evaluacion seleccionada
-export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number }) {
+export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number; version: number }) {
   const details = await Prisma.$queryRaw`
     SELECT DISTINCT ON (q.id)
       q.id AS "question_id",
@@ -349,7 +320,6 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
       ev.id AS "version_id",
       ev.created_at AS "version_created_at",
       e.id AS "evaluation_id",
-      e.observations,
       u.id AS "creator_id",
       u.name AS "creator_name",
       evid.id AS "evidence_id",
@@ -365,6 +335,7 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
     JOIN "user" u ON e.created_by = u.id
     WHERE e.id = ${data.evaluationId}
       AND e.created_by = ${data.userId}
+      AND ev.version_number = ${data.version}
     ORDER BY q.id, ev.created_at DESC, a.created_at DESC
   `;
 
