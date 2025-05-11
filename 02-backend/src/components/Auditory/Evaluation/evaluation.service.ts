@@ -38,15 +38,18 @@ export class EvaluationService {
   }
 
 
-  async submitEvaluation(dto: EvaluationSubmissionDto, userId: number,type: number) {
+  async submitEvaluation(companyIdSelect: number,dto: EvaluationSubmissionDto, userId: number,type: number) {
     const sectionIds = dto.sections.map(s => s.id);
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
     const normId = await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries',sectionIds);
     await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
-    const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
-    const companyId = user.company_id;
+    let companyId = 0;
+    if(type == 1){
+      const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId); 
+      return companyId = user.company_id;
+    }
 
     // Validar respuestas, puntajes y evidencias:
     for (const section of dto.sections) {
@@ -108,7 +111,7 @@ export class EvaluationService {
         userId: userId,
         name: dto.name,
         description: dto.description,
-        company_id: companyId,
+        company_id: companyIdSelect,
         norm_id: normId,
         completion_percentage: metrics.completionPercentage,
         maturity_level: metrics.maturityLevel,

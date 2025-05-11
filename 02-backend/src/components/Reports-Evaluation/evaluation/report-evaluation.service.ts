@@ -3,7 +3,7 @@ import { QueryFilterService } from '../../../imports-barrel';
 
 
 @Injectable()
-export class EvaluationService {
+export class ReportEvaluationService {
   constructor(private readonly queryFilter: QueryFilterService) {}
 
   async getCompanies() { 

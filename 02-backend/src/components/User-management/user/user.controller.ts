@@ -9,19 +9,19 @@ import { Param } from '@nestjs/common';
 
 @Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly service: UserService) {}
 
 
   @Post('create') // Ruta para crear un nuevo usuario
   async crearUsuario(@Body() body: any) {
-    return this.userService.crearUsuario(body);
+    return this.service.crearUsuario(body);
   }
 
 
   // Endpoints Hu005
   @Post('login') // Ruta para el login de validacion
   async login(@Body() loginDto: LoginDto) {
-    return this.userService.login(loginDto);
+    return this.service.login(loginDto);
   }
 
 
@@ -38,7 +38,7 @@ export class UserController {
   @Roles('admin')
   @Get('search')
   async buscarUsuarios() {
-    return this.userService.buscarUsuarios();
+    return this.service.buscarUsuarios();
   }
   
 
@@ -48,7 +48,7 @@ export class UserController {
   @Get(':id')
   async obtenerUsuario(@Param('id',ParseIntPipe) id: number) {
   //  Solo accesible si el token es válido y el rol es ADMIN
-  return this.userService.obtenerUsuarioPorId(id); 
+  return this.service.obtenerUsuarioPorId(id); 
 }
 
 }
