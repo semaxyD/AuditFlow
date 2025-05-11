@@ -1,24 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { QueryManagerService } from './query-manager.service';
+import { QueryExecutorService } from './query-executor.service';
 
 @Injectable()
 export class QueryFilterService {
-  constructor(private readonly queryManagerService: QueryManagerService) {}
+  constructor(private readonly queryExecutorService: QueryExecutorService) {}
 
-  // Lógica para filtrar la consulta según el tipo
-  async filterQuery(queryType: string, queryName: string, ...args: any[]) {
-    // Cargar la query correspondiente de acuerdo al tipo
-    const query = this.queryManagerService.getQuery(queryName);
+  // Lógica para filtrar la consulta según el archivo
+  async filterQuery(queryFunction: string, queryCollection: string, ...args: any[]) {
 
-    if (!query) {
-      throw new Error(`Query not found: ${queryName}`);
-    }
+    // Cargar la query correspondiente de acuerdo al archivo
+    console.log("coleccion solicitada:"+queryCollection)
+    console.log("query solicitada:"+queryFunction)
 
-    const queryFunc = query[queryType];
-    if (typeof queryFunc !== 'function'){
-      throw new Error(`Query function not found for type: ${queryType}`);
-    }
+    const result = await this.queryExecutorService.execute(queryCollection,queryFunction,...args);
 
-    return queryFunc(...args);  // Ejecuta el tipo de consulta que necesites (por ejemplo, 'create', 'read', etc.)
+    console.log("resultado de la query: ", result)
+
+    return result
   }
 }

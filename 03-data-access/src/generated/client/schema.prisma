@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int                 @id @default(autoincrement())
+  name            String
+  email           String              @unique
+  password        String
+  role            String
+  evaluations     Evaluation[]        @relation("EvaluationCreatedBy")
+  versionsCreated EvaluationVersion[] @relation("VersionCreatedBy")
+  answers         Answer[]            @relation("AnswerCreatedBy")
+  evidences       Evidence[]          @relation("EvidenceCreatedBy")
+  comments        Comment[]           @relation("CommentCreatedBy")
+  companyEditors  CompanyEditor[]
+
+  @@map("user")
+}
+
+model Company {
+  id            Int             @id @default(autoincrement())
+  name          String
+  nit           Int
+  address       String?
+  contact_name  String?
+  contact_email String?
+  phone         String?
+  evaluations   Evaluation[]
+  editorUsers   CompanyEditor[]
+
+  @@map("company")
+}
+
+model Norm {
+  id          Int          @id @default(autoincrement())
+  code        String
+  name        String?
+  criteria    Criterion[]
+  evaluations Evaluation[]
+
+  @@map("norm")
+}
+
+model CompanyEditor {
+  company    Company @relation(fields: [company_id], references: [id])
+  company_id Int
+  user       User    @relation(fields: [user_id], references: [id])
+  user_id    Int
+
+  @@id([company_id, user_id])
+  @@map("company_editor")
+}
+
+model Criterion {
+  id          Int        @id @default(autoincrement())
+  description String?
+  norm_id     Int
+  norm        Norm       @relation(fields: [norm_id], references: [id])
+  questions   Question[]
+
+  @@map("criterion")
+}
+
+model Question {
+  id           Int       @id @default(autoincrement())
+  text         String
+  criterion_id Int
+  criterion    Criterion @relation(fields: [criterion_id], references: [id])
+  answers      Answer[]
+
+  @@map("question")
+}
+
+model Evaluation {
+  id         Int                 @id @default(autoincrement())
+  company_id Int
+  created_by Int
+  created_at DateTime            @default(now())
+  company    Company             @relation(fields: [company_id], references: [id])
+  creator    User                @relation("EvaluationCreatedBy", fields: [created_by], references: [id])
+  norm_id    Int
+  norm       Norm                @relation(fields: [norm_id], references: [id])
+  versions   EvaluationVersion[]
+
+  @@map("evaluation")
+}
+
+model EvaluationVersion {
+  id             Int        @id @default(autoincrement())
+  evaluation_id  Int
+  created_by     Int
+  created_at     DateTime   @default(now())
+  is_latest      Boolean    @default(true)
+  submitted_at   DateTime?
+  status         String?
+  version_number Int?
+  evaluation     Evaluation @relation(fields: [evaluation_id], references: [id])
+  creator        User       @relation("VersionCreatedBy", fields: [created_by], references: [id])
+  answers        Answer[]
+  score          Int?
+
+  @@map("evaluation_version")
+}
+
+model Answer {
+  id                Int               @id @default(autoincrement())
+  question_id       Int
+  version_id        Int
+  response          String? // 'Sí', 'No', 'NM', 'N/A'
+  created_by        Int
+  created_at        DateTime          @default(now())
+  score             Int?
+  comments          Comment[]
+  question          Question          @relation(fields: [question_id], references: [id])
+  evaluationVersion EvaluationVersion @relation(fields: [version_id], references: [id])
+  creator           User              @relation("AnswerCreatedBy", fields: [created_by], references: [id])
+  evidences         Evidence[]
+
+  @@map("answer")
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  text       String
+  created_by Int
+  answer_id  Int
+  created_at DateTime @default(now())
+  creator    User     @relation("CommentCreatedBy", fields: [created_by], references: [id])
+  answer     Answer   @relation(fields: [answer_id], references: [id])
+
+  @@map("comment")
+}
+
+model Evidence {
+  id         Int      @id @default(autoincrement())
+  answer_id  Int
+  url        String?
+  created_by Int
+  created_at DateTime @default(now())
+  answer     Answer   @relation(fields: [answer_id], references: [id])
+  creator    User     @relation("EvidenceCreatedBy", fields: [created_by], references: [id])
+
+  @@map("evidence")
+}

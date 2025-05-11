@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { EvaluationService } from './evaluation.service';
 import { EvaluationController } from './evaluation.controller';
-import { QueryFilterService } from '@data-access/src/components/query-manager/query-filter.service';
-import { QueryManagerService } from '@data-access/src/components/query-manager/query-manager.service';
+import { QueryFilterModule, QueryFilterService } from '../../../imports-barrel';
+
 
 @Module({
-    imports: [],
+    imports: [QueryFilterModule],
     controllers: [EvaluationController],
-    providers: [EvaluationService, QueryFilterService, QueryManagerService],
+    providers: [EvaluationService, QueryFilterService],
 })
 
 export class EvaluationModule {}
