@@ -13,7 +13,7 @@ export class UserController {
 
   @Get('companiesList') //Ruta para conseguir los ID's de las compañias disponibles
   async CompaniesList(){
-    return this.userService.CompaniesList();
+    return this.service.CompaniesList();
   }
 
 
