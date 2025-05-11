@@ -6,7 +6,7 @@ export function CompanyHeader({ name, nit }: { name: string; nit: string }) {
       <h1 className="text-3xl font-bold text-teal-700">{name}</h1>
       <div className="flex items-center mt-2">
         <Badge variant="outline" className="text-sm">
-          NIT: {nit}
+          ID: {nit}
         </Badge>
       </div>
     </div>
