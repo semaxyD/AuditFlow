@@ -1,10 +1,10 @@
-import { Controller, Get, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { EvaluationService } from './evaluation.service';
-import { Roles } from '../../Shared/decorators/roles.decorator'
+import { Roles } from '../../Shared/Auth/roles.decorator'
 import { RolesGuard } from '../../Shared/Auth/roles.guard'
 import { JwtAuthGuard } from '../../Shared/Auth/jwt-auth.guard';
 
-@Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
+@Controller('reports-evaluation')
 export class EvaluationController {
   constructor(private readonly service: EvaluationService) {}
 
@@ -19,22 +19,21 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
   @Get(':companyId/evaluations')
-  getEvaluations(@Param('companyId',ParseIntPipe) companyId: number) {
+  getEvaluations(@Param('companyId') companyId: string) {
     return this.service.getEvaluationsByCompany(companyId);
   }
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
-  @Get(':evaluationId/version/:versionId')
-  getEvaluationDetail(@Param('evaluationId',ParseIntPipe) evaluationId: number, @Param('versionId',ParseIntPipe) versionId: number) {
-    return this.service.getEvaluationDetail(evaluationId,versionId);
+  @Get('evaluations/:evaluationId/detail')
+  getEvaluationDetail(@Param('evaluationId') evaluationId: string) {
+    return this.service.getEvaluationDetail(evaluationId);
   }
 
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Roles('admin')
-  @Get(':evaluationId/evolution')
-  getEvolution(@Param('evaluationId',ParseIntPipe) evaluationId: number) {
-    return this.service.getEvolutionEvaluation(evaluationId);
+  @Get(':companyId/evolution')
+  getEvolution(@Param('companyId') companyId: string) {
+    return this.service.getEvolutionEvaluation(companyId);
   }
-
 }

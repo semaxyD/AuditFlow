@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int                 @id @default(autoincrement())
+  name            String
+  email           String              @unique
+  password        String
+  role            String
+  evaluations     Evaluation[]        @relation("Evaluator")
+  versionsCreated EvaluationVersion[] @relation("Editor")
+}
+
+model Company {
+  id          Int          @id @default(autoincrement())
+  name        String
+  address     String
+  evaluations Evaluation[]
+}
+
+model Evaluation {
+  id          Int                 @id @default(autoincrement())
+  company_id  Int
+  auditor_id  Int
+  standard_id Int
+  created_at  DateTime
+  company     Company             @relation(fields: [company_id], references: [id])
+  auditor     User                @relation("Evaluator", fields: [auditor_id], references: [id])
+  versions    EvaluationVersion[]
+}
+
+model EvaluationVersion {
+  id             Int        @id @default(autoincrement())
+  evaluation_id  Int
+  version_number Int
+  created_at     DateTime
+  user_id        Int
+  is_current     Boolean    @default(false)
+  evaluation     Evaluation @relation(fields: [evaluation_id], references: [id])
+  editor         User       @relation("Editor", fields: [user_id], references: [id])
+  answers        Answer[]
+}
+
+model Answer {
+  id                    Int               @id @default(autoincrement())
+  evaluation_version_id Int
+  question_id           Int
+  score                 Int
+  evaluationVersion     EvaluationVersion @relation(fields: [evaluation_version_id], references: [id])
+  question              Question          @relation(fields: [question_id], references: [id])
+  evidences             Evidence[]
+}
+
+model Evidence {
+  id          Int    @id @default(autoincrement())
+  answer_id   Int
+  url         String
+  description String
+  answer      Answer @relation(fields: [answer_id], references: [id])
+}
+
+model Question {
+  id           Int       @id @default(autoincrement())
+  criterion_id Int
+  text         String
+  criterion    Criterion @relation(fields: [criterion_id], references: [id])
+  answers      Answer[]
+}
+
+model Criterion {
+  id          Int        @id @default(autoincrement())
+  standard_id Int
+  description String
+  max_score   Int
+  standard    Standard   @relation(fields: [standard_id], references: [id])
+  questions   Question[]
+}
+
+model Standard {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  criteria    Criterion[]
+}

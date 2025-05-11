@@ -1,13 +1,11 @@
-import { Module, forwardRef} from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { QueryFilterModule } from '../../../imports-barrel';
-import { AuthModule } from 'src/components/Shared/Auth/auth.module';
+import { PrismaService } from '@data-access/src/prismaconfig/prisma.service';
 
 @Module({
-  imports: [QueryFilterModule, forwardRef (()=> AuthModule)],
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, PrismaService],
   exports: [UserService],
 })
 export class UserModule {}

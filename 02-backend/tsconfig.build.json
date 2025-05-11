@@ -1,19 +1,4 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist",
-    "module": "commonjs",
-    "target": "ES6",
-    "esModuleInterop": true,
-    "strict": true,
-    "baseUrl": "./",
-  },
-  "include": [
-    "02-backend/src/**/*",
-  ],
-  "exclude": [
-    "node_modules",
-    "test",
-    "**/*.spec.ts",
-    "**03-data-access**"
-  ]
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "dist", "test", "../03-data-access"]
 }

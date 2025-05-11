@@ -1,10 +1,5 @@
-import { Prisma } from '../../../prismaconfig/prisma-client'
-
-export async function getCriterionsByIds(ids: number[]) {
-  const criterions = await Prisma.criterion.findMany({
+export const getCriteriosByIds = (ids: string[]) => ({
     where: { id: { in: ids } },
-    select: { id: true, norm_id: true },
+    select: { id: true },
   });
-  return criterions;
-}
   

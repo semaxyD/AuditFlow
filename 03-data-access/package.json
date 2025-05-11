@@ -1,26 +1,27 @@
 {
-  "type": "module",
+  "name": "03-data-access",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "prebuild": "prisma generate",
-    "build": "tsc --project tsconfig.json && tsc-alias && tsc-esm-fix dist && npm run copy:generated",
-    "copy:generated": "cpx \"src/generated/client/**/*\" dist/generated/client"
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
-    "@nestjs/common": "^11.0.20",
-    "@prisma/client": "^6.7.0",
-    "dotenv": "^16.5.0",
-    "pg": "^8.15.6",
+    "@prisma/client": "^6.6.0",
+    "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
-    "tsconfig-paths": "^4.2.0"
+    "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.22"
   },
   "devDependencies": {
-    "@nestjs/common": "^11.0.20",
-    "@nestjs/core": "^11.0.20",
-    "cpx": "^1.2.1",
-    "prisma": "^6.7.0",
+    "@nestjs/common": "^11.0.14",
+    "@types/node": "^22.14.0",
+    "prisma": "^6.6.0",
     "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.15",
-    "tsc-esm-fix": "^3.1.2",
     "typescript": "^5.8.3"
   }
 }
