@@ -45,10 +45,11 @@ model Company {
 }
 
 model Norm {
-  id       Int         @id @default(autoincrement())
-  code     String
-  name     String?
-  criteria Criterion[]
+  id          Int          @id @default(autoincrement())
+  code        String
+  name        String?
+  criteria    Criterion[]
+  evaluations Evaluation[]
 
   @@map("norm")
 }
@@ -90,6 +91,8 @@ model Evaluation {
   created_at DateTime            @default(now())
   company    Company             @relation(fields: [company_id], references: [id])
   creator    User                @relation("EvaluationCreatedBy", fields: [created_by], references: [id])
+  norm_id    Int
+  norm       Norm                @relation(fields: [norm_id], references: [id])
   versions   EvaluationVersion[]
 
   @@map("evaluation")

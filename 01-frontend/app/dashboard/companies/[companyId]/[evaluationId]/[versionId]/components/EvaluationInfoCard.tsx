@@ -25,14 +25,9 @@ export function EvaluationInfoCard({
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium">Norma</h3>
-              <p className="text-muted-foreground">
-                {norm.norm_name} - {norm.norm_code}
-              </p>
+              <p className="text-muted-foreground">{norm} </p>
             </div>
-            <div>
-              <h3 className="text-lg font-medium">Versión</h3>
-              <p className="text-muted-foreground">{version.version_number}</p>
-            </div>
+
             <div>
               <h3 className="text-lg font-medium">Fecha de creación</h3>
               <p className="text-muted-foreground">

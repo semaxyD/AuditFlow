@@ -1,8 +1,9 @@
 import { Prisma } from "../../../prismaconfig/prisma-client";
 
-export async function getEvaluationDetail(
-  ids: { evaluationId: number; versionId: number }
-) {
+export async function getEvaluationDetail(ids: {
+  evaluationId: number;
+  versionId: number;
+}) {
   const rows = await Prisma.$queryRaw<{ result: any }[]>`
     WITH base AS (
       SELECT DISTINCT ON (q.id)
@@ -32,7 +33,6 @@ export async function getEvaluationDetail(
         b.question_id,
         b.text,
         b.criterion_description,
-        b.norm_code,
         b.response,
         b.created_by,
         b.created_at,
@@ -47,7 +47,6 @@ export async function getEvaluationDetail(
         b.question_id,
         b.text,
         b.criterion_description,
-        b.norm_code,
         b.response,
         b.created_by,
         b.created_at,
@@ -55,9 +54,14 @@ export async function getEvaluationDetail(
     ),
     obs AS (
       SELECT
+        c.name AS company_name,
+        c.nit,
+        n.name AS norm_name,
         e.observations,
         e.id AS evaluation_id
       FROM evaluation e
+      JOIN company c ON e.company_id = c.id
+      JOIN norm n ON e.norm_id = n.id
       WHERE e.id = ${ids.evaluationId}
       LIMIT 1
     ),
@@ -74,6 +78,9 @@ export async function getEvaluationDetail(
     SELECT
       jsonb_build_array(
         jsonb_build_object(
+          'company_name', obs.company_name,
+          'nit',          obs.nit,
+          'norm_name',    obs.norm_name,
           'observations', obs.observations,
           'questions',   questions.questions
         )
@@ -88,10 +95,10 @@ export async function getEvaluationDetail(
 
 // Obtener evolución de la evaluación  QUERY COMPUESTA 03
 export async function getEvolutionEvaluation(evaluationId: number) {
-  const evolution = await Prisma.evaluationVersion.findMany({
+  const evolutionRecords = await Prisma.evaluationVersion.findMany({
     where: { evaluation_id: evaluationId },
     orderBy: {
-      created_at: "asc",
+      version_number: "asc",
     },
     select: {
       id: true,
@@ -100,89 +107,68 @@ export async function getEvolutionEvaluation(evaluationId: number) {
       created_at: true,
       version_number: true,
       creator: {
+        select: { name: true },
+      },
+
+      evaluation: {
         select: {
-          name: true,
+          company: {
+            select: { name: true, id: true },
+          },
+          norm: {
+            select: { name: true },
+          },
         },
       },
     },
   });
-
-  // Formatear los resultados para que coincidan con la consulta SQL
-  const formattedEvolution = evolution.map((ev) => ({
-    id: ev.id,
+  return evolutionRecords.map((ev) => ({
+    company_name: ev.evaluation.company.name,
+    company_id: ev.evaluation.company.id,
+    norm_name: ev.evaluation.norm.name,
+    version_id: ev.id,
     creator_name: ev.creator.name,
     is_latest: ev.is_latest,
     score: ev.score,
     created_at: ev.created_at,
     version_number: ev.version_number,
   }));
-
-  return formattedEvolution;
 }
 
-// Obtener evaluaciones por empresa con normas asociadas - QUERY COMPUESTA 02
 export async function getEvaluationsByCompany(companyId: number) {
   const evaluations = await Prisma.evaluation.findMany({
-    where: {
-      company_id: companyId,
-    },
+    where: { company_id: companyId },
+    orderBy: { created_at: "desc" },
     select: {
+      company: {
+        select: { name: true, id: true },
+      },
       id: true,
       created_at: true,
-      company_id: true,
       creator: {
-        select: {
-          name: true,
-        },
+        select: { name: true },
       },
-      versions: {
+      norm: {
         select: {
-          answers: {
-            select: {
-              question: {
-                select: {
-                  criterion: {
-                    select: {
-                      norm: {
-                        select: {
-                          id: true,
-                          name: true,
-                          code: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
+          id: true,
+          name: true,
+          code: true,
         },
       },
     },
   });
 
-  const formatted = evaluations.map((evaluation) => {
-    const normsMap = new Map();
-
-    evaluation.versions.forEach((version) => {
-      version.answers.forEach((answer) => {
-        const norm = answer.question.criterion.norm;
-        if (norm && !normsMap.has(norm.id)) {
-          normsMap.set(norm.id, norm);
-        }
-      });
-    });
-
-    return {
-      evaluation_id: evaluation.id,
-      evaluation_created_at: evaluation.created_at,
-      creator_name: evaluation.creator.name,
-      company_id: evaluation.company_id,
-      norms: Array.from(normsMap.values()),
-    };
-  });
-
-  return formatted;
+  // Formateamos al shape que usas en el frontend
+  return evaluations.map((e) => ({
+    company_id: e.company.id,
+    company_name: e.company.name,
+    evaluation_id: e.id,
+    evaluation_created_at: e.created_at,
+    creator_name: e.creator.name,
+    norm_id: e.norm.id,
+    norm_name: e.norm.name,
+    norm_code: e.norm.code,
+  }));
 }
 
 //Query para la HU-008 insertar una evaluación hecha con todos sus datos
@@ -190,125 +176,73 @@ export async function createEvaluationWithDetails(
   data: EvaluationData,
   userId: number
 ) {
-  return await Prisma.$transaction(
-    async (tx: {
-      evaluation: {
-        create: (arg0: {
-          data: { company_id: number; created_by: number; created_at: Date };
-        }) => any;
-      };
-      evaluationVersion: {
-        create: (arg0: {
-          data: {
-            evaluation_id: any;
-            created_by: number;
-            version_number: number;
-            is_latest: boolean;
-            created_at: Date;
-          };
-        }) => any;
-      };
-      answer: {
-        create: (arg0: {
-          data: {
-            version_id: any;
-            question_id: number;
-            score: number;
-            response: string;
-            created_by: number;
-            created_at: Date;
-          };
-        }) => any;
-      };
-      comment: {
-        create: (arg0: {
-          data: {
-            text: string;
-            created_by: number;
-            answer_id: any;
-            created_at: Date;
-          };
-        }) => any;
-      };
-      evidence: {
-        createMany: (arg0: {
-          data: {
-            answer_id: any;
-            url: string;
-            created_by: number;
-            created_at: Date;
-          }[];
-        }) => any;
-      };
-    }) => {
-      // 1. Crear la evaluación
-      const evaluation = await tx.evaluation.create({
-        data: {
-          company_id: data.company_id,
-          created_by: userId,
-          created_at: new Date(),
-        },
-      });
+  return await Prisma.$transaction(async (tx) => {
+    // 1. Crear la evaluación, AHORA con norm_id
+    const evaluation = await tx.evaluation.create({
+      data: {
+        company_id: data.company_id,
+        created_by: userId,
+        norm_id: data.norm_id,
+        created_at: new Date(),
+      },
+    });
 
-      // 2. Crear la primera versión de la evaluación
-      const version = await tx.evaluationVersion.create({
-        data: {
-          evaluation_id: evaluation.id,
-          created_by: userId,
-          version_number: 1,
-          is_latest: true,
-          created_at: new Date(),
-        },
-      });
+    // 2. Crear la primera versión de la evaluación
+    const version = await tx.evaluationVersion.create({
+      data: {
+        evaluation_id: evaluation.id,
+        created_by: userId,
+        version_number: 1,
+        is_latest: true,
+        created_at: new Date(),
+      },
+    });
 
-      // 3. Recorrer cada sección y sus preguntas para insertar respuestas, observaciones y evidencias
-      for (const section of data.sections) {
-        for (const question of section.questions) {
-          // 3.1 Crear respuesta
-          const createdAnswer = await tx.answer.create({
+    // 3. Insertar respuestas, observaciones y evidencias...
+    for (const section of data.sections) {
+      for (const question of section.questions) {
+        const createdAnswer = await tx.answer.create({
+          data: {
+            version_id: version.id,
+            question_id: question.question_id,
+            score: question.score,
+            response: question.answer,
+            created_by: userId,
+            created_at: new Date(),
+          },
+        });
+
+        if (question.observations?.trim()) {
+          await tx.comment.create({
             data: {
-              version_id: version.id,
-              question_id: question.question_id,
-              score: question.score,
-              response: question.answer,
+              text: question.observations.trim(),
               created_by: userId,
+              answer_id: createdAnswer.id,
               created_at: new Date(),
             },
           });
+        }
 
-          // 3.2 Crear observaciones (si existen)
-          if (question.observations?.trim()) {
-            await tx.comment.create({
-              data: {
-                text: question.observations.trim(),
-                created_by: userId,
-                answer_id: createdAnswer.id,
-                created_at: new Date(),
-              },
-            });
-          }
-
-          // 3.3 Crear evidencias (si existen)
-          if (question.evidence && question.evidence.length > 0) {
-            await tx.evidence.createMany({
-              data: question.evidence.map((e) => ({
-                answer_id: createdAnswer.id,
-                url: e.url,
-                created_by: userId,
-                created_at: new Date(),
-              })),
-            });
-          }
+        if (question.evidence?.length) {
+          await tx.evidence.createMany({
+            data: question.evidence.map((e) => ({
+              answer_id: createdAnswer.id,
+              url: e.url,
+              created_by: userId,
+              created_at: new Date(),
+            })),
+          });
         }
       }
-
-      return { evaluation, version };
     }
-  );
+
+    return { evaluation, version };
+  });
 }
 
 interface EvaluationData {
   company_id: number;
+  norm_id: number;
   sections: {
     criterion_id: number;
     questions: {

@@ -165,7 +165,8 @@ exports.Prisma.EvaluationScalarFieldEnum = {
   id: 'id',
   company_id: 'company_id',
   created_by: 'created_by',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  norm_id: 'norm_id'
 };
 
 exports.Prisma.EvaluationVersionScalarFieldEnum = {

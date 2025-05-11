@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { columns } from "./ComplaintsTable/columns";
 import { Company } from "./ComplaintsTable/types/company";
 import CompaniesTable from "./ComplaintsTable/CompaniesTable";
+import { Loading } from "@/components/Loading";
 
 export default function SearchUsersPage() {
   const fetchCompanies = async (token: string): Promise<Company[]> => {
@@ -34,13 +35,7 @@ export default function SearchUsersPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <p>Cargando empresas…</p>
-      </div>
-    );
-  }
+  if (loading) return <Loading message="Cargando empresas…" />;
   if (error) {
     return (
       <div className="p-6">

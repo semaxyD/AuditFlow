@@ -34,17 +34,16 @@ export type Company = {
 };
 
 // — Forma en que viene cada evaluación desde la API
-export type ApiEvaluation = {
+export interface ApiEvaluation {
+  company_name: string;
   evaluation_id: number;
   evaluation_created_at: string;
   creator_name: string;
   company_id: number;
-  norms: {
-    id: number;
-    name: string;
-    code: string;
-  }[];
-};
+  norm_id: number;
+  norm_name: string;
+  norm_code: string;
+}
 
 // — Tipo que usa tu tabla (un solo norm en vez de array)
 export type Evaluation = {
@@ -60,11 +59,14 @@ export type Evaluation = {
 };
 // — Forma cruda que devuelve tu API de versiones
 export type ApiVersion = {
+  company_name: string;
+  norm_name: string;
   id: number;
   creator_name: string;
   is_latest: boolean;
   score: number;
   created_at: string;
+  version_id: number;
   version_number: number;
 };
 

@@ -11,10 +11,14 @@ import {
   CategoryScale,
   LinearScale,
 } from "chart.js";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CompanyHeader } from "./components/CompanyHeader";
 import { EvaluationInfoCard } from "./components/EvaluationInfoCard";
 import { QuestionsList } from "./components/QuestionsList";
+import { set } from "zod";
+import { Loading } from "@/components/Loading";
 
 ChartJS.register(
   Title,
@@ -30,18 +34,19 @@ export default function EvaluationPage({
 }: {
   params: { companyId: string; versionId: string };
 }) {
+  const [showObs, setShowObs] = useState(false);
+  const [normName, setNormName] = useState<string>("");
+  const [companyName, setCompanyName] = useState<string>("");
+  const [companyNit, setCompanyNit] = useState<string>("");
   const [questions, setQuestions] = useState<any[]>([]);
   const [observations, setObservations] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("🆔 Params recibidos:", { companyId, versionId });
-
     const url = `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
-    console.log("⏳ Haciendo fetch a:", url);
-
     const token = localStorage.getItem("token") || "";
+
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -49,30 +54,33 @@ export default function EvaluationPage({
       },
     })
       .then((res) => {
-        console.log("📥 Raw response:", res);
         if (!res.ok) {
           return res.text().then((text) => {
-            console.error(`❌ Error ${res.status}: ${text}`);
-            throw new Error(`Error ${res.status}: ${res.statusText}`);
+            throw new Error(`Error ${res.status}: ${text}`);
           });
         }
         return res.json();
       })
       .then((data) => {
-        console.log("✅ JSON recibido:", data);
-        // data llega como [{ questions: [...], observations: "..." }]
-        const item = data[0];
-        setQuestions(item.questions);
-        setObservations(item.observations || "");
+        console.log("🚧 Payload completo recibido:", data);
+        // Si viene array, tomo el primero; si viene objeto, lo uso tal cual:
+        const payload = Array.isArray(data) ? data[0] : data;
+        if (!payload || !Array.isArray(payload.questions)) {
+          throw new Error("Formato inesperado de respuesta");
+        }
+
+        setCompanyName(payload.company_name);
+        setNormName(payload.norm_name);
+        setCompanyNit(payload.nit);
+        setQuestions(payload.questions);
+        setObservations(payload.observations || "");
       })
       .catch((err) => {
-        console.error("🛑 Fetch falló:", err);
         setError(err.message);
       })
       .finally(() => setLoading(false));
   }, [companyId, versionId]);
-
-  if (loading) return <p className="p-6">Cargando evaluación…</p>;
+  if (loading) return <Loading message="Cargando evaluación…" />;
   if (error)
     return <p className="p-6 text-red-600">Error al cargar: {error}</p>;
 
@@ -127,10 +135,10 @@ export default function EvaluationPage({
 
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
-      <CompanyHeader name="Nombre Empresa" nit="123456789" />
+      <CompanyHeader name={companyName} nit={companyNit} />
 
       <EvaluationInfoCard
-        norm="NORM_CODE"
+        norm={normName}
         version={{
           version_id: Number(versionId),
           created_at: questions[0]?.created_at,
@@ -144,15 +152,40 @@ export default function EvaluationPage({
         formatDate={formatDate}
       />
 
-      {/* Observaciones */}
+      {/* Observaciones: Tarjeta interactiva con collapse */}
       {observations && (
-        <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow">
-          <h3 className="text-lg font-medium mb-2">Observaciones</h3>
-          <p>{observations}</p>
-        </div>
+        <Card className="border-teal-700">
+          <CardHeader
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => setShowObs((v) => !v)}
+          >
+            <CardTitle className="flex items-center gap-2 text-teal-700">
+              <span>📝 Observaciones</span>
+              {showObs ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+            </CardTitle>
+          </CardHeader>
+
+          <AnimatePresence initial={false}>
+            {showObs && (
+              <motion.div
+                key="obs-content"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CardContent className="pt-0">
+                  <p className="text-sm leading-relaxed text-gray-800">
+                    {observations}
+                  </p>
+                </CardContent>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Card>
       )}
 
-      <h2 className="text-2xl font-semibold text-teal-700 mb-6">
+      <h2 className="text-2xl font-semibold text-teal-700 mb-6 mt-2.5">
         Preguntas y Respuestas
       </h2>
 
