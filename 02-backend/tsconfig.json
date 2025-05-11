@@ -16,7 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "typeRoots": ["./types", "./node_modules/@types"],
     "noFallthroughCasesInSwitch": false
   },
   "include": ["src/**/*.ts"],
