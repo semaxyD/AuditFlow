@@ -106,7 +106,7 @@ model EvaluationVersion {
   created_by    Int
   created_at    DateTime    @default(now())
   is_latest     Boolean     @default(true)
-  submitted_at  DateTime?
+  //submitted_at  DateTime?
   status        String?
   version_number Int?
   evaluation    Evaluation  @relation(fields: [evaluation_id], references: [id])

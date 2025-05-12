@@ -239,6 +239,105 @@ export async function createEvaluationWithDetails(
     return { evaluation, version };
   });
 }
+// hu6
+
+export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
+  return await Prisma.$transaction(async (tx) => {
+    // 1. Obtener la versión activa de la evaluación
+    const version = await tx.evaluationVersion.findFirst({
+      where: {
+        evaluation_id: data.evaluation_id,
+        is_latest: true,
+      },
+    });
+
+    if (!version) {
+      throw new Error('No se encontró una versión activa para esta evaluación');
+    }
+
+    for (const section of data.sections) {
+      for (const question of section.questions) {
+        // 2. Buscar respuesta previa
+        const existingAnswer = await tx.answer.findFirst({
+          where: {
+            version_id: version.id,
+            question_id: question.question_id,
+          },
+        });
+
+        let answerId: number;
+
+        if (existingAnswer) {
+          // 3. Actualizar respuesta existente
+          const updated = await tx.answer.update({
+            where: { id: existingAnswer.id },
+            data: {
+              score: question.score,
+              response: question.answer,
+            },
+          });
+
+          answerId = updated.id;
+
+          // 4. Limpiar evidencias y comentarios previos
+          await tx.evidence.deleteMany({ where: { answer_id: answerId } });
+          await tx.comment.deleteMany({ where: { answer_id: answerId } });
+        } else {
+          // 5. Crear nueva respuesta
+          const created = await tx.answer.create({
+            data: {
+              version_id: version.id,
+              question_id: question.question_id,
+              score: question.score,
+              response: question.answer,
+              created_by: data.user_id,
+              created_at: new Date(),
+            },
+          });
+
+          answerId = created.id;
+        }
+
+        // 6. Agregar comentario si lo hay
+        if (question.comments?.trim()) {
+          await tx.comment.create({
+            data: {
+              text: question.comments.trim(),
+              created_by: data.user_id,
+              answer_id: answerId,
+              created_at: new Date(),
+            },
+          });
+        }
+
+        // 7. Agregar evidencias si hay
+        if (question.evidence?.length) {
+          await tx.evidence.createMany({
+            data: question.evidence.map((e) => ({
+              answer_id: answerId,
+              url:e,
+              created_by: data.user_id,
+              created_at: new Date(),
+            })),
+          });
+        }
+      }
+    }
+
+    // 8. Actualizar observaciones generales
+    await tx.evaluation.update({
+      where: { id: data.evaluation_id },
+      data: {
+        observations: data.observations ?? '',
+      },
+    });
+
+    return { success: true };
+  });
+}
+
+
+
 
 interface EvaluationData {
   company_id: number;
@@ -254,6 +353,31 @@ interface EvaluationData {
     }[];
   }[];
 }
+interface UpdateEvaluationData {
+  evaluation_id: number;
+  user_id: number;
+  name: string;
+  description: string;
+  completion_percentage: number;
+  maturity_level: string;
+  total_score: number;
+  max_score: number;
+  answered_questions: number;
+  total_questions: number;
+  observations?: string;
+  sections: {
+    criterion_id: number;
+    questions: {
+      question_id: number;
+      score: number;
+      answer: string;
+      comments?: string;
+      evidence: string[];
+    }[];
+  }[];
+}
+
+
 
 export async function getQuestionsByNorm(normId: number) {
   try {

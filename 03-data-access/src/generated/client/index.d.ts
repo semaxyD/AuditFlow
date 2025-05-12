@@ -8925,6 +8925,7 @@ export namespace Prisma {
     created_by: number
     created_at: number
     norm_id: number
+    observations: number
     _all: number
   }
 
@@ -9598,6 +9599,7 @@ export namespace Prisma {
     readonly created_by: FieldRef<"Evaluation", 'Int'>
     readonly created_at: FieldRef<"Evaluation", 'DateTime'>
     readonly norm_id: FieldRef<"Evaluation", 'Int'>
+    readonly observations: FieldRef<"Evaluation", 'String'>
   }
     
 
@@ -10070,7 +10072,6 @@ export namespace Prisma {
     created_by: number | null
     created_at: Date | null
     is_latest: boolean | null
-    submitted_at: Date | null
     status: string | null
     version_number: number | null
     score: number | null
@@ -10082,7 +10083,6 @@ export namespace Prisma {
     created_by: number | null
     created_at: Date | null
     is_latest: boolean | null
-    submitted_at: Date | null
     status: string | null
     version_number: number | null
     score: number | null
@@ -10094,7 +10094,6 @@ export namespace Prisma {
     created_by: number
     created_at: number
     is_latest: number
-    submitted_at: number
     status: number
     version_number: number
     score: number
@@ -10124,7 +10123,6 @@ export namespace Prisma {
     created_by?: true
     created_at?: true
     is_latest?: true
-    submitted_at?: true
     status?: true
     version_number?: true
     score?: true
@@ -10136,7 +10134,6 @@ export namespace Prisma {
     created_by?: true
     created_at?: true
     is_latest?: true
-    submitted_at?: true
     status?: true
     version_number?: true
     score?: true
@@ -10148,7 +10145,6 @@ export namespace Prisma {
     created_by?: true
     created_at?: true
     is_latest?: true
-    submitted_at?: true
     status?: true
     version_number?: true
     score?: true
@@ -10247,7 +10243,6 @@ export namespace Prisma {
     created_by: number
     created_at: Date
     is_latest: boolean
-    submitted_at: Date | null
     status: string | null
     version_number: number | null
     score: number | null
@@ -10278,7 +10273,6 @@ export namespace Prisma {
     created_by?: boolean
     created_at?: boolean
     is_latest?: boolean
-    submitted_at?: boolean
     status?: boolean
     version_number?: boolean
     score?: boolean
@@ -10294,7 +10288,6 @@ export namespace Prisma {
     created_by?: boolean
     created_at?: boolean
     is_latest?: boolean
-    submitted_at?: boolean
     status?: boolean
     version_number?: boolean
     score?: boolean
@@ -10308,7 +10301,6 @@ export namespace Prisma {
     created_by?: boolean
     created_at?: boolean
     is_latest?: boolean
-    submitted_at?: boolean
     status?: boolean
     version_number?: boolean
     score?: boolean
@@ -10322,13 +10314,12 @@ export namespace Prisma {
     created_by?: boolean
     created_at?: boolean
     is_latest?: boolean
-    submitted_at?: boolean
     status?: boolean
     version_number?: boolean
     score?: boolean
   }
 
-  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "submitted_at" | "status" | "version_number" | "score", ExtArgs["result"]["evaluationVersion"]>
+  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "status" | "version_number" | "score", ExtArgs["result"]["evaluationVersion"]>
   export type EvaluationVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10357,7 +10348,6 @@ export namespace Prisma {
       created_by: number
       created_at: Date
       is_latest: boolean
-      submitted_at: Date | null
       status: string | null
       version_number: number | null
       score: number | null
@@ -10792,7 +10782,6 @@ export namespace Prisma {
     readonly created_by: FieldRef<"EvaluationVersion", 'Int'>
     readonly created_at: FieldRef<"EvaluationVersion", 'DateTime'>
     readonly is_latest: FieldRef<"EvaluationVersion", 'Boolean'>
-    readonly submitted_at: FieldRef<"EvaluationVersion", 'DateTime'>
     readonly status: FieldRef<"EvaluationVersion", 'String'>
     readonly version_number: FieldRef<"EvaluationVersion", 'Int'>
     readonly score: FieldRef<"EvaluationVersion", 'Int'>
@@ -14736,7 +14725,8 @@ export namespace Prisma {
     company_id: 'company_id',
     created_by: 'created_by',
     created_at: 'created_at',
-    norm_id: 'norm_id'
+    norm_id: 'norm_id',
+    observations: 'observations'
   };
 
   export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
@@ -14748,7 +14738,6 @@ export namespace Prisma {
     created_by: 'created_by',
     created_at: 'created_at',
     is_latest: 'is_latest',
-    submitted_at: 'submitted_at',
     status: 'status',
     version_number: 'version_number',
     score: 'score'
@@ -15293,6 +15282,7 @@ export namespace Prisma {
     created_by?: IntWithAggregatesFilter<"Evaluation"> | number
     created_at?: DateTimeWithAggregatesFilter<"Evaluation"> | Date | string
     norm_id?: IntWithAggregatesFilter<"Evaluation"> | number
+    observations?: StringNullableWithAggregatesFilter<"Evaluation"> | string | null
   }
 
   export type EvaluationVersionWhereInput = {
@@ -15304,7 +15294,6 @@ export namespace Prisma {
     created_by?: IntFilter<"EvaluationVersion"> | number
     created_at?: DateTimeFilter<"EvaluationVersion"> | Date | string
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
-    submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
@@ -15319,7 +15308,6 @@ export namespace Prisma {
     created_by?: SortOrder
     created_at?: SortOrder
     is_latest?: SortOrder
-    submitted_at?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
@@ -15337,7 +15325,6 @@ export namespace Prisma {
     created_by?: IntFilter<"EvaluationVersion"> | number
     created_at?: DateTimeFilter<"EvaluationVersion"> | Date | string
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
-    submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
@@ -15352,7 +15339,6 @@ export namespace Prisma {
     created_by?: SortOrder
     created_at?: SortOrder
     is_latest?: SortOrder
-    submitted_at?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
@@ -15372,7 +15358,6 @@ export namespace Prisma {
     created_by?: IntWithAggregatesFilter<"EvaluationVersion"> | number
     created_at?: DateTimeWithAggregatesFilter<"EvaluationVersion"> | Date | string
     is_latest?: BoolWithAggregatesFilter<"EvaluationVersion"> | boolean
-    submitted_at?: DateTimeNullableWithAggregatesFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableWithAggregatesFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
     score?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
@@ -15909,6 +15894,7 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     norm_id: number
+    observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
@@ -15927,6 +15913,7 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     norm_id?: IntFieldUpdateOperationsInput | number
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -15936,6 +15923,7 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     norm_id: number
+    observations?: string | null
   }
 
   export type EvaluationUpdateManyMutationInput = {
@@ -15949,12 +15937,12 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     norm_id?: IntFieldUpdateOperationsInput | number
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EvaluationVersionCreateInput = {
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -15969,7 +15957,6 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -15979,7 +15966,6 @@ export namespace Prisma {
   export type EvaluationVersionUpdateInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -15994,7 +15980,6 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16007,7 +15992,6 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -16016,7 +16000,6 @@ export namespace Prisma {
   export type EvaluationVersionUpdateManyMutationInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16028,7 +16011,6 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16661,17 +16643,6 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -16694,7 +16665,6 @@ export namespace Prisma {
     created_by?: SortOrder
     created_at?: SortOrder
     is_latest?: SortOrder
-    submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
     score?: SortOrder
@@ -16714,7 +16684,6 @@ export namespace Prisma {
     created_by?: SortOrder
     created_at?: SortOrder
     is_latest?: SortOrder
-    submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
     score?: SortOrder
@@ -16726,7 +16695,6 @@ export namespace Prisma {
     created_by?: SortOrder
     created_at?: SortOrder
     is_latest?: SortOrder
-    submitted_at?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
     score?: SortOrder
@@ -16746,20 +16714,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17605,10 +17559,6 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -17984,37 +17934,12 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18074,7 +17999,6 @@ export namespace Prisma {
   export type EvaluationVersionCreateWithoutCreatorInput = {
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -18087,7 +18011,6 @@ export namespace Prisma {
     evaluation_id: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -18252,7 +18175,6 @@ export namespace Prisma {
     created_by?: IntFilter<"EvaluationVersion"> | number
     created_at?: DateTimeFilter<"EvaluationVersion"> | Date | string
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
-    submitted_at?: DateTimeNullableFilter<"EvaluationVersion"> | Date | string | null
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
@@ -18465,6 +18387,7 @@ export namespace Prisma {
 
   export type EvaluationCreateWithoutNormInput = {
     created_at?: Date | string
+    observations?: string | null
     company: CompanyCreateNestedOneWithoutEvaluationsInput
     creator: UserCreateNestedOneWithoutEvaluationsInput
     versions?: EvaluationVersionCreateNestedManyWithoutEvaluationInput
@@ -18475,6 +18398,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
     versions?: EvaluationVersionUncheckedCreateNestedManyWithoutEvaluationInput
   }
 
@@ -18903,7 +18827,6 @@ export namespace Prisma {
   export type EvaluationVersionCreateWithoutEvaluationInput = {
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -18916,7 +18839,6 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -19055,6 +18977,7 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     norm_id: number
+    observations?: string | null
   }
 
   export type EvaluationCreateOrConnectWithoutVersionsInput = {
@@ -19245,7 +19168,6 @@ export namespace Prisma {
   export type EvaluationVersionCreateWithoutAnswersInput = {
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -19259,7 +19181,6 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -19375,7 +19296,6 @@ export namespace Prisma {
   export type EvaluationVersionUpdateWithoutAnswersInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19389,7 +19309,6 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19700,6 +19619,7 @@ export namespace Prisma {
     company_id: number
     created_at?: Date | string
     norm_id: number
+    observations?: string | null
   }
 
   export type EvaluationVersionCreateManyCreatorInput = {
@@ -19707,7 +19627,6 @@ export namespace Prisma {
     evaluation_id: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -19753,6 +19672,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     norm_id?: IntFieldUpdateOperationsInput | number
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19761,12 +19681,12 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     norm_id?: IntFieldUpdateOperationsInput | number
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EvaluationVersionUpdateWithoutCreatorInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19779,7 +19699,6 @@ export namespace Prisma {
     evaluation_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19791,7 +19710,6 @@ export namespace Prisma {
     evaluation_id?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19938,6 +19856,7 @@ export namespace Prisma {
     company_id: number
     created_by: number
     created_at?: Date | string
+    observations?: string | null
   }
 
   export type CriterionUpdateWithoutNormInput = {
@@ -19958,6 +19877,7 @@ export namespace Prisma {
 
   export type EvaluationUpdateWithoutNormInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     company?: CompanyUpdateOneRequiredWithoutEvaluationsNestedInput
     creator?: UserUpdateOneRequiredWithoutEvaluationsNestedInput
     versions?: EvaluationVersionUpdateManyWithoutEvaluationNestedInput
@@ -19968,6 +19888,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: EvaluationVersionUncheckedUpdateManyWithoutEvaluationNestedInput
   }
 
@@ -19976,6 +19897,7 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuestionCreateManyCriterionInput = {
@@ -20043,7 +19965,6 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     is_latest?: boolean
-    submitted_at?: Date | string | null
     status?: string | null
     version_number?: number | null
     score?: number | null
@@ -20052,7 +19973,6 @@ export namespace Prisma {
   export type EvaluationVersionUpdateWithoutEvaluationInput = {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -20065,7 +19985,6 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
@@ -20077,7 +19996,6 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_latest?: BoolFieldUpdateOperationsInput | boolean
-    submitted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
