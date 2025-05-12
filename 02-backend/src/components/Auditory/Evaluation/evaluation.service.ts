@@ -139,8 +139,6 @@ export class EvaluationService {
       return result;
     }
   }
-
-  // hu6
   
  async updateEvaluation(
   evaluationId: number,
@@ -213,8 +211,20 @@ export class EvaluationService {
   );
 }
 
+async getEvaluationsByCreator(userId: number) {
+  try {
+    const evaluations = await this.queryFilter.filterQuery(
+      'getEvaluationsByCreator',
+      'compound-evaluations',
+      userId
+    );
 
-
+    return evaluations;
+  } catch (error) {
+    console.error('Error fetching evaluations for auditor:', error);
+    throw new InternalServerErrorException('Error fetching evaluations for auditor');
+  }
+}
 
   // funcion helper para validacion de existencia de criterios y preguntas 
   private async validateEntityExistence(

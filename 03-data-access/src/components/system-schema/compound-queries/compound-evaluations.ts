@@ -239,7 +239,6 @@ export async function createEvaluationWithDetails(
     return { evaluation, version };
   });
 }
-// hu6
 
 export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
   return await Prisma.$transaction(async (tx) => {
@@ -335,6 +334,48 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
     return { success: true };
   });
 }
+export async function getEvaluationsByCreator(userId: number) {
+  const evaluations = await Prisma.evaluation.findMany({
+    where: { created_by: userId },
+    orderBy: { created_at: 'desc' },
+    select: {
+      id: true,
+      created_at: true,
+      observations: true,
+      company: {
+        select: { id: true, name: true },
+      },
+      norm: {
+        select: { id: true, name: true, code: true },
+      },
+      versions: {
+        where: { is_latest: true },
+        select: {
+          id: true,
+          score: true,
+          is_latest: true,
+          version_number: true,
+        },
+      },
+    },
+  });
+
+  return evaluations.map((e) => ({
+    evaluation_id: e.id,
+    created_at: e.created_at,
+    company_id: e.company.id,
+    company_name: e.company.name,
+    norm_id: e.norm.id,
+    norm_name: e.norm.name,
+    norm_code: e.norm.code,
+    version_id: e.versions[0]?.id ?? null,
+    version_number: e.versions[0]?.version_number ?? null,
+    score: e.versions[0]?.score ?? null,
+    is_latest: e.versions[0]?.is_latest ?? false,
+    observations: e.observations ?? '',
+  }));
+}
+
 
 
 

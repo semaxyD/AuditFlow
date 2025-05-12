@@ -67,17 +67,26 @@ export class EvaluationController {
     return this.service.submitEvaluation(companyIdSelect, body, user.id, type);
   }
 
-  //hu 6
+  //Endpoint para obtener la version actual de la evaluacion
   @Put(':evaluationId')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('auditor_interno')
-updateEvaluation(
-  @Param('evaluationId', ParseIntPipe) evaluationId: number,
-  @Body() body: EvaluationSubmissionDto,
-  @CurrentUser() user: { id: number },
-) {
-  return this.service.updateEvaluation(evaluationId, body, user.id);
-}
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno')
+  updateEvaluation(
+    @Param('evaluationId', ParseIntPipe) evaluationId: number,
+    @Body() body: EvaluationSubmissionDto,
+    @CurrentUser() user: { id: number },
+  ) {
+    return this.service.updateEvaluation(evaluationId, body, user.id);
+  }
+
+  // Endpoint para listar evaluaciones creadas por el auditor interno
+  @UseGuards(JwtAuthGuard, RolesGuard)  
+  @Roles('auditor_interno')
+  @Get('assigned')
+  getAssignedEvaluations(@CurrentUser() user: { id: number }) {
+    return this.service.getEvaluationsByCreator(user.id);
+  }
+
 
 
 }
