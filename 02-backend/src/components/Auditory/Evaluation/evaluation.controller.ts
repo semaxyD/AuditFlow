@@ -43,10 +43,10 @@ export class EvaluationController {
   //Endpoint especifico para guardar de la HU008 - auditor interno
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_interno')
-  @Post('/save')
-  submitEvaluation(@Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number },) {
+  @Post('/:normId/save')
+  submitEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number },) {
     const type = AuditorType.Interno;
-    return this.service.submitEvaluation(0, body, user.id, type);
+    return this.service.submitEvaluation(normIdSelect,0, body, user.id, type);
   }
 
   //Endpoint para que el auditor externo escoja la compañia a la cual va a auditar(Recordemos que solo es para el externo ya que este tiene varias empresas)
@@ -61,11 +61,12 @@ export class EvaluationController {
   //Endpoint especifico para guardar de la HU010
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_externo')
-  @Post('/:companyId/saveExternal')
-  submitExternalEvaluation(@Param('companyId', ParseIntPipe) companyIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number }) {
+  @Post('/:normId/:companyId/saveExternal')
+  submitExternalEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Param('companyId', ParseIntPipe) companyIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number }) {
     const type = AuditorType.Externo;
-    return this.service.submitEvaluation(companyIdSelect, body, user.id, type);
+    return this.service.submitEvaluation(normIdSelect,companyIdSelect, body, user.id, type);
   }
+
 
   //Endpoint para obtener la version actual de la evaluacion
   @Put(':evaluationId')

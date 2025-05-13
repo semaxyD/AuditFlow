@@ -35,7 +35,7 @@ export class EvaluationService {
   }
 
 
-  async submitEvaluation(companyIdSelect: number, dto: EvaluationSubmissionDto, userId: number, type: number) {
+  async submitEvaluation(normIdSelect: number,companyIdSelect: number, dto: EvaluationSubmissionDto, userId: number, type: number) {
     const sectionIds = dto.sections.map(s => s.id);
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
@@ -80,6 +80,7 @@ export class EvaluationService {
 
       const evaluationData = {
         userId: userId,
+        normId: normIdSelect,
         name: dto.name,
         company_id: companyId,
         norm_id: normId,
@@ -104,6 +105,7 @@ export class EvaluationService {
 
       const evaluationData2 = {
         userId: userId,
+        normId: normIdSelect,
         name: dto.name,
         company_id: companyIdSelect,
         norm_id: normId,
