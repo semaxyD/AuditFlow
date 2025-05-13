@@ -70,12 +70,12 @@ export class ReportEvaluationService {
       const data = { 
         evaluationId, 
         userId,
-        version: 2
+        version:1
       };
-      const query = await this.queryFilter.filterQuery('getEvaluationDetailsByExternalAuditorId', 'compound-evaluations', data);
+      const query = await this.queryFilter.filterQuery('getEvaluationDetailsByExternalAuditorId','compound-evaluations',data);
       return query;
     } catch (error) {
-      throw new InternalServerErrorException('Error fetching evaluation details by external auditor');
+      throw new InternalServerErrorException('Error fetching evaluation details by external auditor xd');
     }
   }
 

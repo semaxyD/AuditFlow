@@ -152,6 +152,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
         version_number: 1,
         is_latest: true,
         created_at: new Date(),
+        score: data.total_score,
       },
     });
 
@@ -197,7 +198,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
       }
     }
 
-    return { evaluation, version };
+    return evaluation.id;
   });
 }
 
@@ -207,6 +208,7 @@ export interface EvaluationData {
   company_id: number;
   userId: number,
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
+  total_score: number,
   sections: SectionData[];
 }
 
@@ -235,7 +237,7 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
       created_by: data.userId,
       versions: {
         some: {
-          version_number: data.version,
+          version_number: 1,
         }
       }
     },
@@ -305,6 +307,38 @@ interface dataId {
 
 //Query 2 para la HU009,Obtener los detalles de la evaluacion seleccionada
 export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number; version: number }) {
+  console.log('🔍 Eval ID:', data.evaluationId);
+  console.log('🔍 User ID:', data.userId);
+  console.log('🔍 Version:', data.version);
+
+  // 1. Verifica si la versión existe
+  const versionExists = await Prisma.$queryRaw`
+    SELECT * FROM evaluation_version
+    WHERE evaluation_id = ${data.evaluationId}
+      AND version_number = ${data.version}
+  `;
+  console.log('✅ Versión encontrada:', versionExists);
+
+  // 2. Verifica si hay respuestas para esa versión
+  const answersExist = await Prisma.$queryRaw`
+    SELECT * FROM answer
+    WHERE version_id = (
+      SELECT id FROM evaluation_version
+      WHERE evaluation_id = ${data.evaluationId}
+        AND version_number = ${data.version}
+      LIMIT 1
+    )
+  `;
+  console.log('✅ Respuestas encontradas:', answersExist);
+
+  // 3. Verifica si el usuario es el creador (para confirmar el filtro problemático)
+  const creatorCheck = await Prisma.$queryRaw`
+    SELECT created_by FROM evaluation
+    WHERE id = ${data.evaluationId}
+  `;
+  console.log('👤 Creador de la evaluación:', creatorCheck);
+
+  // 4. Query original SIN filtro por usuario para ver si devuelve algo
   const details = await Prisma.$queryRaw`
     SELECT DISTINCT ON (q.id)
       q.id AS "question_id",
@@ -334,10 +368,14 @@ export async function getEvaluationDetailsByExternalAuditorId(data: { evaluation
     LEFT JOIN evidence evid ON evid.answer_id = a.id
     JOIN "user" u ON e.created_by = u.id
     WHERE e.id = ${data.evaluationId}
-      AND e.created_by = ${data.userId}
+      -- ⚠️ ESTE FILTRO SE DEJA COMENTADO PARA PROBAR
+      -- AND e.created_by = ${data.userId}
       AND ev.version_number = ${data.version}
     ORDER BY q.id, ev.created_at DESC, a.created_at DESC
   `;
 
+  console.log('📦 Datos devueltos por la query principal:', details);
+
   return details;
 }
+

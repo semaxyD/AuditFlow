@@ -5,6 +5,8 @@ export async function getCriterionsByIds(ids: number[]) {
     where: { id: { in: ids } },
     select: { id: true, norm_id: true },
   });
+
+  console.log(criterions)
   return criterions;
 }
   
@@ -36,6 +38,6 @@ export async function getQuestionsByNorm(normId: number) {
       question_text: q.text
     }))
   }));
-  
-  console.log(resultado);
+
+  return resultado
 }

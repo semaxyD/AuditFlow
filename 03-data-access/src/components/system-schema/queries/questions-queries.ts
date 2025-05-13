@@ -5,5 +5,6 @@ export async function getQuestionsByIds(ids: number[]) {
     where: { id: { in: ids } },
     select: { id: true },
   });
+  console.log(questions)
   return questions;
 }

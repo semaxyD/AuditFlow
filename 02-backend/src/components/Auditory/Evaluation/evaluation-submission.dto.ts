@@ -1,6 +1,5 @@
 export class EvaluationSubmissionDto {
     name: string;
-    description: string;
     sections: SectionSubmissionDto[];
     observations?: string;
   }

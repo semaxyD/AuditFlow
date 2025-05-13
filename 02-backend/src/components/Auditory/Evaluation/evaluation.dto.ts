@@ -41,9 +41,6 @@ import {
     @IsString()
     name: string;
   
-    @IsString()
-    description: string;
-  
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => SectionSubmissionDto)
