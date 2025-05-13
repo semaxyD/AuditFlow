@@ -25,6 +25,7 @@ import {
   Settings,
   User,
   UserPlus,
+  Building2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -39,6 +40,11 @@ const items = [
     title: "Configuración",
     url: "/dashboard/settings",
     icon: Settings,
+  },
+  {
+    title: "Empresas",
+    url: "/dashboard/companies",
+    icon: Building2,
   },
 ];
 
@@ -119,7 +125,7 @@ export function AppSidebar() {
                       <SidebarMenuSub>
                         <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                           <Link
-                            href="/dashboard/evaluations-list"
+                            href="/dashboard/evaluation"
                             className="flex items-center gap-2 group-hover/subitem:text-white"
                           >
                             <List className="w-4 h-4" />

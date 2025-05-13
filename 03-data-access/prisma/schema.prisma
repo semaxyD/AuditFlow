@@ -49,6 +49,7 @@ model Norm {
   code       String
   name       String?
   criteria   Criterion[]
+  evaluations Evaluation[] 
 
   @@map("norm")
 }
@@ -91,6 +92,8 @@ model Evaluation {
   created_at   DateTime            @default(now())
   company      Company             @relation(fields: [company_id], references: [id])
   creator      User                @relation("EvaluationCreatedBy", fields: [created_by], references: [id])
+  norm_id    Int
+  norm       Norm                  @relation(fields: [norm_id], references: [id])
   versions     EvaluationVersion[]
   observations String?   // <--- campo temporal por si se deja en la bd para la hu012
 
@@ -103,7 +106,7 @@ model EvaluationVersion {
   created_by    Int
   created_at    DateTime    @default(now())
   is_latest     Boolean     @default(true)
-  submitted_at  DateTime?
+  //submitted_at  DateTime?
   status        String?
   version_number Int?
   evaluation    Evaluation  @relation(fields: [evaluation_id], references: [id])
