@@ -25,12 +25,9 @@ export class EvaluationService {
         numericId
       );
 
-      const response = {
-        name: 'Preguntas por criterios Generadas', // hardcodeado
-        sections
-      };
-
-      return response;
+      return {'Preguntas por criterios Generadas': sections};
+  
+  
     } catch (error) {
       console.error('Error fetching questions by norm:', error);
       throw new InternalServerErrorException('Error fetching questions by norm');
@@ -80,151 +77,66 @@ export class EvaluationService {
     }
 
     const metrics = this.calculateEvaluationMetrics(dto);
-    console.log("resumen de metricas calculadas: ", metrics);
 
-    const evaluationData = {
-      userId: userId,
-      name: dto.name,
-      description: dto.description,
-      company_id: companyId,
-      norm_id: normId,
-      completion_percentage: metrics.completionPercentage,
-      maturity_level: metrics.maturityLevel,
-      total_score: metrics.totalScore,
-      max_score: metrics.maxScore,
-      answered_questions: metrics.answeredQuestions,
-      total_questions: metrics.totalQuestions,
-      observations: dto.observations ?? '',
-      sections: dto.sections.map(section => ({
-        criterion_id: section.id,
-        questions: section.questions.map(q => ({
-          question_id: q.id,
-          answer: q.answer,
-          evidence: q.evidence,
-          comments: q.comments ?? '',
-          score: q.score,
+      const evaluationData = {
+        userId: userId,
+        name: dto.name,
+        company_id: companyId,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        observations: dto.observations ?? '',
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
         })),
-      })),
-    };
+      }
 
-    const evaluationData2 = {
-      userId: userId,
-      name: dto.name,
-      description: dto.description,
-      company_id: companyIdSelect,
-      norm_id: normId,
-      completion_percentage: metrics.completionPercentage,
-      maturity_level: metrics.maturityLevel,
-      total_score: metrics.totalScore,
-      max_score: metrics.maxScore,
-      answered_questions: metrics.answeredQuestions,
-      total_questions: metrics.totalQuestions,
-      sections: dto.sections.map(section => ({
-        criterion_id: section.id,
-        questions: section.questions.map(q => ({
-          question_id: q.id,
-          answer: q.answer,
-          evidence: q.evidence,
-          comments: q.comments ?? '',
-          score: q.score,
+      const evaluationData2 = {
+        userId: userId,
+        name: dto.name,
+        company_id: companyIdSelect,
+        norm_id: normId,
+        completion_percentage: metrics.completionPercentage,
+        maturity_level: metrics.maturityLevel,
+        total_score: metrics.totalScore,
+        max_score: metrics.maxScore,
+        answered_questions: metrics.answeredQuestions,
+        total_questions: metrics.totalQuestions,
+        sections: dto.sections.map(section => ({
+          criterion_id: section.id,
+          questions: section.questions.map(q => ({
+            question_id: q.id,
+            answer: q.answer,
+            evidence: q.evidence,
+            comments: q.comments ?? '',
+            score: q.score,
+          })),
         })),
-      })),
-    };
+      }
 
-    if (type == 1) {
-      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
-      return result;
-    } else {
-      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData2);
-      return result;
+    if(type == 1){
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData);
+      return {
+        message: "Evaluacion Guardada correctamente",
+        evaluationId: result};
+    }else{
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData2);
+      return {
+        message: "Evaluacion Guardada correctamente",
+        evaluationId: result};
     }
-  }
-  
- async updateEvaluation(
-  evaluationId: number,
-  dto: EvaluationSubmissionDto,
-  userId: number
-) {
-  const sectionIds = dto.sections.map(s => s.id);
-  const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
-
-  await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
-  await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
-
-  for (const section of dto.sections) {
-    for (const question of section.questions) {
-      const validScores = [0, 50, 100, null];
-      const validAnswers = ['Si', 'No', 'NM', 'NA'];
-
-      if (!validScores.includes(question.score)) {
-        throw new BadRequestException(
-          `El puntaje de la pregunta ${question.id} debe ser uno de los siguientes: 0, 50, 100 o null.`,
-        );
-      }
-
-      if (!validAnswers.includes(question.answer)) {
-        throw new BadRequestException(
-          `La respuesta de la pregunta ${question.id} debe ser una de las siguientes: ${validAnswers.join(', ')}`,
-        );
-      }
-
-      for (const evidenceUrl of question.evidence || []) {
-        if (!this.isValidUrl(evidenceUrl)) {
-          throw new BadRequestException(
-            `El enlace de evidencia "${evidenceUrl}" en la pregunta ${question.id} no es un URL válido.`,
-          );
-        }
-      }
-    }
-  }
-
-  const metrics = this.calculateEvaluationMetrics(dto);
-
-  const evaluationData = {
-    evaluation_id: evaluationId,
-    user_id: userId,
-    name: dto.name,
-    description: dto.description,
-    completion_percentage: metrics.completionPercentage,
-    maturity_level: metrics.maturityLevel,
-    total_score: metrics.totalScore,
-    max_score: metrics.maxScore,
-    answered_questions: metrics.answeredQuestions,
-    total_questions: metrics.totalQuestions,
-    observations: dto.observations ?? '',
-    sections: dto.sections.map(section => ({
-      criterion_id: section.id,
-      questions: section.questions.map(q => ({
-        question_id: q.id,
-        answer: q.answer,
-        evidence: q.evidence,
-        comments: q.comments ?? '',
-        score: q.score,
-      })),
-    })),
   };
-
-  return this.queryFilter.filterQuery(
-    'updateEvaluationWithDetails',
-    'compound-evaluations',
-    evaluationData
-  );
-}
-
-async getEvaluationsByCreator(userId: number) {
-  try {
-    const evaluations = await this.queryFilter.filterQuery(
-      'getEvaluationsByCreator',
-      'compound-evaluations',
-      userId
-    );
-
-    return evaluations;
-  } catch (error) {
-    console.error('Error fetching evaluations for auditor:', error);
-    throw new InternalServerErrorException('Error fetching evaluations for auditor');
-  }
-}
 
   // funcion helper para validacion de existencia de criterios y preguntas 
   private async validateEntityExistence(
@@ -314,4 +226,63 @@ async getEvaluationsByCreator(userId: number) {
       return false;
     }
   }
+
+
+    
+  async getEvaluationsByCreator(userId: number) {
+    try {
+      const evaluations = await this.queryFilter.filterQuery(
+        'getEvaluationsByCreator',
+        'compound-evaluations',
+        userId
+      );
+
+      return evaluations;
+    } catch (error) {
+      console.error('Error fetching evaluations for auditor:', error);
+      throw new InternalServerErrorException('Error fetching evaluations for auditor');
+    }
+  }
+
+  
+
+  async updateEvaluation(
+  evaluationId: number,
+  dto: EvaluationSubmissionDto,
+  userId: number
+  ) {
+    const sectionIds = dto.sections.map(s => s.id);
+    const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
+
+    await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
+    await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
+
+    for (const section of dto.sections) {
+      for (const question of section.questions) {
+        const validScores = [0, 50, 100, null];
+        const validAnswers = ['Si', 'No', 'NM', 'NA'];
+
+        if (!validScores.includes(question.score)) {
+          throw new BadRequestException(
+            `El puntaje de la pregunta ${question.id} debe ser uno de los siguientes: 0, 50, 100 o null.`,
+          );
+        }
+
+        if (!validAnswers.includes(question.answer)) {
+          throw new BadRequestException(
+            `La respuesta de la pregunta ${question.id} debe ser una de las siguientes: ${validAnswers.join(', ')}`,
+          );
+        }
+
+        for (const evidenceUrl of question.evidence || []) {
+          if (!this.isValidUrl(evidenceUrl)) {
+            throw new BadRequestException(
+              `El enlace de evidencia "${evidenceUrl}" en la pregunta ${question.id} no es un URL válido.`,
+            );
+          }
+        }
+      }
+    }
+  }
 }
+
