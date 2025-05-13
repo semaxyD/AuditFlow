@@ -25,7 +25,7 @@ model User {
   answers           Answer[]             @relation("AnswerCreatedBy")
   evidences         Evidence[]           @relation("EvidenceCreatedBy")
   comments          Comment[]            @relation("CommentCreatedBy")
-  companyEditors    CompanyEditor[]    
+  companyAuditors   CompanyAuditor[]    
   @@map("user")
 }
 
@@ -39,7 +39,7 @@ model Company {
   contact_email   String?
   phone           String?
   evaluations     Evaluation[]
-  editorUsers     CompanyEditor[]   
+  editorUsers     CompanyAuditor[]   
 
   @@map("company")
 }
@@ -54,14 +54,14 @@ model Norm {
   @@map("norm")
 }
 
-model CompanyEditor {
+model CompanyAuditor {
   company     Company  @relation(fields: [company_id], references: [id])
   company_id  Int
   user        User     @relation(fields: [user_id], references: [id])
   user_id     Int
 
   @@id([company_id, user_id])
-  @@map("company_editor")
+  @@map("company_auditor")
 }
 
 
@@ -92,8 +92,8 @@ model Evaluation {
   created_at   DateTime            @default(now())
   company      Company             @relation(fields: [company_id], references: [id])
   creator      User                @relation("EvaluationCreatedBy", fields: [created_by], references: [id])
-  norm_id    Int
-  norm       Norm                  @relation(fields: [norm_id], references: [id])
+  norm_id      Int
+  norm         Norm                @relation(fields: [norm_id], references: [id])
   versions     EvaluationVersion[]
   observations String?   // <--- campo temporal por si se deja en la bd para la hu012
 
@@ -106,7 +106,6 @@ model EvaluationVersion {
   created_by    Int
   created_at    DateTime    @default(now())
   is_latest     Boolean     @default(true)
-  //submitted_at  DateTime?
   status        String?
   version_number Int?
   evaluation    Evaluation  @relation(fields: [evaluation_id], references: [id])

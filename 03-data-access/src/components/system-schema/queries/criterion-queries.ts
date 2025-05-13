@@ -37,5 +37,5 @@ export async function getQuestionsByNorm(normId: number) {
     }))
   }));
   
-  console.log(resultado);
+  return resultado
 }
