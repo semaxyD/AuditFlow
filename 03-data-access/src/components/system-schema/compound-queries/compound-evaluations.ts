@@ -213,12 +213,22 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
       },
     });
 
+    // Obtener la última versión existente de la evaluación (puede no haber ninguna si es la primera)
+    const lastVersion = await tx.evaluationVersion.findFirst({
+      where: { evaluation_id: evaluation.id },
+      orderBy: { version_number: 'desc' },
+      select: { version_number: true },
+    });
+
+    const versionNumber = lastVersion?.version_number ?? 0;
+    const nextVersionNumber = versionNumber + 1;
+
     // 2. Crear la primera versión de la evaluación
     const version = await tx.evaluationVersion.create({
       data: {
         evaluation_id: evaluation.id,
         created_by: data.userId,
-        version_number: 1,
+        version_number: nextVersionNumber,
         is_latest: true,
         created_at: new Date(),
         score: data.total_score,
@@ -269,7 +279,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
       }
     }
 
-    return { evaluation, version };
+    return evaluation.id;
   });
 }
 
@@ -310,7 +320,7 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
       created_by: data.userId,
       versions: {
         some: {
-          version_number: data.version,
+          version_number: 1,
         }
       }
     },
@@ -322,7 +332,7 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
       },
       versions: {
         where: {
-          version_number: data.version,
+          version_number: 1,
         },
         select: {
           answers: {
@@ -375,47 +385,143 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
 interface dataId {
   userId: number;
   companyId: number;
-  version: number;
 }
 
-//Query 2 para la HU009,Obtener los detalles de la evaluacion seleccionada
-export async function getEvaluationDetailsByExternalAuditorId(data: { evaluationId: number; userId: number; version: number }) {
-  const details = await Prisma.$queryRaw`
-    SELECT DISTINCT ON (q.id)
+export async function getEvaluationDetailsByExternalAuditorId(data: {
+  evaluationId: number;
+  userId: number;
+  version: number;
+}) {
+  const rawResults = await Prisma.$queryRaw<
+    Array<{
+      question_id: number;
+      question_text: string;
+      criterion_description: string;
+      norm_name: string;
+      norm_id: number;
+      norm_code: string;
+      answer_id: number | null;
+      response: string | null;
+      answer_score: number | null;
+      version_id: number;
+      version_created_at: Date;
+      evaluation_id: number;
+      creator_id: number | null;
+      creator_name: string | null;
+      evidence_id: number | null;
+      evidence_url: string | null;
+      comment_id: number | null;
+      comment_text: string | null;
+      comment_created_at: Date | null;
+      comment_created_by: number | null;
+      nit: string;
+      company_name: string;
+    }>
+  >`
+    SELECT DISTINCT ON (q.id, a.id, evid.id, com.id)
       q.id AS "question_id",
       q.text AS "question_text",
-      c.id AS "criterion_id",
       c.description AS "criterion_description",
-      n.id AS "norm_id",
       n.name AS "norm_name",
+      n.id AS "norm_id",
       n.code AS "norm_code",
       a.id AS "answer_id",
-      a.response_value,
-      a.observation,
+      a.response AS "response",
+      a.score AS "answer_score",
       ev.id AS "version_id",
       ev.created_at AS "version_created_at",
       e.id AS "evaluation_id",
       u.id AS "creator_id",
       u.name AS "creator_name",
       evid.id AS "evidence_id",
-      evid.file_url AS "evidence_url",
-      evid.description AS "evidence_description"
+      evid.url AS "evidence_url",
+      com.id AS "comment_id",
+      com.text AS "comment_text",
+      com.created_at AS "comment_created_at",
+      com.created_by AS "comment_created_by",
+      comp.nit AS "nit",
+      comp.name AS "company_name"
     FROM evaluation e
+    JOIN company comp ON comp.id = e.company_id
     JOIN evaluation_version ev ON ev.evaluation_id = e.id
+    JOIN "user" u ON e.created_by = u.id
     LEFT JOIN answer a ON a.version_id = ev.id
     LEFT JOIN question q ON a.question_id = q.id
     LEFT JOIN criterion c ON q.criterion_id = c.id
     LEFT JOIN norm n ON c.norm_id = n.id
     LEFT JOIN evidence evid ON evid.answer_id = a.id
-    JOIN "user" u ON e.created_by = u.id
+    LEFT JOIN comment com ON com.answer_id = a.id
     WHERE e.id = ${data.evaluationId}
-      AND e.created_by = ${data.userId}
       AND ev.version_number = ${data.version}
-    ORDER BY q.id, ev.created_at DESC, a.created_at DESC
+    ORDER BY q.id, a.id, evid.id, com.id, ev.created_at DESC, a.created_at DESC
   `;
 
-  return details;
+  if (rawResults.length === 0) return [];
+
+  const first = rawResults[0];
+
+  const groupedQuestions: Record<number, any> = {};
+
+  for (const row of rawResults) {
+    if (!groupedQuestions[row.question_id]) {
+      groupedQuestions[row.question_id] = {
+        question_id: row.question_id,
+        text: row.question_text,
+        criterion_description: row.criterion_description,
+        response: row.response,
+        evidences: [],
+        comments: row.comment_id
+          ? [{
+              id: row.comment_id,
+              text: row.comment_text!,
+              created_by: row.comment_created_by!,
+              created_at: row.comment_created_at!,
+            }]
+          : [],
+      };
+    }
+
+    // Verificar si hay evidencia y agregarla correctamente solo si tiene URL válida
+    if (row.evidence_url) {
+      if (!groupedQuestions[row.question_id].evidences.includes(row.evidence_url)) {
+        groupedQuestions[row.question_id].evidences.push(row.evidence_url);
+      }
+    } else if (row.evidence_id) {
+      // Si evidence_url es null, pero tenemos un evidence_id, es posible que haya un error en la base de datos
+      console.log(`Evidence ID present but no URL for Question ID ${row.question_id}`);
+    }
+
+    // Agregar comentarios si no existen
+    if (row.comment_id && !groupedQuestions[row.question_id].comments.some((c: any) => c.id === row.comment_id)) {
+      groupedQuestions[row.question_id].comments.push({
+        id: row.comment_id,
+        text: row.comment_text!,
+        created_by: row.comment_created_by!,
+        created_at: row.comment_created_at!,
+      });
+    }
+  }
+
+  const finalResult = [
+    {
+      nit: first.nit,
+      company_name: first.company_name,
+      norm_name: first.norm_name,
+      version_id: first.version_id,
+      created_at: first.version_created_at,
+      created_by: first.creator_id,
+      questions: Object.values(groupedQuestions),
+    },
+  ];
+
+  return finalResult;
 }
+
+
+
+
+
+
 
 
 

@@ -60,8 +60,7 @@ export class ReportEvaluationService {
     try{
       const data = {
         companyId,
-        userId,
-        version: 2
+        userId
       };
       const query = await this.queryFilter.filterQuery('getExternalAuditorEvaluationsByCompany','compound-evaluations',data);
       return query;
@@ -75,7 +74,7 @@ export class ReportEvaluationService {
       const data = { 
         evaluationId, 
         userId,
-        version: 2
+        version: 1
       };
       const query = await this.queryFilter.filterQuery('getEvaluationDetailsByExternalAuditorId', 'compound-evaluations', data);
       return query;
