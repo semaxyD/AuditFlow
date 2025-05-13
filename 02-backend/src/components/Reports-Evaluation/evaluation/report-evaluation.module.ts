@@ -7,7 +7,6 @@ import { QueryFilterModule, QueryFilterService } from '../../../imports-barrel';
 @Module({
     imports: [QueryFilterModule],
     controllers: [ReportEvaluationController],
-    exports: [ReportEvaluationService],
     providers: [ReportEvaluationService, QueryFilterService],
 })
 

@@ -24,10 +24,13 @@ export class EvaluationService {
         'criterion-queries',
         numericId
       );
-
-      return {'Preguntas por criterios Generadas': sections};
   
+      const response = {
+        name: 'Preguntas por criterios Generadas', // hardcodeado
+        sections
+      };
   
+      return response;
     } catch (error) {
       console.error('Error fetching questions by norm:', error);
       throw new InternalServerErrorException('Error fetching questions by norm');
@@ -82,6 +85,7 @@ export class EvaluationService {
       const evaluationData = {
         userId: userId,
         name: dto.name,
+        description: dto.description,
         company_id: companyId,
         norm_id: normId,
         completion_percentage: metrics.completionPercentage,
@@ -106,6 +110,7 @@ export class EvaluationService {
       const evaluationData2 = {
         userId: userId,
         name: dto.name,
+        description: dto.description,
         company_id: companyIdSelect,
         norm_id: normId,
         completion_percentage: metrics.completionPercentage,
@@ -127,15 +132,11 @@ export class EvaluationService {
       };
 
     if(type == 1){
-      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData);
-      return {
-        message: "Evaluacion Guardada correctamente",
-        evaluationId: result};
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData);
+      return result;
     }else{
-      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData2);
-      return {
-        message: "Evaluacion Guardada correctamente",
-        evaluationId: result};
+      const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-queries', evaluationData2);
+      return result;
     }
   }
 

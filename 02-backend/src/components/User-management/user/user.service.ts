@@ -17,7 +17,7 @@ export class UserService {
       const companies = await this.queryFilter.filterQuery('getListCompanies', 'company-queries');
       return companies
     }catch(error){
-      throw new InternalServerErrorException('Error fetching evaluations',error.message);
+      throw new InternalServerErrorException('Error fetching evaluations',error);
     };
   }
 

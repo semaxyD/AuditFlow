@@ -25,13 +25,13 @@ model User {
   answers         Answer[]            @relation("AnswerCreatedBy")
   evidences       Evidence[]          @relation("EvidenceCreatedBy")
   comments        Comment[]           @relation("CommentCreatedBy")
-  companyAuditors CompanyAuditor[]
+  companyEditors  CompanyEditor[]
 
   @@map("user")
 }
 
 model Company {
-  id            Int              @id @default(autoincrement())
+  id            Int             @id @default(autoincrement())
   name          String
   nit           Int
   address       String?
@@ -39,7 +39,7 @@ model Company {
   contact_email String?
   phone         String?
   evaluations   Evaluation[]
-  editorUsers   CompanyAuditor[]
+  editorUsers   CompanyEditor[]
 
   @@map("company")
 }
@@ -53,14 +53,14 @@ model Norm {
   @@map("norm")
 }
 
-model CompanyAuditor {
+model CompanyEditor {
   company    Company @relation(fields: [company_id], references: [id])
   company_id Int
   user       User    @relation(fields: [user_id], references: [id])
   user_id    Int
 
   @@id([company_id, user_id])
-  @@map("company_auditor")
+  @@map("company_editor")
 }
 
 model Criterion {
@@ -102,6 +102,7 @@ model EvaluationVersion {
   created_by     Int
   created_at     DateTime   @default(now())
   is_latest      Boolean    @default(true)
+  submitted_at   DateTime?
   status         String?
   version_number Int?
   evaluation     Evaluation @relation(fields: [evaluation_id], references: [id])

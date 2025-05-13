@@ -57,7 +57,7 @@ export class EvaluationController{
       return this.reportEvaluationService.getExternalAuditorCompaniesById(user.id);
     }
 
-    //Endpoint especifico para guardar de la HU010 - auditor externo
+    //Endpoint especifico para guardar de la HU010
     @UseGuards(JwtAuthGuard,RolesGuard)
     @Roles('auditor_externo')
     @Post('/:companyId/saveExternal')
