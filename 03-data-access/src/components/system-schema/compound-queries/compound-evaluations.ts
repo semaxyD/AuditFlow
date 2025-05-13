@@ -387,6 +387,7 @@ interface dataId {
   companyId: number;
 }
 
+//Query 2 de la HU009 - mostrar detalles de una evaluacion escogida (solo la version 1)
 export async function getEvaluationDetailsByExternalAuditorId(data: {
   evaluationId: number;
   userId: number;
