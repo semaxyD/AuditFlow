@@ -110,6 +110,9 @@ model EvaluationVersion {
   version_number Int?
   evaluation    Evaluation  @relation(fields: [evaluation_id], references: [id])
   creator       User        @relation("VersionCreatedBy", fields: [created_by], references: [id])
+  answered_questions Int?
+  total_questions Int?
+  completion_percentage Float?
   answers       Answer[]
   score         Int? 
 

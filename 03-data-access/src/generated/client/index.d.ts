@@ -10055,6 +10055,9 @@ export namespace Prisma {
     evaluation_id: number | null
     created_by: number | null
     version_number: number | null
+    answered_questions: number | null
+    total_questions: number | null
+    completion_percentage: number | null
     score: number | null
   }
 
@@ -10063,6 +10066,9 @@ export namespace Prisma {
     evaluation_id: number | null
     created_by: number | null
     version_number: number | null
+    answered_questions: number | null
+    total_questions: number | null
+    completion_percentage: number | null
     score: number | null
   }
 
@@ -10074,6 +10080,9 @@ export namespace Prisma {
     is_latest: boolean | null
     status: string | null
     version_number: number | null
+    answered_questions: number | null
+    total_questions: number | null
+    completion_percentage: number | null
     score: number | null
   }
 
@@ -10085,6 +10094,9 @@ export namespace Prisma {
     is_latest: boolean | null
     status: string | null
     version_number: number | null
+    answered_questions: number | null
+    total_questions: number | null
+    completion_percentage: number | null
     score: number | null
   }
 
@@ -10096,6 +10108,9 @@ export namespace Prisma {
     is_latest: number
     status: number
     version_number: number
+    answered_questions: number
+    total_questions: number
+    completion_percentage: number
     score: number
     _all: number
   }
@@ -10106,6 +10121,9 @@ export namespace Prisma {
     evaluation_id?: true
     created_by?: true
     version_number?: true
+    answered_questions?: true
+    total_questions?: true
+    completion_percentage?: true
     score?: true
   }
 
@@ -10114,6 +10132,9 @@ export namespace Prisma {
     evaluation_id?: true
     created_by?: true
     version_number?: true
+    answered_questions?: true
+    total_questions?: true
+    completion_percentage?: true
     score?: true
   }
 
@@ -10125,6 +10146,9 @@ export namespace Prisma {
     is_latest?: true
     status?: true
     version_number?: true
+    answered_questions?: true
+    total_questions?: true
+    completion_percentage?: true
     score?: true
   }
 
@@ -10136,6 +10160,9 @@ export namespace Prisma {
     is_latest?: true
     status?: true
     version_number?: true
+    answered_questions?: true
+    total_questions?: true
+    completion_percentage?: true
     score?: true
   }
 
@@ -10147,6 +10174,9 @@ export namespace Prisma {
     is_latest?: true
     status?: true
     version_number?: true
+    answered_questions?: true
+    total_questions?: true
+    completion_percentage?: true
     score?: true
     _all?: true
   }
@@ -10245,6 +10275,9 @@ export namespace Prisma {
     is_latest: boolean
     status: string | null
     version_number: number | null
+    answered_questions: number | null
+    total_questions: number | null
+    completion_percentage: number | null
     score: number | null
     _count: EvaluationVersionCountAggregateOutputType | null
     _avg: EvaluationVersionAvgAggregateOutputType | null
@@ -10275,6 +10308,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: boolean
     version_number?: boolean
+    answered_questions?: boolean
+    total_questions?: boolean
+    completion_percentage?: boolean
     score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10290,6 +10326,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: boolean
     version_number?: boolean
+    answered_questions?: boolean
+    total_questions?: boolean
+    completion_percentage?: boolean
     score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10303,6 +10342,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: boolean
     version_number?: boolean
+    answered_questions?: boolean
+    total_questions?: boolean
+    completion_percentage?: boolean
     score?: boolean
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10316,10 +10358,13 @@ export namespace Prisma {
     is_latest?: boolean
     status?: boolean
     version_number?: boolean
+    answered_questions?: boolean
+    total_questions?: boolean
+    completion_percentage?: boolean
     score?: boolean
   }
 
-  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "status" | "version_number" | "score", ExtArgs["result"]["evaluationVersion"]>
+  export type EvaluationVersionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "evaluation_id" | "created_by" | "created_at" | "is_latest" | "status" | "version_number" | "answered_questions" | "total_questions" | "completion_percentage" | "score", ExtArgs["result"]["evaluationVersion"]>
   export type EvaluationVersionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluation?: boolean | EvaluationDefaultArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10350,6 +10395,9 @@ export namespace Prisma {
       is_latest: boolean
       status: string | null
       version_number: number | null
+      answered_questions: number | null
+      total_questions: number | null
+      completion_percentage: number | null
       score: number | null
     }, ExtArgs["result"]["evaluationVersion"]>
     composites: {}
@@ -10784,6 +10832,9 @@ export namespace Prisma {
     readonly is_latest: FieldRef<"EvaluationVersion", 'Boolean'>
     readonly status: FieldRef<"EvaluationVersion", 'String'>
     readonly version_number: FieldRef<"EvaluationVersion", 'Int'>
+    readonly answered_questions: FieldRef<"EvaluationVersion", 'Int'>
+    readonly total_questions: FieldRef<"EvaluationVersion", 'Int'>
+    readonly completion_percentage: FieldRef<"EvaluationVersion", 'Float'>
     readonly score: FieldRef<"EvaluationVersion", 'Int'>
   }
     
@@ -14736,6 +14787,9 @@ export namespace Prisma {
     is_latest: 'is_latest',
     status: 'status',
     version_number: 'version_number',
+    answered_questions: 'answered_questions',
+    total_questions: 'total_questions',
+    completion_percentage: 'completion_percentage',
     score: 'score'
   };
 
@@ -15292,6 +15346,9 @@ export namespace Prisma {
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    answered_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    total_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    completion_percentage?: FloatNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
     evaluation?: XOR<EvaluationScalarRelationFilter, EvaluationWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -15306,6 +15363,9 @@ export namespace Prisma {
     is_latest?: SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
+    answered_questions?: SortOrderInput | SortOrder
+    total_questions?: SortOrderInput | SortOrder
+    completion_percentage?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
     evaluation?: EvaluationOrderByWithRelationInput
     creator?: UserOrderByWithRelationInput
@@ -15323,6 +15383,9 @@ export namespace Prisma {
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    answered_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    total_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    completion_percentage?: FloatNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
     evaluation?: XOR<EvaluationScalarRelationFilter, EvaluationWhereInput>
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -15337,6 +15400,9 @@ export namespace Prisma {
     is_latest?: SortOrder
     status?: SortOrderInput | SortOrder
     version_number?: SortOrderInput | SortOrder
+    answered_questions?: SortOrderInput | SortOrder
+    total_questions?: SortOrderInput | SortOrder
+    completion_percentage?: SortOrderInput | SortOrder
     score?: SortOrderInput | SortOrder
     _count?: EvaluationVersionCountOrderByAggregateInput
     _avg?: EvaluationVersionAvgOrderByAggregateInput
@@ -15356,6 +15422,9 @@ export namespace Prisma {
     is_latest?: BoolWithAggregatesFilter<"EvaluationVersion"> | boolean
     status?: StringNullableWithAggregatesFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
+    answered_questions?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
+    total_questions?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
+    completion_percentage?: FloatNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
     score?: IntNullableWithAggregatesFilter<"EvaluationVersion"> | number | null
   }
 
@@ -15941,6 +16010,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
@@ -15955,6 +16027,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
@@ -15964,6 +16039,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
@@ -15978,6 +16056,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
@@ -15990,6 +16071,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
   }
 
@@ -15998,6 +16082,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -16009,6 +16096,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -16650,6 +16740,17 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type EvaluationScalarRelationFilter = {
     is?: EvaluationWhereInput
     isNot?: EvaluationWhereInput
@@ -16663,6 +16764,9 @@ export namespace Prisma {
     is_latest?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    answered_questions?: SortOrder
+    total_questions?: SortOrder
+    completion_percentage?: SortOrder
     score?: SortOrder
   }
 
@@ -16671,6 +16775,9 @@ export namespace Prisma {
     evaluation_id?: SortOrder
     created_by?: SortOrder
     version_number?: SortOrder
+    answered_questions?: SortOrder
+    total_questions?: SortOrder
+    completion_percentage?: SortOrder
     score?: SortOrder
   }
 
@@ -16682,6 +16789,9 @@ export namespace Prisma {
     is_latest?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    answered_questions?: SortOrder
+    total_questions?: SortOrder
+    completion_percentage?: SortOrder
     score?: SortOrder
   }
 
@@ -16693,6 +16803,9 @@ export namespace Prisma {
     is_latest?: SortOrder
     status?: SortOrder
     version_number?: SortOrder
+    answered_questions?: SortOrder
+    total_questions?: SortOrder
+    completion_percentage?: SortOrder
     score?: SortOrder
   }
 
@@ -16701,6 +16814,9 @@ export namespace Prisma {
     evaluation_id?: SortOrder
     created_by?: SortOrder
     version_number?: SortOrder
+    answered_questions?: SortOrder
+    total_questions?: SortOrder
+    completion_percentage?: SortOrder
     score?: SortOrder
   }
 
@@ -16726,6 +16842,22 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type QuestionScalarRelationFilter = {
@@ -17569,6 +17701,14 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type EvaluationUpdateOneRequiredWithoutVersionsNestedInput = {
     create?: XOR<EvaluationCreateWithoutVersionsInput, EvaluationUncheckedCreateWithoutVersionsInput>
     connectOrCreate?: EvaluationCreateOrConnectWithoutVersionsInput
@@ -17945,6 +18085,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -17969,7 +18120,7 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -17977,7 +18128,12 @@ export namespace Prisma {
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EvaluationCreateWithoutCreatorInput = {
@@ -18012,6 +18168,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     answers?: AnswerCreateNestedManyWithoutEvaluationVersionInput
@@ -18024,6 +18183,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
@@ -18188,6 +18350,9 @@ export namespace Prisma {
     is_latest?: BoolFilter<"EvaluationVersion"> | boolean
     status?: StringNullableFilter<"EvaluationVersion"> | string | null
     version_number?: IntNullableFilter<"EvaluationVersion"> | number | null
+    answered_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    total_questions?: IntNullableFilter<"EvaluationVersion"> | number | null
+    completion_percentage?: FloatNullableFilter<"EvaluationVersion"> | number | null
     score?: IntNullableFilter<"EvaluationVersion"> | number | null
   }
 
@@ -18840,6 +19005,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
     answers?: AnswerCreateNestedManyWithoutEvaluationVersionInput
@@ -18852,6 +19020,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     answers?: AnswerUncheckedCreateNestedManyWithoutEvaluationVersionInput
   }
@@ -19181,6 +19352,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
     evaluation: EvaluationCreateNestedOneWithoutVersionsInput
     creator: UserCreateNestedOneWithoutVersionsCreatedInput
@@ -19194,6 +19368,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
   }
 
@@ -19309,6 +19486,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
@@ -19322,6 +19502,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -19640,6 +19823,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
   }
 
@@ -19700,6 +19886,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     evaluation?: EvaluationUpdateOneRequiredWithoutVersionsNestedInput
     answers?: AnswerUpdateManyWithoutEvaluationVersionNestedInput
@@ -19712,6 +19901,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
@@ -19723,6 +19915,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -19978,6 +20173,9 @@ export namespace Prisma {
     is_latest?: boolean
     status?: string | null
     version_number?: number | null
+    answered_questions?: number | null
+    total_questions?: number | null
+    completion_percentage?: number | null
     score?: number | null
   }
 
@@ -19986,6 +20184,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     creator?: UserUpdateOneRequiredWithoutVersionsCreatedNestedInput
     answers?: AnswerUpdateManyWithoutEvaluationVersionNestedInput
@@ -19998,6 +20199,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
     answers?: AnswerUncheckedUpdateManyWithoutEvaluationVersionNestedInput
   }
@@ -20009,6 +20213,9 @@ export namespace Prisma {
     is_latest?: BoolFieldUpdateOperationsInput | boolean
     status?: NullableStringFieldUpdateOperationsInput | string | null
     version_number?: NullableIntFieldUpdateOperationsInput | number | null
+    answered_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    total_questions?: NullableIntFieldUpdateOperationsInput | number | null
+    completion_percentage?: NullableFloatFieldUpdateOperationsInput | number | null
     score?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
