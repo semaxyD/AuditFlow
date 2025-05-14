@@ -40,13 +40,10 @@ export class EvaluationService {
     const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
     // Validar existencia de criterios y preguntas usando la función genérica:
-    const normId = await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
+    await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
     await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
-    let companyId = 0;
-    if (type == 1) {
-      const user = await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId);
-      return companyId = user.company_id;
-    }
+
+    const companyId = type == 1 ? await this.queryFilter.filterQuery('getUserCompanyById', 'user-queries', userId) : 0;
 
     // Validar respuestas, puntajes y evidencias:
     for (const section of dto.sections) {
@@ -83,7 +80,6 @@ export class EvaluationService {
         normId: normIdSelect,
         name: dto.name,
         company_id: companyId,
-        norm_id: normId,
         completion_percentage: metrics.completionPercentage,
         maturity_level: metrics.maturityLevel,
         total_score: metrics.totalScore,
@@ -108,7 +104,6 @@ export class EvaluationService {
         normId: normIdSelect,
         name: dto.name,
         company_id: companyIdSelect,
-        norm_id: normId,
         completion_percentage: metrics.completionPercentage,
         maturity_level: metrics.maturityLevel,
         total_score: metrics.totalScore,
@@ -128,11 +123,13 @@ export class EvaluationService {
       }
 
     if(type == 1){
+      console.log("payload enviado a la query por parte del interno: ",evaluationData)
       const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData);
       return {
         message: "Evaluacion Guardada correctamente",
         evaluationId: result};
     }else{
+      console.log("payload enviado a la query por parte del externo: ",evaluationData2)
       const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData2);
       return {
         message: "Evaluacion Guardada correctamente",
@@ -207,6 +204,7 @@ export class EvaluationService {
     else if (completionPercentage >= 50) maturityLevel = 'Intermedio';
     else if (completionPercentage >= 0) maturityLevel = 'No aprobado';
     else maturityLevel = 'No evaluado';
+
 
     return {
       totalScore,

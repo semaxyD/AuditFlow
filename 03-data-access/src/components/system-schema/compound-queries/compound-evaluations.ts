@@ -202,7 +202,7 @@ type TxClient = {
 // Query para la HU-008 y HU-010: insertar una evaluación hecha con todos sus datos
 export async function createEvaluationWithDetails(data: EvaluationData) {
   return await Prisma.$transaction(async (tx: TxClient) => {
-    // 1. Crear la evaluación base
+    // 1. Crear la evaluación base (tabla evaluation)
     const evaluation = await tx.evaluation.create({
       data: {
         company_id: data.company_id,
@@ -213,36 +213,46 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
       },
     });
 
-    // Obtener la última versión existente de la evaluación (puede no haber ninguna si es la primera)
-    const lastVersion = await tx.evaluationVersion.findFirst({
-      where: { evaluation_id: evaluation.id },
-      orderBy: { version_number: "desc" },
-      select: { version_number: true },
-    });
 
-    const versionNumber = lastVersion?.version_number ?? 0;
-    const nextVersionNumber = versionNumber + 1;
-
-    // 2. Crear la primera versión de la evaluación
-    const version = await tx.evaluationVersion.create({
+    // 2. Crear la 1ª versión (v1): info general con version_number = 1
+    const version1 = await tx.evaluationVersion.create({
       data: {
         evaluation_id: evaluation.id,
         created_by: data.userId,
-        version_number: nextVersionNumber,
-        is_latest: true,
         created_at: new Date(),
+        version_number: 1,
+        is_latest: false,
         score: data.total_score,
-        status: data.maturity_level,
+        status: null,
+        completion_percentage: null,
+        answered_questions: null,
+        total_questions: null,
       },
     });
 
-    // 3. Insertar respuestas, observaciones y evidencias por sección/pregunta
+    // 3. Crear la 2ª versión (v2): info específica con version_number = 2
+    const version2 = await tx.evaluationVersion.create({
+      data: {
+        evaluation_id: evaluation.id,
+        created_by: data.userId,
+        created_at: new Date(),
+        version_number: 2,
+        is_latest: true,          
+        status: data.maturity_level,
+        score: data.total_score,              
+        completion_percentage: data.completion_percentaje,
+        answered_questions: data.answered_questions,
+        total_questions: data.total_questions,
+      },
+    });
+
+    // 4. Insertar respuestas, comentarios y evidencias usando version2.id
     for (const section of data.sections) {
       for (const question of section.questions) {
-        // 3.1 Crear respuesta
+        // 4.1 Crear respuesta
         const createdAnswer = await tx.answer.create({
           data: {
-            version_id: version.id,
+            version_id: version2.id,
             question_id: question.question_id,
             score: question.score,
             response: question.answer,
@@ -251,12 +261,11 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
           },
         });
 
-        // 3.2 Crear comments (si existe)
-        const trimmedObs = question.comments?.trim();
-        if (trimmedObs) {
+        // 4.2 Crear comments (si existe)
+        if (question.comments?.trim()) {
           await tx.comment.create({
             data: {
-              text: trimmedObs,
+              text: question.comments.trim(),
               created_by: data.userId,
               answer_id: createdAnswer.id,
               created_at: new Date(),
@@ -264,7 +273,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
           });
         }
 
-        // 3.3 Crear evidencias (si existen)
+        // 4.3 Crear evidencias (si existen)
         if (question.evidence?.length) {
           await tx.evidence.create({
             data: {
@@ -290,6 +299,9 @@ export interface EvaluationData {
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
   total_score: number;
   maturity_level: string;
+  completion_percentaje: number;
+  answered_questions: number;
+  total_questions: number;
   sections: SectionData[];
 }
 
@@ -306,9 +318,6 @@ interface QuestionData {
   evidence?: string[]; // Evidencias opcionales
 }
 
-interface EvidenceData {
-  url: string;
-}
 
 //Query 1 para la HU009,Obtener evaluaciones hechas o asignadas al auditor externo
 export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
@@ -329,9 +338,6 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
         select: { name: true },
       },
       versions: {
-        where: {
-          version_number: 1,
-        },
         select: {
           answers: {
             select: {

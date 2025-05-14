@@ -63,11 +63,11 @@ export async function createUser(data: {
 
 //Query para hu008 - Buscar el id de la compañia a la cual el user esta asociado
 export async function getUserCompanyById(userId: number) {
-  const editor = await Prisma.companyAuditor.findMany({
+  const editor = await Prisma.companyAuditor.findFirst({
     where: { user_id: userId },
     select: { company_id: true },
   });
-  return editor;
+  return editor?.company_id ?? 0;
 }
 
 export async function validateUserEmail(email:string) {
