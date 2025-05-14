@@ -216,7 +216,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
     // Obtener la última versión existente de la evaluación (puede no haber ninguna si es la primera)
     const lastVersion = await tx.evaluationVersion.findFirst({
       where: { evaluation_id: evaluation.id },
-      orderBy: { version_number: 'desc' },
+      orderBy: { version_number: "desc" },
       select: { version_number: true },
     });
 
@@ -233,7 +233,6 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
         created_at: new Date(),
         score: data.total_score,
         status: data.maturity_level,
-
       },
     });
 
@@ -267,13 +266,13 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
 
         // 3.3 Crear evidencias (si existen)
         if (question.evidence?.length) {
-          await tx.evidence.createMany({
-            data: question.evidence.map((e) => ({
+          await tx.evidence.create({
+            data: {
               answer_id: createdAnswer.id,
-              url: e.url,
+              url: question.evidence, // ← string[]
               created_by: data.userId,
               created_at: new Date(),
-            })),
+            },
           });
         }
       }
@@ -283,12 +282,11 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
   });
 }
 
-
 //Interfaces de datos usado en la HU008
 export interface EvaluationData {
   company_id: number;
-  userId: number,
-  normId: number,
+  userId: number;
+  normId: number;
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
   total_score: number;
   maturity_level: string;
@@ -305,7 +303,7 @@ interface QuestionData {
   score: number;
   answer: string;
   comments?: string; // Comentarios por pregunta
-  evidence?: EvidenceData[]; // Evidencias opcionales
+  evidence?: string[]; // Evidencias opcionales
 }
 
 interface EvidenceData {
@@ -321,8 +319,8 @@ export async function getExternalAuditorEvaluationsByCompany(data: dataId) {
       versions: {
         some: {
           version_number: 1,
-        }
-      }
+        },
+      },
     },
     select: {
       id: true,
@@ -472,28 +470,39 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
         response: row.response,
         evidences: [],
         comments: row.comment_id
-          ? [{
-              id: row.comment_id,
-              text: row.comment_text!,
-              created_by: row.comment_created_by!,
-              created_at: row.comment_created_at!,
-            }]
+          ? [
+              {
+                id: row.comment_id,
+                text: row.comment_text!,
+                created_by: row.comment_created_by!,
+                created_at: row.comment_created_at!,
+              },
+            ]
           : [],
       };
     }
 
     // Verificar si hay evidencia y agregarla correctamente solo si tiene URL válida
     if (row.evidence_url) {
-      if (!groupedQuestions[row.question_id].evidences.includes(row.evidence_url)) {
+      if (
+        !groupedQuestions[row.question_id].evidences.includes(row.evidence_url)
+      ) {
         groupedQuestions[row.question_id].evidences.push(row.evidence_url);
       }
     } else if (row.evidence_id) {
       // Si evidence_url es null, pero tenemos un evidence_id, es posible que haya un error en la base de datos
-      console.log(`Evidence ID present but no URL for Question ID ${row.question_id}`);
+      console.log(
+        `Evidence ID present but no URL for Question ID ${row.question_id}`
+      );
     }
 
     // Agregar comentarios si no existen
-    if (row.comment_id && !groupedQuestions[row.question_id].comments.some((c: any) => c.id === row.comment_id)) {
+    if (
+      row.comment_id &&
+      !groupedQuestions[row.question_id].comments.some(
+        (c: any) => c.id === row.comment_id
+      )
+    ) {
       groupedQuestions[row.question_id].comments.push({
         id: row.comment_id,
         text: row.comment_text!,
@@ -518,16 +527,6 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
   return finalResult;
 }
 
-
-
-
-
-
-
-
-
-
-
 export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
   return await Prisma.$transaction(async (tx) => {
     // 1. Obtener la versión activa de la evaluación
@@ -539,7 +538,7 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
     });
 
     if (!version) {
-      throw new Error('No se encontró una versión activa para esta evaluación');
+      throw new Error("No se encontró una versión activa para esta evaluación");
     }
 
     for (const section of data.sections) {
@@ -599,13 +598,13 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
 
         // 7. Agregar evidencias si hay
         if (question.evidence?.length) {
-          await tx.evidence.createMany({
-            data: question.evidence.map((e) => ({
+          await tx.evidence.create({
+            data: {
               answer_id: answerId,
-              url:e,
+              url: question.evidence, // ← string[]
               created_by: data.user_id,
               created_at: new Date(),
-            })),
+            },
           });
         }
       }
@@ -615,7 +614,7 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
     await tx.evaluation.update({
       where: { id: data.evaluation_id },
       data: {
-        observations: data.observations ?? '',
+        observations: data.observations ?? "",
       },
     });
 
@@ -623,11 +622,10 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
   });
 }
 
-
 export async function getEvaluationsByCreator(userId: number) {
   const evaluations = await Prisma.evaluation.findMany({
     where: { created_by: userId },
-    orderBy: { created_at: 'desc' },
+    orderBy: { created_at: "desc" },
     select: {
       id: true,
       created_at: true,
@@ -662,11 +660,9 @@ export async function getEvaluationsByCreator(userId: number) {
     version_number: e.versions[0]?.version_number ?? null,
     score: e.versions[0]?.score ?? null,
     is_latest: e.versions[0]?.is_latest ?? false,
-    observations: e.observations ?? '',
+    observations: e.observations ?? "",
   }));
 }
-
-
 
 interface UpdateEvaluationData {
   evaluation_id: number;
@@ -691,8 +687,6 @@ interface UpdateEvaluationData {
     }[];
   }[];
 }
-
-
 
 export async function getQuestionsByNorm(normId: number) {
   try {

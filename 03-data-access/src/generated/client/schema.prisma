@@ -147,7 +147,7 @@ model Comment {
 model Evidence {
   id         Int      @id @default(autoincrement())
   answer_id  Int
-  url        String?
+  url        String[] @db.Text
   created_by Int
   created_at DateTime @default(now())
   answer     Answer   @relation(fields: [answer_id], references: [id])

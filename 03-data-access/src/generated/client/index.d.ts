@@ -13566,7 +13566,6 @@ export namespace Prisma {
   export type EvidenceMinAggregateOutputType = {
     id: number | null
     answer_id: number | null
-    url: string | null
     created_by: number | null
     created_at: Date | null
   }
@@ -13574,7 +13573,6 @@ export namespace Prisma {
   export type EvidenceMaxAggregateOutputType = {
     id: number | null
     answer_id: number | null
-    url: string | null
     created_by: number | null
     created_at: Date | null
   }
@@ -13604,7 +13602,6 @@ export namespace Prisma {
   export type EvidenceMinAggregateInputType = {
     id?: true
     answer_id?: true
-    url?: true
     created_by?: true
     created_at?: true
   }
@@ -13612,7 +13609,6 @@ export namespace Prisma {
   export type EvidenceMaxAggregateInputType = {
     id?: true
     answer_id?: true
-    url?: true
     created_by?: true
     created_at?: true
   }
@@ -13715,7 +13711,7 @@ export namespace Prisma {
   export type EvidenceGroupByOutputType = {
     id: number
     answer_id: number
-    url: string | null
+    url: string[]
     created_by: number
     created_at: Date
     _count: EvidenceCountAggregateOutputType | null
@@ -13800,7 +13796,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       answer_id: number
-      url: string | null
+      url: string[]
       created_by: number
       created_at: Date
     }, ExtArgs["result"]["evidence"]>
@@ -14230,7 +14226,7 @@ export namespace Prisma {
   interface EvidenceFieldRefs {
     readonly id: FieldRef<"Evidence", 'Int'>
     readonly answer_id: FieldRef<"Evidence", 'Int'>
-    readonly url: FieldRef<"Evidence", 'String'>
+    readonly url: FieldRef<"Evidence", 'String[]'>
     readonly created_by: FieldRef<"Evidence", 'Int'>
     readonly created_at: FieldRef<"Evidence", 'DateTime'>
   }
@@ -15508,7 +15504,7 @@ export namespace Prisma {
     NOT?: EvidenceWhereInput | EvidenceWhereInput[]
     id?: IntFilter<"Evidence"> | number
     answer_id?: IntFilter<"Evidence"> | number
-    url?: StringNullableFilter<"Evidence"> | string | null
+    url?: StringNullableListFilter<"Evidence">
     created_by?: IntFilter<"Evidence"> | number
     created_at?: DateTimeFilter<"Evidence"> | Date | string
     answer?: XOR<AnswerScalarRelationFilter, AnswerWhereInput>
@@ -15518,7 +15514,7 @@ export namespace Prisma {
   export type EvidenceOrderByWithRelationInput = {
     id?: SortOrder
     answer_id?: SortOrder
-    url?: SortOrderInput | SortOrder
+    url?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
     answer?: AnswerOrderByWithRelationInput
@@ -15531,7 +15527,7 @@ export namespace Prisma {
     OR?: EvidenceWhereInput[]
     NOT?: EvidenceWhereInput | EvidenceWhereInput[]
     answer_id?: IntFilter<"Evidence"> | number
-    url?: StringNullableFilter<"Evidence"> | string | null
+    url?: StringNullableListFilter<"Evidence">
     created_by?: IntFilter<"Evidence"> | number
     created_at?: DateTimeFilter<"Evidence"> | Date | string
     answer?: XOR<AnswerScalarRelationFilter, AnswerWhereInput>
@@ -15541,7 +15537,7 @@ export namespace Prisma {
   export type EvidenceOrderByWithAggregationInput = {
     id?: SortOrder
     answer_id?: SortOrder
-    url?: SortOrderInput | SortOrder
+    url?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
     _count?: EvidenceCountOrderByAggregateInput
@@ -15557,7 +15553,7 @@ export namespace Prisma {
     NOT?: EvidenceScalarWhereWithAggregatesInput | EvidenceScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Evidence"> | number
     answer_id?: IntWithAggregatesFilter<"Evidence"> | number
-    url?: StringNullableWithAggregatesFilter<"Evidence"> | string | null
+    url?: StringNullableListFilter<"Evidence">
     created_by?: IntWithAggregatesFilter<"Evidence"> | number
     created_at?: DateTimeWithAggregatesFilter<"Evidence"> | Date | string
   }
@@ -16140,7 +16136,7 @@ export namespace Prisma {
   }
 
   export type EvidenceCreateInput = {
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_at?: Date | string
     answer: AnswerCreateNestedOneWithoutEvidencesInput
     creator: UserCreateNestedOneWithoutEvidencesInput
@@ -16149,13 +16145,13 @@ export namespace Prisma {
   export type EvidenceUncheckedCreateInput = {
     id?: number
     answer_id: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_by: number
     created_at?: Date | string
   }
 
   export type EvidenceUpdateInput = {
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     answer?: AnswerUpdateOneRequiredWithoutEvidencesNestedInput
     creator?: UserUpdateOneRequiredWithoutEvidencesNestedInput
@@ -16164,7 +16160,7 @@ export namespace Prisma {
   export type EvidenceUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     answer_id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16172,20 +16168,20 @@ export namespace Prisma {
   export type EvidenceCreateManyInput = {
     id?: number
     answer_id: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_by: number
     created_at?: Date | string
   }
 
   export type EvidenceUpdateManyMutationInput = {
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EvidenceUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     answer_id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16829,6 +16825,14 @@ export namespace Prisma {
     answer_id?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type EvidenceCountOrderByAggregateInput = {
     id?: SortOrder
     answer_id?: SortOrder
@@ -16846,7 +16850,6 @@ export namespace Prisma {
   export type EvidenceMaxOrderByAggregateInput = {
     id?: SortOrder
     answer_id?: SortOrder
-    url?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
   }
@@ -16854,7 +16857,6 @@ export namespace Prisma {
   export type EvidenceMinOrderByAggregateInput = {
     id?: SortOrder
     answer_id?: SortOrder
-    url?: SortOrder
     created_by?: SortOrder
     created_at?: SortOrder
   }
@@ -17765,6 +17767,10 @@ export namespace Prisma {
     update?: XOR<XOR<AnswerUpdateToOneWithWhereWithoutCommentsInput, AnswerUpdateWithoutCommentsInput>, AnswerUncheckedUpdateWithoutCommentsInput>
   }
 
+  export type EvidenceCreateurlInput = {
+    set: string[]
+  }
+
   export type AnswerCreateNestedOneWithoutEvidencesInput = {
     create?: XOR<AnswerCreateWithoutEvidencesInput, AnswerUncheckedCreateWithoutEvidencesInput>
     connectOrCreate?: AnswerCreateOrConnectWithoutEvidencesInput
@@ -17775,6 +17781,11 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutEvidencesInput, UserUncheckedCreateWithoutEvidencesInput>
     connectOrCreate?: UserCreateOrConnectWithoutEvidencesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type EvidenceUpdateurlInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type AnswerUpdateOneRequiredWithoutEvidencesNestedInput = {
@@ -18059,7 +18070,7 @@ export namespace Prisma {
   }
 
   export type EvidenceCreateWithoutCreatorInput = {
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_at?: Date | string
     answer: AnswerCreateNestedOneWithoutEvidencesInput
   }
@@ -18067,7 +18078,7 @@ export namespace Prisma {
   export type EvidenceUncheckedCreateWithoutCreatorInput = {
     id?: number
     answer_id: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_at?: Date | string
   }
 
@@ -18231,7 +18242,7 @@ export namespace Prisma {
     NOT?: EvidenceScalarWhereInput | EvidenceScalarWhereInput[]
     id?: IntFilter<"Evidence"> | number
     answer_id?: IntFilter<"Evidence"> | number
-    url?: StringNullableFilter<"Evidence"> | string | null
+    url?: StringNullableListFilter<"Evidence">
     created_by?: IntFilter<"Evidence"> | number
     created_at?: DateTimeFilter<"Evidence"> | Date | string
   }
@@ -19222,14 +19233,14 @@ export namespace Prisma {
   }
 
   export type EvidenceCreateWithoutAnswerInput = {
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_at?: Date | string
     creator: UserCreateNestedOneWithoutEvidencesInput
   }
 
   export type EvidenceUncheckedCreateWithoutAnswerInput = {
     id?: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_by: number
     created_at?: Date | string
   }
@@ -19644,7 +19655,7 @@ export namespace Prisma {
   export type EvidenceCreateManyCreatorInput = {
     id?: number
     answer_id: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_at?: Date | string
   }
 
@@ -19746,7 +19757,7 @@ export namespace Prisma {
   }
 
   export type EvidenceUpdateWithoutCreatorInput = {
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     answer?: AnswerUpdateOneRequiredWithoutEvidencesNestedInput
   }
@@ -19754,14 +19765,14 @@ export namespace Prisma {
   export type EvidenceUncheckedUpdateWithoutCreatorInput = {
     id?: IntFieldUpdateOperationsInput | number
     answer_id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EvidenceUncheckedUpdateManyWithoutCreatorInput = {
     id?: IntFieldUpdateOperationsInput | number
     answer_id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -20049,7 +20060,7 @@ export namespace Prisma {
 
   export type EvidenceCreateManyAnswerInput = {
     id?: number
-    url?: string | null
+    url?: EvidenceCreateurlInput | string[]
     created_by: number
     created_at?: Date | string
   }
@@ -20075,21 +20086,21 @@ export namespace Prisma {
   }
 
   export type EvidenceUpdateWithoutAnswerInput = {
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutEvidencesNestedInput
   }
 
   export type EvidenceUncheckedUpdateWithoutAnswerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EvidenceUncheckedUpdateManyWithoutAnswerInput = {
     id?: IntFieldUpdateOperationsInput | number
-    url?: NullableStringFieldUpdateOperationsInput | string | null
+    url?: EvidenceUpdateurlInput | string[]
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
