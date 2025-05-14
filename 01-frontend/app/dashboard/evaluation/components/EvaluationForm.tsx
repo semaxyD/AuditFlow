@@ -8,6 +8,7 @@ import { createEvaluationSchema } from "../schemas/evaluation.schema";
 import { AUDIT_FORM_MOCK } from "../mock/mock";
 import { Button } from "@/components/ui/button";
 import { SectionQuestions } from "./SectionQuestions";
+import { toast } from "sonner";
 
 type EvaluationSchema = z.infer<ReturnType<typeof createEvaluationSchema>>;
 
@@ -79,7 +80,10 @@ export function EvaluationForm() {
       // const result = await response.json();
       // console.log("Respuesta del servidor:", result);
 
-      alert("Formulario enviado con éxito!");
+      toast.success("Formulario enviado con éxito!", {
+        description: "Los datos han sido enviados correctamente.",
+      });
+
       // reset(); // Reiniciar formulario después de envío exitoso
     } catch (error) {
       console.error("Error al enviar formulario:", error);

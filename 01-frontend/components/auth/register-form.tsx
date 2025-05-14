@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { toast, Toaster } from "sonner";
 import {
   Form,
   FormControl,
@@ -12,29 +13,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { UserRole, RegisterFormData } from '@/lib/types';
+} from "@/components/ui/select";
+import { UserRole, RegisterFormData } from "@/lib/types";
 
 const formSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  email: z.string().email('Correo electrónico inválido'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-  role: z.enum(['administrador', 'auditor_interno', 'auditor_externo', 'empresa_cliente']),
+  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+  email: z.string().email("Correo electrónico inválido"),
+  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+  role: z.enum([
+    "administrador",
+    "auditor_interno",
+    "auditor_externo",
+    "empresa_cliente",
+  ]),
 });
 
 export const ROLES: { value: UserRole; label: string }[] = [
-  { value: 'administrador', label: 'Administrador' },
-  { value: 'auditor_interno', label: 'Auditor Interno' },
-  { value: 'auditor_externo', label: 'Auditor Externo' },
-  { value: 'empresa_cliente', label: 'Empresa Cliente' },
+  { value: "administrador", label: "Administrador" },
+  { value: "auditor_interno", label: "Auditor Interno" },
+  { value: "auditor_externo", label: "Auditor Externo" },
+  { value: "empresa_cliente", label: "Empresa Cliente" },
 ];
 
 export function RegisterForm() {
@@ -43,16 +49,16 @@ export function RegisterForm() {
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
-      email: '',
-      password: '',
+      name: "",
+      email: "",
+      password: "",
     },
   });
 
   //Backend------------------------------------------------
   async function onSubmit(data: RegisterFormData) {
     setIsLoading(true); // Activa el estado de carga mientras se envía el formulario
-  
+
     try {
       // Preparamos los datos que espera el backend
       const payload = {
@@ -61,31 +67,34 @@ export function RegisterForm() {
         contrasena: data.password,
         rol: data.role,
       };
-  
-      // Enviamos los datos al backend 
-      const res = await fetch('http://localhost:3001/usuarios', {
-        method: 'POST',
+
+      // Enviamos los datos al backend
+      const res = await fetch("http://localhost:3001/usuarios", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
-  
+
       const result = await res.json(); // Obtenemos la respuesta del backend
-  
+
       if (res.ok) {
-        // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
-        
-        alert(result.message || 'Usuario registrado correctamente');
+        toast.success("Usuario", {
+          description: `${result.message} || registrado correctamente!`,
+        });
         form.reset(); // Limpia el formulario
       } else {
         //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
-        alert(result.message || 'Ocurrió un error al registrar');
+        toast.error("Error", {
+          description: result.message || "Ocurrió un error al registrar.",
+        });
       }
-  
     } catch (error) {
       //mostramos error genérico
-      alert('Error al registrar usuario. Intente más tarde.');
+      toast.error("Error", {
+        description: "Ocurrió un error al registrar. Intente más tarde.",
+      });
       console.error(error);
     } finally {
       setIsLoading(false); // Apagamos el estado de carga
@@ -117,7 +126,11 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Correo electrónico</FormLabel>
               <FormControl>
-                <Input placeholder="ejemplo@correo.com" type="email" {...field} />
+                <Input
+                  placeholder="ejemplo@correo.com"
+                  type="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -150,7 +163,7 @@ export function RegisterForm() {
                     <SelectValue placeholder="Seleccione un rol" />
                   </SelectTrigger>
                 </FormControl>
-                <SelectContent className='w-full'>
+                <SelectContent className="w-full">
                   {ROLES.map((role) => (
                     <SelectItem key={role.value} value={role.value}>
                       {role.label}
@@ -164,9 +177,9 @@ export function RegisterForm() {
         />
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? 'Registrando...' : 'Registrar'}
+          {isLoading ? "Registrando..." : "Registrar"}
         </Button>
       </form>
     </Form>
   );
-} 
+}
