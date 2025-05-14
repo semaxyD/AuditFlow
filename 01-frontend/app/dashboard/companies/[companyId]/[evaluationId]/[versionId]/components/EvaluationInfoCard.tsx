@@ -2,6 +2,24 @@ import { Pie } from "react-chartjs-2";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check, X } from "lucide-react";
 
+interface EvaluationInfoCardProps {
+  norm: string;
+  version: {
+    version_id: number;
+    created_at: string;
+  };
+  yesCount: number;
+  noCount: number;
+  totalQuestions: number;
+  compliancePercentage: number;
+  answered_questions: number;
+  total_questions: number;
+  completion_percentage: number;
+  chartData: any;
+  chartOptions: any;
+  formatDate: (date: string) => string;
+}
+
 export function EvaluationInfoCard({
   norm,
   version,
@@ -9,10 +27,13 @@ export function EvaluationInfoCard({
   noCount,
   totalQuestions,
   compliancePercentage,
+  answered_questions,
+  total_questions,
+  completion_percentage,
   chartData,
   chartOptions,
   formatDate,
-}: any) {
+}: EvaluationInfoCardProps) {
   return (
     <Card className="mb-8 shadow-md">
       <CardHeader className="pb-3">
@@ -25,27 +46,45 @@ export function EvaluationInfoCard({
           <div className="space-y-4">
             <div>
               <h3 className="text-lg font-medium">Norma</h3>
-              <p className="text-muted-foreground">{norm} </p>
+              <p className="text-muted-foreground">{norm}</p>
             </div>
-
             <div>
               <h3 className="text-lg font-medium">Fecha de creación</h3>
               <p className="text-muted-foreground">
                 {formatDate(version.created_at)}
               </p>
             </div>
+            {/* Detalles de progreso */}
+            <div className="pt-4">
+              <h3 className="text-lg font-medium">Progreso</h3>
+              <ul className="mt-2 space-y-1 text-muted-foreground">
+                <li>
+                  Total de preguntas: <strong>{total_questions}</strong>
+                </li>
+                <li>
+                  Respondidas: <strong>{answered_questions}</strong>
+                </li>
+                <li>
+                  Porcentaje completado:{" "}
+                  <strong>
+                    {Math.round(completion_percentage * 100) / 100}%
+                  </strong>
+                </li>
+              </ul>
+            </div>
+            {/* Resumen de respuestas */}
             <div className="pt-4">
               <h3 className="text-lg font-medium">Resumen</h3>
               <div className="flex flex-col gap-2 mt-2">
                 <div className="flex items-center gap-2">
-                  <Check className=" text-teal-500" />
+                  <Check className="text-teal-500" />
                   <span>
                     Respuestas Sí: <strong>{yesCount}</strong> (
                     {Math.round((yesCount / totalQuestions) * 100)}%)
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <X className=" text-red-500" />
+                  <X className="text-red-500" />
                   <span>
                     Respuestas No: <strong>{noCount}</strong> (
                     {Math.round((noCount / totalQuestions) * 100)}%)

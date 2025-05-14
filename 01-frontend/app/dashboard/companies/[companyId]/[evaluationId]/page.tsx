@@ -5,12 +5,17 @@ import type { ApiVersion, Version } from "../../ComplaintsTable/types/company";
 import VersionTable from "./ComplatainsTable/TableVersions";
 import { versionColumns } from "./ComplatainsTable/columns";
 import { Loading } from "@/components/Loading";
+import { useParams } from "next/navigation";
 
-export default function CompanyEvaluationVersionsPage({
-  params: { companyId, evaluationId },
-}: {
-  params: { companyId: string; evaluationId: string };
-}) {
+export default function CompanyEvaluationVersionsPage() {
+  const params = useParams();
+  const companyId = params?.companyId as string;
+  const evaluationId = params?.evaluationId as string;
+
+  console.log("Params en página de versiones:", params);
+  console.log("Company ID:", companyId);
+  console.log("Evaluation ID:", evaluationId);
+
   const [companyName, setCompanyName] = useState<string>("");
   const [normName, setNormName] = useState<string>("");
   const [versions, setVersions] = useState<Version[]>([]);
@@ -18,6 +23,12 @@ export default function CompanyEvaluationVersionsPage({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!companyId || !evaluationId) {
+      setError("Parámetros de ruta no disponibles");
+      setLoading(false);
+      return;
+    }
+
     const token = window.localStorage.getItem("token") || "";
     fetch(
       `http://localhost:3001/reports-evaluation/${evaluationId}/evolution`,
@@ -33,20 +44,21 @@ export default function CompanyEvaluationVersionsPage({
         return res.json() as Promise<ApiVersion[]>;
       })
       .then((apiData) => {
+        console.log("Datos recibidos de la API:", apiData);
         if (apiData.length > 0) {
           setCompanyName(apiData[0].company_name);
           setNormName(apiData[0].norm_name);
         }
-        // mapeo completo
         const all = apiData.map<Version>((v) => ({
-          version_id: v.version_id,
+          version_id: v.id,
           create_by: v.creator_name,
           created_at: v.created_at,
           is_latest: v.is_latest,
           score: v.score,
           version_number: v.version_number,
-          company_id: Number(companyId),
+          company_id: companyId,
         }));
+        console.log("Versiones mapeadas:", all);
         setVersions(all);
       })
       .catch((err) => setError(err.message))

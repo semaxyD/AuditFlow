@@ -54,14 +54,14 @@ export async function getEvaluationDetail(ids: {
     ),
     obs AS (
       SELECT
-        c.name AS company_name,
+        c.name         AS company_name,
         c.nit,
-        n.name AS norm_name,
+        n.name         AS norm_name,
         e.observations,
-        e.id AS evaluation_id
+        e.id           AS evaluation_id
       FROM evaluation e
-      JOIN company c ON e.company_id = c.id
-      JOIN norm n ON e.norm_id = n.id
+      JOIN company c     ON e.company_id = c.id
+      JOIN norm n        ON e.norm_id = n.id
       WHERE e.id = ${ids.evaluationId}
       LIMIT 1
     ),
@@ -74,22 +74,34 @@ export async function getEvaluationDetail(ids: {
         ) AS questions
       FROM answers
       GROUP BY evaluation_id
+    ),
+    version_info AS (
+      SELECT
+        id               AS version_id,
+        answered_questions,
+        total_questions,
+        completion_percentage
+      FROM evaluation_version
+      WHERE id = ${ids.versionId}
+      LIMIT 1
     )
     SELECT
       jsonb_build_array(
         jsonb_build_object(
-          'company_name', obs.company_name,
-          'nit',          obs.nit,
-          'norm_name',    obs.norm_name,
-          'observations', obs.observations,
-          'questions',   questions.questions
+          'company_name',         obs.company_name,
+          'nit',                  obs.nit,
+          'norm_name',            obs.norm_name,
+          'observations',         obs.observations,
+          'answered_questions',   vi.answered_questions,
+          'total_questions',      vi.total_questions,
+          'completion_percentage',vi.completion_percentage,
+          'questions',            q.questions
         )
       ) AS result
     FROM obs
-    JOIN questions ON questions.evaluation_id = obs.evaluation_id
+    JOIN questions q   ON q.evaluation_id = obs.evaluation_id
+    JOIN version_info vi ON vi.version_id   = ${ids.versionId}
   `;
-
-  // Devuelves directamente el JSON parseado
   return rows[0]?.result ?? [];
 }
 
@@ -213,7 +225,6 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
       },
     });
 
-
     // 2. Crear la 1ª versión (v1): info general con version_number = 1
     const version1 = await tx.evaluationVersion.create({
       data: {
@@ -237,9 +248,9 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
         created_by: data.userId,
         created_at: new Date(),
         version_number: 2,
-        is_latest: true,          
+        is_latest: true,
         status: data.maturity_level,
-        score: data.total_score,              
+        score: data.total_score,
         completion_percentage: data.completion_percentaje,
         answered_questions: data.answered_questions,
         total_questions: data.total_questions,
@@ -317,7 +328,6 @@ interface QuestionData {
   comments?: string; // Comentarios por pregunta
   evidence?: string[]; // Evidencias opcionales
 }
-
 
 //Query 1 para la HU009,Obtener evaluaciones hechas o asignadas al auditor externo
 export async function getExternalAuditorEvaluationsByCompany(data: dataId) {

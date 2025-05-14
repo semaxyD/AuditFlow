@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import EvaluationTable from "./ComplatainsTable/TableEvaluations";
 import { evaluationColumns } from "./ComplatainsTable/columns";
 import type {
@@ -8,18 +9,25 @@ import type {
   Evaluation,
 } from "../ComplaintsTable/types/company";
 import { Loading } from "@/components/Loading";
-export default function CompanyPage({
-  params,
-}: {
-  params: { companyId: string };
-}) {
-  const { companyId } = params;
+
+export default function CompanyPage() {
+  const params = useParams();
+  const companyId = params?.companyId as string;
+  console.log("Params recibidos:", params);
+  console.log("Company ID:", companyId);
+
   const [companyName, setCompanyName] = useState<string>("");
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!companyId) {
+      setError("ID de compañía no disponible");
+      setLoading(false);
+      return;
+    }
+
     const token = window.localStorage.getItem("token") || "";
 
     fetch(`http://localhost:3001/reports-evaluation/${companyId}/evaluations`, {
@@ -33,6 +41,7 @@ export default function CompanyPage({
         return res.json() as Promise<ApiEvaluation[]>;
       })
       .then((apiData) => {
+        console.log("Datos recibidos de la API:", apiData);
         if (apiData.length > 0) {
           setCompanyName(apiData[0].company_name);
         }
@@ -41,14 +50,14 @@ export default function CompanyPage({
           evaluation_id: ev.evaluation_id,
           evaluation_created_at: ev.evaluation_created_at,
           creator_name: ev.creator_name,
-          company_id: ev.company_id,
+          company_id: Number(companyId),
           norm: {
             norm_id: ev.norm_id,
             norm_name: ev.norm_name,
             norm_code: ev.norm_code,
           },
         }));
-
+        console.log("Datos mapeados:", mapped);
         setEvaluations(mapped);
       })
       .catch((err) => setError(err.message))

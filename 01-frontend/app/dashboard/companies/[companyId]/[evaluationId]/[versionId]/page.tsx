@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import { Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -29,12 +30,16 @@ ChartJS.register(
   LinearScale
 );
 
-export default function EvaluationPage({
-  params: { companyId, versionId },
-}: {
-  params: { companyId: string; versionId: string };
-}) {
+export default function EvaluationPage() {
+  const params = useParams();
+  const companyId = params?.companyId as string;
+  const versionId = params?.versionId as string;
+
   const [showObs, setShowObs] = useState(false);
+  const [total_questions, setTotal_questions] = useState<string>("");
+  const [answered_questions, setAnswered_questions] = useState<string>("");
+  const [completion_percentage, setCompletion_percentage] =
+    useState<string>("");
   const [normName, setNormName] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
   const [companyNit, setCompanyNit] = useState<string>("");
@@ -44,6 +49,12 @@ export default function EvaluationPage({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!companyId || !versionId) {
+      setError("Parámetros de ruta no disponibles");
+      setLoading(false);
+      return;
+    }
+
     const url = `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
     const token = localStorage.getItem("token") || "";
 
@@ -62,8 +73,6 @@ export default function EvaluationPage({
         return res.json();
       })
       .then((data) => {
-        console.log("🚧 Payload completo recibido:", data);
-        // Si viene array, tomo el primero; si viene objeto, lo uso tal cual:
         const payload = Array.isArray(data) ? data[0] : data;
         if (!payload || !Array.isArray(payload.questions)) {
           throw new Error("Formato inesperado de respuesta");
@@ -71,6 +80,9 @@ export default function EvaluationPage({
 
         setCompanyName(payload.company_name);
         setNormName(payload.norm_name);
+        setTotal_questions(payload.total_questions);
+        setAnswered_questions(payload.answered_questions);
+        setCompletion_percentage(payload.completion_percentage);
         setCompanyNit(payload.nit);
         setQuestions(payload.questions);
         setObservations(payload.observations || "");
@@ -80,9 +92,9 @@ export default function EvaluationPage({
       })
       .finally(() => setLoading(false));
   }, [companyId, versionId]);
+
   if (loading) return <Loading message="Cargando evaluación…" />;
-  if (error)
-    return <p className="p-6 text-red-600">Error al cargar: {error}</p>;
+  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
 
   // Cálculo de 'Sí' y 'No'
   const yesCount = questions.filter((q) => q.response === "Sí").length;
@@ -139,6 +151,9 @@ export default function EvaluationPage({
 
       <EvaluationInfoCard
         norm={normName}
+        total_questions={Number(total_questions)}
+        answered_questions={Number(answered_questions)}
+        completion_percentage={Number(completion_percentage)}
         version={{
           version_id: Number(versionId),
           created_at: questions[0]?.created_at,

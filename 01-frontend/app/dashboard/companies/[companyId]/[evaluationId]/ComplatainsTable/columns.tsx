@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Eye, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useParams } from "next/navigation";
 
 export const versionColumns: ColumnDef<Version>[] = [
   {
@@ -57,11 +58,23 @@ export const versionColumns: ColumnDef<Version>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const { company_id, version_id } = row.original;
+      const params = useParams();
+      const evaluationId = params?.evaluationId as string;
+      const { version_id } = row.original;
+
+      console.log("Datos de la versión:", row.original);
+      console.log("Evaluation ID:", evaluationId);
+      console.log("Version ID:", version_id);
+
+      if (!evaluationId || !version_id) {
+        console.error("Faltan IDs necesarios:", { evaluationId, version_id });
+        return null;
+      }
+
       return (
         <div className="flex gap-2 justify-end">
           <Link
-            href={`/dashboard/companies/${company_id}/version/${version_id}`}
+            href={`/dashboard/companies/${evaluationId}/version/${version_id}`}
           >
             <Button variant="outline" size="sm">
               <Eye className="w-4 h-4" />

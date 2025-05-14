@@ -52,7 +52,10 @@ export const evaluationColumns: ColumnDef<Evaluation>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const evaluationId = row.original.evaluation_id;
-      const companyId = row.original.company_id;
+      const companyId = String(row.original.company_id);
+      console.log("Datos de la fila:", row.original);
+      console.log("Company ID:", companyId);
+      console.log("Evaluation ID:", evaluationId);
       return (
         <div className="flex gap-2 justify-end">
           <Link href={`/dashboard/companies/${companyId}/${evaluationId}`}>

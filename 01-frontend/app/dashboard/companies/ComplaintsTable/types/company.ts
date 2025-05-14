@@ -57,21 +57,20 @@ export type Evaluation = {
     norm_code: string;
   };
 };
+
 // — Forma cruda que devuelve tu API de versiones
 export type ApiVersion = {
   company_name: string;
   norm_name: string;
-  id: number;
+  id: number; // Este es el ID que usaremos como version_id
   creator_name: string;
   is_latest: boolean;
   score: number;
   created_at: string;
-  version_id: number;
   version_number: number;
 };
 
-// — Tipo que usa tu tabla (nota que ya no incluimos evaluation_id,
-//   porque la API no lo devuelve; si lo necesitas, pídelo al backend)
+// — Tipo que usa tu tabla
 export type Version = {
   version_id: number;
   create_by: string;
@@ -79,5 +78,5 @@ export type Version = {
   is_latest: boolean;
   score: number;
   version_number: number;
-  company_id: number;
+  company_id: string | number;
 };
