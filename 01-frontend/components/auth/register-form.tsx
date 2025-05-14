@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -34,7 +34,12 @@ const formSchema = z.object({
     "auditor_externo",
     "empresa_cliente",
   ]),
+  companyIds: z.array(z.number()).length(1, "Seleccione una empresa"),
 });
+
+type FormValues = z.infer<typeof formSchema>;
+
+type Company = { id: number; name: string; phone: string };
 
 export const ROLES: { value: UserRole; label: string }[] = [
   { value: "administrador", label: "Administrador" },
@@ -45,66 +50,75 @@ export const ROLES: { value: UserRole; label: string }[] = [
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [companies, setCompanies] = useState<Company[]>([]);
 
-  const form = useForm<RegisterFormData>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
       password: "",
+      role: "empresa_cliente",
+      companyIds: [],
     },
   });
 
-  //Backend------------------------------------------------
-  async function onSubmit(data: RegisterFormData) {
-    setIsLoading(true); // Activa el estado de carga mientras se envía el formulario
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("http://localhost:3001/user/companiesList");
+        const data: Company[] = await res.json();
+        setCompanies(data);
+      } catch (err) {
+        toast.error("No se pudieron cargar las empresas.");
+      }
+    }
+    load();
+  }, []);
 
+  async function onSubmit(data: FormValues) {
+    setIsLoading(true);
     try {
-      // Preparamos los datos que espera el backend
       const payload = {
-        nombre: data.name,
-        correo: data.email,
-        contrasena: data.password,
-        rol: data.role,
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role,
+        companyIds: data.companyIds,
       };
+      console.log("Enviando al backend:", payload);
 
-      // Enviamos los datos al backend
-      const res = await fetch("http://localhost:3001/usuarios", {
+      const res = await fetch("http://localhost:3001/user/create", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      const result = await res.json(); // Obtenemos la respuesta del backend
+      const result = await res.json();
+      console.log("Respuesta del backend:", result);
 
       if (res.ok) {
-        toast.success("Usuario", {
-          description: `${result.message} || registrado correctamente!`,
-        });
-        form.reset(); // Limpia el formulario
+        toast.success("Usuario registrado", { description: result.message });
+        form.reset();
       } else {
-        //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
         toast.error("Error", {
           description: result.message || "Ocurrió un error al registrar.",
         });
       }
     } catch (error) {
-      //mostramos error genérico
+      console.error(error);
       toast.error("Error", {
         description: "Ocurrió un error al registrar. Intente más tarde.",
       });
-      console.error(error);
     } finally {
-      setIsLoading(false); // Apagamos el estado de carga
+      setIsLoading(false);
     }
   }
-  //Backend------------------------------------------------------
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Nombre */}
         <FormField
           control={form.control}
           name="name"
@@ -112,13 +126,14 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Nombre</FormLabel>
               <FormControl>
-                <Input placeholder="Ingrese su nombre" {...field} />
+                <Input {...field} placeholder="Ingrese su nombre" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Email */}
         <FormField
           control={form.control}
           name="email"
@@ -127,9 +142,9 @@ export function RegisterForm() {
               <FormLabel>Correo electrónico</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="ejemplo@correo.com"
-                  type="email"
                   {...field}
+                  type="email"
+                  placeholder="ejemplo@correo.com"
                 />
               </FormControl>
               <FormMessage />
@@ -137,6 +152,7 @@ export function RegisterForm() {
           )}
         />
 
+        {/* Contraseña */}
         <FormField
           control={form.control}
           name="password"
@@ -144,33 +160,63 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Contraseña</FormLabel>
               <FormControl>
-                <Input placeholder="********" type="password" {...field} />
+                <Input {...field} type="password" placeholder="********" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Rol */}
         <FormField
           control={form.control}
           name="role"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Rol</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
+              <FormControl>
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione un rol" />
                   </SelectTrigger>
-                </FormControl>
-                <SelectContent className="w-full">
-                  {ROLES.map((role) => (
-                    <SelectItem key={role.value} value={role.value}>
-                      {role.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                  <SelectContent>
+                    {ROLES.map((r) => (
+                      <SelectItem key={r.value} value={r.value}>
+                        {r.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Empresa (single select) */}
+        <FormField
+          control={form.control}
+          name="companyIds"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Empresa</FormLabel>
+              <FormControl>
+                <Select
+                  onValueChange={(val) => field.onChange([Number(val)])}
+                  value={field.value[0]?.toString() || ""}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccione una empresa" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {companies.map((c) => (
+                      <SelectItem key={c.id} value={c.id.toString()}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

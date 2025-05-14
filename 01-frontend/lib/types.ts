@@ -1,4 +1,8 @@
-export type UserRole = 'administrador' | 'auditor_interno' | 'auditor_externo' | 'empresa_cliente';
+export type UserRole =
+  | "administrador"
+  | "auditor_interno"
+  | "auditor_externo"
+  | "empresa_cliente";
 
 export interface User {
   id?: string;
@@ -13,4 +17,5 @@ export interface RegisterFormData {
   email: string;
   password: string;
   role: UserRole;
-} 
+  companyIds: number[];
+}
