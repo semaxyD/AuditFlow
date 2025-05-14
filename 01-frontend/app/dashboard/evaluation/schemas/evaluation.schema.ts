@@ -36,8 +36,11 @@ export const createEvaluationSchema = (formData: EvaluationForm) => {
         .object({
           answer: z.enum(
             VALID_ANSWERS.map((answer) => answer.value) as [string, ...string[]]
-          ),
-          evidence: z.array(z.string()).optional(),
+          , {
+            message: "Por favor selecciona una respuesta",
+          }),
+          // es un string opcional porque no siempre se sube evidencia
+          evidence: z.string().optional(),
           observations: z.string().optional(),
           score: z.number(),
         })

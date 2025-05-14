@@ -84,8 +84,10 @@ export const columns: ColumnDef<ListedEvaluation>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 justify-end">
-          <Button variant="outline" size="icon" title="Editar evaluación">
-            <Pencil />
+          <Button variant="outline" size="icon" title="Editar evaluación" asChild>
+            <Link href={`/dashboard/evaluation/edit/${row.getValue("id")}`}>
+              <Pencil />
+            </Link>
           </Button>
           <Button variant="default" size="icon" title="Ver evaluación" asChild>
             <Link href={`/dashboard/evaluations-list/${row.getValue("id")}`}>
