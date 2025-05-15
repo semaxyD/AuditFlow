@@ -251,7 +251,7 @@ export async function createEvaluationWithDetails(data: EvaluationData) {
         is_latest: true,
         status: data.maturity_level,
         score: data.total_score,
-        completion_percentage: data.completion_percentaje,
+        completion_percentage: data.completion_percentage,
         answered_questions: data.answered_questions,
         total_questions: data.total_questions,
       },
@@ -310,7 +310,7 @@ export interface EvaluationData {
   observations?: string; // Observaciones generales de la evaluación (no de preguntas)
   total_score: number;
   maturity_level: string;
-  completion_percentaje: number;
+  completion_percentage: number;
   answered_questions: number;
   total_questions: number;
   sections: SectionData[];
