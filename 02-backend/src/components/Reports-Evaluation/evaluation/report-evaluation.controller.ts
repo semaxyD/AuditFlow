@@ -33,7 +33,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'auditor_interno')
   @Get(':evaluationId/version/:versionId')
   getEvaluationDetail(
     @Param('evaluationId', ParseIntPipe) evaluationId: number,
@@ -43,7 +43,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'auditor_interno')
   @Get(':evaluationId/evolution')
   getEvolution(@Param('evaluationId', ParseIntPipe) evaluationId: number) {
     return this.service.getEvolutionEvaluation(evaluationId);
