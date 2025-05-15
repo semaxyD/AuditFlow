@@ -119,4 +119,19 @@ export class UserService {
     };
   
   }
+
+  //hu17 en proceso
+  async updateFrequency(dto: {
+    userId: number;
+    companyId: number;
+    normId: number;
+    frequencyDays: number;
+  }) {
+    // Por ahora placeholder, para cuando este la tabla y hacer upsert con el queryFilter
+
+    // ejemplo:
+    // const obtenerUsuarioPorId = await this.queryFilter.filterQuery('auditFrequency', 'auditFrequency-queries',id);
+
+    return { message: 'Frecuencia actualizada correctamente' };
+  }
 }

@@ -198,7 +198,7 @@ export class EvaluationService {
     }
 
     const completionPercentage = maxScore > 0 ? (totalScore / maxScore) * 100 : 0;
-
+    console.log("completionPercentaje: ",completionPercentage)
     let maturityLevel: String;
     if (completionPercentage >= 80) maturityLevel = 'Aprobado';
     else if (completionPercentage >= 50) maturityLevel = 'Intermedio';

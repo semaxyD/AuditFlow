@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { Param } from '@nestjs/common';
+import { UpdateFrequencyDto } from './update-frecuency.dto'
 
 @Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
@@ -54,6 +55,13 @@ export class UserController {
   async obtenerUsuario(@Param('id',ParseIntPipe) id: number) {
   //  Solo accesible si el token es válido y el rol es ADMIN
   return this.service.obtenerUsuarioPorId(id); 
-}
+  }
+
+  @Post('auditFrequency')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  async updateAuditFrequency(@Body() updateFrequencyDto: UpdateFrequencyDto) {
+    return this.service.updateFrequency(updateFrequencyDto);
+  }
 
 }
