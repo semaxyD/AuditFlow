@@ -58,8 +58,12 @@ export function LoginForm() {
       });
       // 3) Extraemos y guardamos el token
       const token = sessionData?.user?.accessToken;
+      const user = sessionData?.user;
       if (token) {
         window.localStorage.setItem("token", token);
+        window.localStorage.setItem("user", JSON.stringify(user));
+        console.log("este es el usuario", user);
+
         console.log("✅ Token guardado en localStorage:", token);
       } else {
         console.warn("❌ No vino accessToken en sessionData.user");
