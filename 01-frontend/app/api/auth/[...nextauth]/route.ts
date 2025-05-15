@@ -37,6 +37,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: decodeInfo.id,
             email: decodeInfo.email,
+            name: decodeInfo.name,
             accessToken: user.access_token,
             role: decodeInfo.role,
           };
@@ -55,6 +56,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken;
         token.id = user.id;
         token.role = user.role;
+        token.name = user.name;
         token.accessToken = user.accessToken;
       }
       return token;
@@ -62,6 +64,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       session.user.accessToken = token.accessToken as string;
       session.user.id = token.id as number;
+      session.user.name = token.name as string;
       session.user.role = token.role as string;
       return session;
     },

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import EvaluationTable from "./ComplatainsTable/TableEvaluations";
 import { evaluationColumns } from "./ComplatainsTable/columns";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
+
 import type {
   ApiEvaluation,
   Evaluation,
@@ -20,8 +22,13 @@ export default function CompanyPage() {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
 
   useEffect(() => {
+    if (status === "loading" || role === null) return;
+    setLoading(true);
+    setError(null);
+
     if (!companyId) {
       setError("ID de compañía no disponible");
       setLoading(false);
@@ -30,7 +37,12 @@ export default function CompanyPage() {
 
     const token = window.localStorage.getItem("token") || "";
 
-    fetch(`http://localhost:3001/reports-evaluation/${companyId}/evaluations`, {
+    const endpoint =
+      role === "auditor_interno" || role === "auditor_externo"
+        ? `http://localhost:3001/reports-evaluation/${companyId}/myEvaluations`
+        : `http://localhost:3001/reports-evaluation/${companyId}/evaluations`;
+
+    fetch(endpoint, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -62,7 +74,7 @@ export default function CompanyPage() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [companyId]);
+  }, [companyId, role, status]);
 
   if (loading) return <Loading message="Cargando evaluaciones…" />;
   if (error)

@@ -3,6 +3,17 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { signOut } from "next-auth/react";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+} from "@/components/ui/dropdown-menu";
+
 import {
   Sidebar,
   SidebarContent,
@@ -26,31 +37,53 @@ import {
   User,
   UserPlus,
   Building2,
+  FileSearch2,
+  ListChecks,
+  LogOut,
+  ChevronsUpDown,
+  User2,
 } from "lucide-react";
 import Link from "next/link";
-
-// Menu items.
-const items = [
-  {
-    title: "Inicio",
-    url: "/dashboard",
-    icon: Home,
-  },
-  {
-    title: "Configuración",
-    url: "/dashboard/settings",
-    icon: Settings,
-  },
-  {
-    title: "Empresas",
-    url: "/dashboard/companies",
-    icon: Building2,
-  },
-];
+import { useEffect, useState } from "react";
 
 export function AppSidebar() {
+  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+
+  const items = [{ title: "Inicio", url: "/dashboard", icon: Home }];
+
+  if (role === "admin") {
+    items.push({
+      title: "Empresas",
+      url: "/dashboard/companies",
+      icon: Building2,
+    });
+  } else if (role === "auditor_interno" || role === "auditor_externo") {
+    items.push({
+      title: "Mis auditorías",
+      url: "/dashboard/companies",
+      icon: FileSearch2,
+    });
+  }
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const stored = localStorage.getItem("user");
+    if (!stored) return;
+
+    try {
+      const user = JSON.parse(stored);
+      setName(user.name);
+      setEmail(user.email);
+      console.log("User role from localStorage:", user.role);
+    } catch (e) {
+      console.error("Error parsing user from localStorage:", e);
+    }
+  }, []);
+
   return (
-    <Sidebar variant="sidebar">
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader />
       <SidebarContent>
         <Collapsible defaultOpen className="group/collapsible">
@@ -114,7 +147,7 @@ export function AppSidebar() {
                       <SidebarMenuButton asChild>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4" />
+                            <ListChecks className="w-4 h-4" />
                             Evaluaciones
                           </div>
                           <ChevronDown className="w-4 h-4 transition-transform" />
@@ -125,7 +158,7 @@ export function AppSidebar() {
                       <SidebarMenuSub>
                         <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                           <Link
-                            href="/dashboard/evaluation"
+                            href="/dashboard/evaluations-list"
                             className="flex items-center gap-2 group-hover/subitem:text-white"
                           >
                             <List className="w-4 h-4" />
@@ -151,7 +184,57 @@ export function AppSidebar() {
         </Collapsible>
         <SidebarGroup />
       </SidebarContent>
-      <SidebarFooter />
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton className="flex items-center w-full gap-2 px-2 py-6 ">
+                  <User2 className="w-10 h-10" />
+                  <div className="flex flex-col text-left">
+                    <span className="text-sm font-medium text-gray-900">
+                      {name}
+                    </span>
+                    <span className="text-xs text-gray-500">{email}</span>
+                  </div>
+                  <ChevronsUpDown className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width] w-60"
+              >
+                {role === "admin" && (
+                  <DropdownMenuItem>
+                    <Link
+                      href="/dashboard/settings"
+                      className="flex items-center gap-2"
+                    >
+                      <Settings className="w-4 h-4" />
+                      Configuración
+                    </Link>
+                  </DropdownMenuItem>
+                )}
+
+                {role === "admin" && <DropdownMenuSeparator />}
+
+                <DropdownMenuItem
+                  onSelect={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+                    signOut({ callbackUrl: "/" });
+                  }}
+                  className="group flex items-center gap-2 text-red-600 hover:text-black"
+                >
+                  <LogOut className="w-4 h-4 text-red-600 group-hover:text-black" />
+                  Cerrar sesión
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
