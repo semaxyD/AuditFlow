@@ -1,11 +1,9 @@
 "use client";
-
+import { toast } from "sonner";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,6 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Correo electrónico inválido"),
@@ -41,15 +41,44 @@ export function LoginForm() {
     setIsLoading(true);
     setErrorMessage("");
 
+    // 1) Intentamos el login con NextAuth
     const res = await signIn("credentials", {
       redirect: false,
+      email: data.email,
       password: data.password,
     });
 
     if (res?.ok) {
+      // 2) Recuperamos la sesión desde el endpoint de NextAuth
+      const r = await fetch("/api/auth/session");
+      const sessionData = await r.json();
+      console.log("⚡ sessionData from /api/auth/session:", sessionData);
+      toast.success("Sesión iniciada correctamente", {
+        description: sessionData.message,
+      });
+      // 3) Extraemos y guardamos el token
+      const token = sessionData?.user?.accessToken;
+      const user = sessionData?.user;
+      if (token) {
+        window.localStorage.setItem("token", token);
+        window.localStorage.setItem("user", JSON.stringify(user));
+        console.log("este es el usuario", user);
+
+        console.log("✅ Token guardado en localStorage:", token);
+      } else {
+        console.warn("❌ No vino accessToken en sessionData.user");
+        toast.error("Error al iniciar sesión", {
+          description: "No se pudo iniciar sesión",
+        });
+      }
+
+      // 4) Redirigimos al dashboard
       router.push("/dashboard");
     } else {
       setErrorMessage("Correo o contraseña incorrectos");
+      toast.error("Revisa tus credenciales", {
+        description: "Correo o contraseña incorrectos.",
+      });
     }
 
     setIsLoading(false);
@@ -62,13 +91,11 @@ export function LoginForm() {
         className="space-y-6 w-80 mx-auto"
       >
         <h2 className="text-xl font-bold text-center">Iniciar sesión</h2>
-
         {errorMessage && (
           <div className="text-red-600 bg-red-100 p-2 rounded text-sm">
             {errorMessage}
           </div>
         )}
-
         <FormField
           control={form.control}
           name="email"
@@ -86,7 +113,6 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="password"

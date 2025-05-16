@@ -1,4 +1,5 @@
 "use client";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
@@ -94,6 +95,8 @@ export const columns: ColumnDef<ListedEvaluation>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const { hasAccess, role, status } = useRoleCheck(["auditor Interno"]);
+
       return (
         <div className="flex gap-2 justify-end">
           <Button
@@ -121,6 +124,7 @@ export const columns: ColumnDef<ListedEvaluation>[] = [
           <Button variant="outline" size="icon" title="Editar evaluación">
             <Pencil />
           </Button>
+
 
           <Button variant="default" size="icon" title="Ver evaluación" asChild>
             <Link href={`/dashboard/evaluations-list/${row.getValue("id")}`}>

@@ -144,7 +144,7 @@ exports.Prisma.NormScalarFieldEnum = {
   name: 'name'
 };
 
-exports.Prisma.CompanyEditorScalarFieldEnum = {
+exports.Prisma.CompanyAuditorScalarFieldEnum = {
   company_id: 'company_id',
   user_id: 'user_id'
 };
@@ -165,7 +165,9 @@ exports.Prisma.EvaluationScalarFieldEnum = {
   id: 'id',
   company_id: 'company_id',
   created_by: 'created_by',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  norm_id: 'norm_id',
+  observations: 'observations'
 };
 
 exports.Prisma.EvaluationVersionScalarFieldEnum = {
@@ -174,9 +176,11 @@ exports.Prisma.EvaluationVersionScalarFieldEnum = {
   created_by: 'created_by',
   created_at: 'created_at',
   is_latest: 'is_latest',
-  submitted_at: 'submitted_at',
   status: 'status',
   version_number: 'version_number',
+  answered_questions: 'answered_questions',
+  total_questions: 'total_questions',
+  completion_percentage: 'completion_percentage',
   score: 'score'
 };
 
@@ -226,7 +230,7 @@ exports.Prisma.ModelName = {
   User: 'User',
   Company: 'Company',
   Norm: 'Norm',
-  CompanyEditor: 'CompanyEditor',
+  CompanyAuditor: 'CompanyAuditor',
   Criterion: 'Criterion',
   Question: 'Question',
   Evaluation: 'Evaluation',

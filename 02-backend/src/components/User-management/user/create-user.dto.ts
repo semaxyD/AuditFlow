@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, MinLength } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsEmail, IsEnum, IsInt, IsNotEmpty, MinLength, ValidateIf } from 'class-validator';
 
 // Tipos válidos de roles de usuario
 export type UserRole = 'admin' | 'auditor_interno' | 'auditor_externo';
@@ -18,4 +18,10 @@ export class CreateUserDto {
     message: 'Rol inválido', 
   })
   role: UserRole;
+
+  @ValidateIf(o => o.role !== 'admin') // Solo auditores necesitan esto
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsInt({ each: true })
+  companyIds: number[];
 }

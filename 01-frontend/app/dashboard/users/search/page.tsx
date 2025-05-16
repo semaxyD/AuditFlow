@@ -1,5 +1,4 @@
 import { columns } from "./components/ComplaintsTable/columns";
-import { USERS_MOCK } from "./components/ComplaintsTable/mock/users";
 import UsersTable from "./components/ComplaintsTable/UsersTable";
 
 export default function SearchUsersPage() {
@@ -10,7 +9,7 @@ export default function SearchUsersPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-        <UsersTable columns={columns} data={USERS_MOCK} users={USERS_MOCK} />
+        <UsersTable columns={columns} />
       </div>
     </div>
   );

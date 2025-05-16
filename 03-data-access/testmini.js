@@ -66,4 +66,4 @@ function verContenidoTabla(nombreTabla) {
     });
 }
 // Llamar la función:
-verContenidoTabla('question');
+verContenidoTabla('evaluation');
