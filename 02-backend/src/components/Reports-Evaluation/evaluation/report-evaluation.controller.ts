@@ -11,7 +11,6 @@ import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
 import { CurrentUser } from 'src/components/Middleware/decorators/current-user.decorator';
-import { version } from 'os';
 
 @Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
 export class ReportEvaluationController {

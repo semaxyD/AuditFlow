@@ -77,3 +77,21 @@ export async function validateUserEmail(email:string) {
   return validate;
 }
 
+//Query para la HU017 - seleccion de la empresa del usuario a configurar
+export async function getCompaniesByUserId(userId: number) {
+  const auditorRecords = await Prisma.companyAuditor.findMany({
+    where: { user_id: userId },
+    include: {
+      company: {
+        select: {
+          id: true,
+          name: true,
+          phone: true,
+        },
+      },
+    },
+  });
+
+  return auditorRecords.map((record) => record.company);
+}
+
