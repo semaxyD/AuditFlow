@@ -51,17 +51,17 @@ export const columns: ColumnDef<Company>[] = [
         <div className="flex gap-2 justify-end">
           {/* Enlace a la página de detalles de la empresa */}
           <Link href={`/dashboard/companies/${companyId}`}>
-            <Button variant="outline" size="sm">
-              <Eye className="w-4 h-4" />
+            <Button variant="outline" size="icon">
+              <Eye />
             </Button>
           </Link>
 
           {/* Puedes añadir otros botones de acción, como editar o eliminar */}
-          {/* <Button variant="outline" size="sm">
-            <Pencil className="w-4 h-4" />
+          {/* <Button variant="outline" size="icon">
+            <Pencil  />
           </Button> */}
-          <Button variant="destructive" size="sm">
-            <Trash className="w-4 h-4" />
+          <Button variant="destructive" size="icon">
+            <Trash />
           </Button>
         </div>
       );

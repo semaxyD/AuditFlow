@@ -62,12 +62,12 @@ export function getEvaluationColumns(role: string): ColumnDef<Evaluation>[] {
         return (
           <div className="flex gap-2 justify-end">
             <Link href={href}>
-              <Button variant="outline" size="sm">
-                <Eye className="w-4 h-4" />
+              <Button variant="outline" size="icon">
+                <Eye />
               </Button>
             </Link>
-            <Button variant="destructive" size="sm">
-              <Trash className="w-4 h-4" />
+            <Button variant="destructive" size="icon">
+              <Trash />
             </Button>
           </div>
         );

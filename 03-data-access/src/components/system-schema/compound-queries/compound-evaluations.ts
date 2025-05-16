@@ -6,102 +6,131 @@ export async function getEvaluationDetail(ids: {
 }) {
   const rows = await Prisma.$queryRaw<{ result: any }[]>`
     WITH base AS (
-      SELECT DISTINCT ON (q.id)
-        q.id               AS question_id,
-        q.text,
-        c.description      AS criterion_description,
-        n.code             AS norm_code,
-        a.id               AS answer_id,
-        a.response,
-        a.created_by,
-        a.created_at,
-        ev.id              AS version_id,
-        ev.evaluation_id   AS evaluation_id
-      FROM question q
-      JOIN criterion c       ON q.criterion_id = c.id
-      JOIN norm n            ON c.norm_id = n.id
-      LEFT JOIN answer a     ON a.question_id = q.id
-      LEFT JOIN evaluation_version ev
-                             ON a.version_id = ev.id
-      WHERE ev.evaluation_id = ${ids.evaluationId}
-        AND ev.id            <= ${ids.versionId}
-      ORDER BY q.id, ev.id DESC, a.created_at DESC
-    ),
-    answers AS (
-      SELECT
-        b.evaluation_id,
-        b.question_id,
-        b.text,
-        b.criterion_description,
-        b.response,
-        b.created_by,
-        b.created_at,
-        b.version_id,
-        ARRAY_AGG(DISTINCT e.url)   FILTER (WHERE e.id IS NOT NULL) AS evidences,
-        ARRAY_AGG(DISTINCT cm.text) FILTER (WHERE cm.id IS NOT NULL) AS comments
-      FROM base b
-      LEFT JOIN evidence e ON e.answer_id = b.answer_id
-      LEFT JOIN comment  cm ON cm.answer_id = b.answer_id
-      GROUP BY
-        b.evaluation_id,
-        b.question_id,
-        b.text,
-        b.criterion_description,
-        b.response,
-        b.created_by,
-        b.created_at,
-        b.version_id
-    ),
-    obs AS (
-      SELECT
-        c.name         AS company_name,
-        c.nit,
-        n.name         AS norm_name,
-        e.observations,
-        e.id           AS evaluation_id
-      FROM evaluation e
-      JOIN company c     ON e.company_id = c.id
-      JOIN norm n        ON e.norm_id = n.id
-      WHERE e.id = ${ids.evaluationId}
-      LIMIT 1
-    ),
-    questions AS (
-      SELECT
-        evaluation_id,
-        jsonb_agg(
-          to_jsonb(answers) - 'evaluation_id'
-          ORDER BY answers.question_id
-        ) AS questions
-      FROM answers
-      GROUP BY evaluation_id
-    ),
-    version_info AS (
-      SELECT
-        id               AS version_id,
-        answered_questions,
-        total_questions,
-        completion_percentage
-      FROM evaluation_version
-      WHERE id = ${ids.versionId}
-      LIMIT 1
-    )
-    SELECT
-      jsonb_build_array(
+  SELECT DISTINCT ON (q.id)
+    q.id                    AS question_id,
+    q.text,
+    q.criterion_id          AS criterion_id,
+    c.description           AS criterion_description,
+    ev.id                   AS version_id,
+    ev.evaluation_id        AS evaluation_id,
+    a.id                    AS answer_id,
+    a.response,
+    a.created_by,
+    a.created_at
+  FROM question q
+
+  JOIN evaluation_version ev
+    ON ev.id = ${ids.versionId}
+  JOIN evaluation e
+    ON ev.evaluation_id = e.id      -- aquí traemos norm_id de la evaluación
+
+  JOIN criterion c
+    ON q.criterion_id = c.id
+   AND c.norm_id      = e.norm_id   -- <-- este filtro es clave
+
+  LEFT JOIN answer a
+    ON a.question_id = q.id
+   AND a.version_id  = ev.id
+
+  WHERE ev.evaluation_id = ${ids.evaluationId}      
+  ORDER BY q.id, ev.id DESC, a.created_at DESC
+),
+
+answers AS (
+  SELECT
+    b.evaluation_id,
+    b.criterion_id,
+    b.criterion_description,
+    b.question_id,
+    b.text,
+    b.response,
+    b.created_by,
+    b.created_at,
+    b.version_id,
+    ARRAY_AGG(DISTINCT e.url)   FILTER (WHERE e.id IS NOT NULL) AS evidences,
+    ARRAY_AGG(DISTINCT cm.text) FILTER (WHERE cm.id IS NOT NULL) AS comments
+  FROM base b
+  LEFT JOIN evidence e  ON e.answer_id  = b.answer_id
+  LEFT JOIN comment  cm ON cm.answer_id = b.answer_id
+  GROUP BY
+    b.evaluation_id,
+    b.criterion_id,
+    b.criterion_description,
+    b.question_id,
+    b.text,
+    b.response,
+    b.created_by,
+    b.created_at,
+    b.version_id
+),
+
+criteria AS (
+  SELECT
+    a.criterion_id               AS id,
+    a.criterion_description      AS title,
+    jsonb_agg(
+      ( to_jsonb(a)
+          - 'evaluation_id'
+          - 'criterion_id'
+          - 'criterion_description'
+      )
+      ORDER BY a.question_id
+    ) AS questions
+  FROM answers a
+  GROUP BY
+    a.criterion_id,
+    a.criterion_description
+),
+
+obs AS (
+  SELECT
+    c.name         AS company_name,
+    c.nit,
+    n.name         AS norm_name,
+    e.observations,
+    e.id           AS evaluation_id
+  FROM evaluation e
+  JOIN company c ON e.company_id = c.id
+  JOIN norm    n ON e.norm_id     = n.id
+  WHERE e.id = ${ids.evaluationId}
+  LIMIT 1
+),
+
+version_info AS (
+  SELECT
+    id                        AS version_id,
+    answered_questions,
+    total_questions,
+    completion_percentage
+  FROM evaluation_version
+  WHERE id = ${ids.versionId}
+  LIMIT 1
+)
+
+SELECT jsonb_build_array(
+  jsonb_build_object(
+    'company_name',          obs.company_name,
+    'nit',                   obs.nit,
+    'norm_name',             obs.norm_name,
+    'observations',          obs.observations,
+    'answered_questions',    vi.answered_questions,
+    'total_questions',       vi.total_questions,
+    'completion_percentage', vi.completion_percentage,
+    'criteria',              (
+      SELECT jsonb_agg(
         jsonb_build_object(
-          'company_name',         obs.company_name,
-          'nit',                  obs.nit,
-          'norm_name',            obs.norm_name,
-          'observations',         obs.observations,
-          'answered_questions',   vi.answered_questions,
-          'total_questions',      vi.total_questions,
-          'completion_percentage',vi.completion_percentage,
-          'questions',            q.questions
+          'id',        cr.id,
+          'title',     cr.title,
+          'questions', cr.questions
         )
-      ) AS result
-    FROM obs
-    JOIN questions q   ON q.evaluation_id = obs.evaluation_id
-    JOIN version_info vi ON vi.version_id   = ${ids.versionId}
-  `;
+      )
+      FROM criteria cr
+    )
+  )
+) AS result
+FROM obs
+CROSS JOIN version_info vi;
+`;
   return rows[0]?.result ?? [];
 }
 
@@ -352,6 +381,7 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
     Array<{
       question_id: number;
       question_text: string;
+      criterion_id: number;
       criterion_description: string;
       norm_name: string;
       norm_id: number;
@@ -380,6 +410,7 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
     SELECT DISTINCT ON (q.id, a.id, evid.id, com.id)
       q.id                    AS "question_id",
       q.text                  AS "question_text",
+      c.id                    AS "criterion_id",
       c.description           AS "criterion_description",
       n.name                  AS "norm_name",
       n.id                    AS "norm_id",
@@ -404,80 +435,94 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
       comp.nit                AS "nit",
       comp.name               AS "company_name"
     FROM evaluation e
-    JOIN company comp           ON comp.id = e.company_id
-    JOIN evaluation_version ev  ON ev.evaluation_id = e.id
-    JOIN "user" u               ON e.created_by = u.id
-    LEFT JOIN answer a          ON a.version_id = ev.id
-    LEFT JOIN question q        ON a.question_id = q.id
-    LEFT JOIN criterion c       ON q.criterion_id = c.id
-    LEFT JOIN norm n            ON c.norm_id = n.id
-    LEFT JOIN evidence evid     ON evid.answer_id = a.id
-    LEFT JOIN comment com       ON com.answer_id = a.id
+    JOIN company comp          ON comp.id = e.company_id
+    JOIN evaluation_version ev ON ev.evaluation_id = e.id
+    JOIN "user" u              ON e.created_by = u.id
+    LEFT JOIN answer a         ON a.version_id = ev.id
+    LEFT JOIN question q       ON a.question_id = q.id
+    LEFT JOIN criterion c      ON q.criterion_id = c.id
+    LEFT JOIN norm n           ON c.norm_id = n.id
+    LEFT JOIN evidence evid    ON evid.answer_id = a.id
+    LEFT JOIN comment com      ON com.answer_id = a.id
     WHERE e.id = ${data.evaluationId}
       AND ev.version_number = ${data.version}
     ORDER BY q.id, a.id, evid.id, com.id,
              ev.created_at DESC, a.created_at DESC
   `;
 
-  if (rawResults.length === 0) return [];
-
-  // Tomamos el primer registro para datos globales
+  if (!rawResults.length) return [];
   const first = rawResults[0];
 
-  // Agrupamos preguntas
-  const grouped: Record<number, any> = {};
+  const byCriterion: Record<
+    number,
+    {
+      id: number;
+      title: string;
+      questions: any[];
+    }
+  > = {};
 
   for (const row of rawResults) {
-    let q = grouped[row.question_id];
-    if (!q) {
-      // Al crear la pregunta, guardamos también version y creator
-      q = grouped[row.question_id] = {
-        question_id: row.question_id,
-        text: row.question_text,
-        criterion_description: row.criterion_description,
-        response: row.response,
-        version_id: row.version_id,
-        // if there's a comment use its created_at/by, else fall back to version
-        created_at:
-          row.comment_created_at?.toISOString() ??
-          row.version_created_at.toISOString(),
-        created_by: row.comment_created_by ?? first.creator_id,
-        evidences: [] as string[],
-        comments: [] as string[],
+    let crit = byCriterion[row.criterion_id];
+    if (!crit) {
+      crit = byCriterion[row.criterion_id] = {
+        id: row.criterion_id,
+        title: row.criterion_description,
+        questions: [],
       };
     }
 
-    // Comentarios: solo el texto
+    let q = crit.questions.find((q) => q.question_id === row.question_id);
+    if (!q) {
+      q = {
+        question_id: row.question_id,
+        text: row.question_text,
+        response: row.response,
+        evidences: [] as string[],
+        comments: [] as string[],
+        created_at:
+          row.comment_created_at?.toISOString() ??
+          row.version_created_at.toISOString(),
+        created_by: row.comment_created_by ?? row.creator_id,
+        version_id: row.version_id,
+        criterion_description: row.criterion_description,
+      };
+      crit.questions.push(q);
+    }
+
+    // Agregamos comentarios únicos
     if (row.comment_text && !q.comments.includes(row.comment_text)) {
       q.comments.push(row.comment_text);
     }
-
-    // Evidencias
+    // Agregamos evidencias únicas
     if (row.evidence_url && !q.evidences.includes(row.evidence_url)) {
       q.evidences.push(row.evidence_url);
     }
   }
 
-  // Montamos el array final
   const result = {
     nit: first.nit,
-    norm_name: first.norm_name,
-    questions: Object.values(grouped).map((q: any) => ({
-      text: q.text,
-      comments: q.comments.length > 0 ? q.comments : null,
-      response: q.response,
-      evidences: q.evidences.length > 0 ? [q.evidences] : null,
-      created_at: q.created_at,
-      created_by: q.created_by,
-      version_id: q.version_id,
-      question_id: q.question_id,
-      criterion_description: q.criterion_description,
-    })),
     company_name: first.company_name,
+    norm_name: first.norm_name,
     observations: null,
     total_questions: first.total_questions,
     answered_questions: first.answered_questions,
     completion_percentage: first.completion_percentage,
+    criteria: Object.values(byCriterion).map((crit) => ({
+      id: crit.id,
+      title: crit.title,
+      questions: crit.questions.map((q) => ({
+        question_id: q.question_id,
+        text: q.text,
+        response: q.response,
+        evidences: q.evidences.length ? [q.evidences] : null,
+        comments: q.comments.length ? q.comments : null,
+        created_at: q.created_at,
+        created_by: q.created_by,
+        version_id: q.version_id,
+        criterion_description: q.criterion_description,
+      })),
+    })),
   };
 
   return [result];

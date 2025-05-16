@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Check, X, Minus, AlertTriangle } from "lucide-react";
+import { Check, X, Minus, AlertTriangle, HelpCircle } from "lucide-react";
 
 // Mapeo de etiqueta corta
 const labelMap: Record<string, string> = {
@@ -18,25 +18,22 @@ const iconMap: Record<string, { Icon: any; colorClass: string }> = {
   "N/M": { Icon: AlertTriangle, colorClass: "text-amber-500" },
 };
 
-interface Comment {
-  id: number;
-  text: string;
-  created_by: number;
-  created_at: string;
-}
-
 export interface Question {
   question_id: number;
   text: string;
-  response: "Sí" | "No" | "No aplica" | "N/M";
+  response?: "Sí" | "No" | "No aplica" | "N/M" | null;
   evidences?: string[] | null;
   comments?: string[] | null;
 }
 
 export function QuestionCard({ question }: { question: Question }) {
-  const { Icon, colorClass } = iconMap[question.response];
+  const { Icon, colorClass } = iconMap[question.response as string] ?? {
+    Icon: HelpCircle,
+    colorClass: "text-gray-400",
+  };
 
-  // Decide variante y clases del Badge
+  const label = labelMap[question.response as string] ?? "-";
+
   const badgeVariant =
     question.response === "Sí"
       ? "default"
@@ -57,14 +54,13 @@ export function QuestionCard({ question }: { question: Question }) {
     <Card key={question.question_id} className="shadow-sm">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          {/* Icono según respuesta */}
           <Icon className={`h-6 w-6 mt-0.5 flex-shrink-0 ${colorClass}`} />
 
           <div className="flex flex-col gap-2">
             <h5 className="font-medium text-lg">{question.text}</h5>
 
             <Badge variant={badgeVariant} className={badgeClasses}>
-              {labelMap[question.response]}
+              {label}
             </Badge>
 
             {question.comments && question.comments.length > 0 && (
