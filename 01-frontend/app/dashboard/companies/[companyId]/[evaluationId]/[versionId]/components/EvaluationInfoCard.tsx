@@ -1,6 +1,6 @@
 import { Pie } from "react-chartjs-2";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, X } from "lucide-react";
+import { Check, X, Minus, AlertTriangle } from "lucide-react";
 
 interface EvaluationInfoCardProps {
   norm: string;
@@ -9,6 +9,8 @@ interface EvaluationInfoCardProps {
     created_at: string;
   };
   yesCount: number;
+  naCount: number;
+  improveCount: number;
   noCount: number;
   totalQuestions: number;
   compliancePercentage: number;
@@ -25,6 +27,8 @@ export function EvaluationInfoCard({
   version,
   yesCount,
   noCount,
+  naCount,
+  improveCount,
   totalQuestions,
   compliancePercentage,
   answered_questions,
@@ -73,30 +77,43 @@ export function EvaluationInfoCard({
               </ul>
             </div>
             {/* Resumen de respuestas */}
-            <div className="pt-4">
-              <h3 className="text-lg font-medium">Resumen</h3>
-              <div className="flex flex-col gap-2 mt-2">
-                <div className="flex items-center gap-2">
-                  <Check className="text-teal-500" />
-                  <span>
-                    Respuestas Sí: <strong>{yesCount}</strong> (
-                    {Math.round((yesCount / totalQuestions) * 100)}%)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <X className="text-red-500" />
-                  <span>
-                    Respuestas No: <strong>{noCount}</strong> (
-                    {Math.round((noCount / totalQuestions) * 100)}%)
-                  </span>
-                </div>
-              </div>
+            {/* Sí */}{" "}
+            <div className="flex items-center gap-2">
+              <Check className="text-teal-500" />{" "}
+              <span>
+                Sí: <strong>{yesCount}</strong> ({" "}
+                {Math.round((yesCount / totalQuestions) * 100)}%){" "}
+              </span>{" "}
+            </div>
+            {/* No */}{" "}
+            <div className="flex items-center gap-2">
+              <X className="text-red-500" />{" "}
+              <span>
+                No: <strong>{noCount}</strong> ({" "}
+                {Math.round((noCount / totalQuestions) * 100)}%){" "}
+              </span>{" "}
+            </div>
+            {/* No aplica */}{" "}
+            <div className="flex items-center gap-2">
+              <Minus className="text-gray-500" />{" "}
+              <span>
+                N/A: <strong>{naCount}</strong> ({" "}
+                {Math.round((naCount / totalQuestions) * 100)}%){" "}
+              </span>{" "}
+            </div>
+            {/* Necesita mejora */}{" "}
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="text-amber-500" />{" "}
+              <span>
+                N/M: <strong>{improveCount}</strong> ({" "}
+                {Math.round((improveCount / totalQuestions) * 100)}%){" "}
+              </span>{" "}
             </div>
           </div>
           <div className="flex flex-col items-center justify-center">
             <div className="relative w-64 aspect-[1/1]">
               <Pie data={chartData} options={chartOptions} />
-              <div className="absolute inset-0 flex items-center justify-center flex-col -translate-y-5">
+              <div className="absolute top-4/11 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
                 <span className="text-4xl font-bold">
                   {compliancePercentage}%
                 </span>

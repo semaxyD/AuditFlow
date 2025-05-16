@@ -31,6 +31,12 @@ ChartJS.register(
 );
 
 export default function EvaluationPage() {
+  const labelMap: Record<string, string> = {
+    Sí: "Sí",
+    No: "No",
+    "No aplica": "N/A",
+    "N/M": "N/M",
+  };
   const params = useParams();
   const companyId = params?.companyId as string;
   const versionId = params?.versionId as string;
@@ -115,19 +121,27 @@ export default function EvaluationPage() {
   if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
 
   // Cálculo de 'Sí' y 'No'
+  // Cálculo de cada tipo de respuesta
   const yesCount = questions.filter((q) => q.response === "Sí").length;
   const noCount = questions.filter((q) => q.response === "No").length;
+  const naCount = questions.filter((q) => q.response === "No aplica").length;
+  const improveCount = questions.filter((q) => q.response === "N/M").length;
   const totalCount = questions.length;
   const compliancePercentage = Math.round((yesCount / totalCount) * 100);
 
   const chartData = {
-    labels: ["Sí", "No"],
+    labels: [
+      labelMap["Sí"],
+      labelMap["No"],
+      labelMap["No aplica"],
+      labelMap["N/M"],
+    ],
     datasets: [
       {
         label: "Respuestas",
-        data: [yesCount, noCount],
-        backgroundColor: ["#00786f", "#ef4444"],
-        borderColor: ["#00786f", "#ef4444"],
+        data: [yesCount, noCount, naCount, improveCount],
+        backgroundColor: ["#00786f", "#ef4444", "#6b7280", "#f59e0b"], // puedes ajustar colores
+        borderColor: ["#00786f", "#ef4444", "#6b7280", "#f59e0b"],
         borderWidth: 1,
       },
     ],
@@ -175,6 +189,8 @@ export default function EvaluationPage() {
         }}
         yesCount={yesCount}
         noCount={noCount}
+        naCount={naCount}
+        improveCount={improveCount}
         totalQuestions={totalCount}
         compliancePercentage={compliancePercentage}
         chartData={chartData}
