@@ -3,10 +3,22 @@ import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Circle, Delete, Eye, Pencil, Trash } from "lucide-react";
+import {
+  ArrowUpDown,
+  Circle,
+  Delete,
+  Eye,
+  FileSpreadsheet,
+  FileText,
+  Pencil,
+  Sheet,
+  Trash,
+} from "lucide-react";
 import "./EvaluationsTable.css";
 import { ListedEvaluation } from "../../mock/mock";
 import Link from "next/link";
+import { generateEvaluationReport } from "../../utils/generatePdfReport";
+import { exportEvaluationToExcel } from "../../utils/generateExcelReport";
 
 export const columns: ColumnDef<ListedEvaluation>[] = [
   {
@@ -87,18 +99,33 @@ export const columns: ColumnDef<ListedEvaluation>[] = [
 
       return (
         <div className="flex gap-2 justify-end">
-          {hasAccess ? (
-            <Button
-              variant="outline"
-              size="icon"
-              title="Editar evaluación"
-              asChild
-            >
-              <Link href={`/dashboard/evaluation/edit/${row.getValue("id")}`}>
-                <Pencil />
-              </Link>
-            </Button>
-          ) : null}
+          <Button
+            variant="outline"
+            size="icon"
+            title="Descargar PDF"
+            className="bg-red-600 text-white hover:bg-red-700 hover:text-white"
+            onClick={() => {
+              generateEvaluationReport(row.original);
+            }}
+          >
+            <FileText />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            title="Descargar excel"
+            className="bg-green-700 text-white hover:bg-green-800 hover:text-white"
+            onClick={() => {
+              exportEvaluationToExcel(row.original);
+            }}
+          >
+            <FileSpreadsheet />
+          </Button>
+          <Button variant="outline" size="icon" title="Editar evaluación">
+            <Pencil />
+          </Button>
+
+
           <Button variant="default" size="icon" title="Ver evaluación" asChild>
             <Link href={`/dashboard/evaluations-list/${row.getValue("id")}`}>
               <Eye />
