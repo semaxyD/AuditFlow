@@ -2,10 +2,10 @@
 
 import type { Version } from "../../../ComplaintsTable/types/company";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, Trash } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
+import { ArrowUpDown, Circle, Delete, Eye, Pencil, Trash } from "lucide-react";
 
 export const versionColumns: ColumnDef<Version>[] = [
   {
@@ -42,17 +42,24 @@ export const versionColumns: ColumnDef<Version>[] = [
   {
     accessorKey: "score",
     header: "Puntaje",
-    cell: ({ row }) => (
-      <div className="w-full max-w-[120px]">
-        <div className="h-2 bg-muted rounded-full overflow-hidden">
-          <div
-            className="h-full bg-teal-700 transition-all"
-            style={{ width: `${row.original.score}%` }}
+    cell: ({ row }) => {
+      const score = row.original.score as number;
+
+      return (
+        <div className="flex items-center gap-2">
+          <Circle
+            className={`h-2 w-2 ${
+              score >= 90
+                ? "fill-green-500 text-transparent"
+                : score >= 75
+                ? "fill-yellow-500 text-transparent"
+                : "fill-red-500 text-transparent"
+            }`}
           />
+          {score}
         </div>
-        <div className="text-xs text-right mt-1">{row.original.score}</div>
-      </div>
-    ),
+      );
+    },
   },
   {
     id: "actions",

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import EvaluationTable from "./ComplatainsTable/TableEvaluations";
-import { evaluationColumns } from "./ComplatainsTable/columns";
+import { getEvaluationColumns } from "./ComplatainsTable/columns";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 import type {
@@ -64,9 +64,9 @@ export default function CompanyPage() {
           creator_name: ev.creator_name,
           company_id: Number(companyId),
           norm: {
-            norm_id: ev.norm_id,
-            norm_name: ev.norm_name,
-            norm_code: ev.norm_code,
+            norm_id: ev.norm.id,
+            norm_name: ev.norm.name,
+            norm_code: ev.norm.code,
           },
         }));
         console.log("Datos mapeados:", mapped);
@@ -91,7 +91,11 @@ export default function CompanyPage() {
       </h1>
       <div className="bg-white rounded-lg shadow p-6 pt-2 mt-4">
         <h2 className="text-xl mt-6 font-semibold">Evaluaciones</h2>
-        <EvaluationTable columns={evaluationColumns} data={evaluations} />
+        <EvaluationTable
+          columns={getEvaluationColumns(role!)}
+          data={evaluations}
+          role={role}
+        />
       </div>
     </div>
   );

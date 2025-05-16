@@ -51,14 +51,14 @@ export class ReportEvaluationController {
 
   // Endpoints Hu009
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get('myCompanies')
   getMyCompanies(@CurrentUser() user: { id: number }) {
     return this.service.getExternalAuditorCompaniesById(user.id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get(':companyId/myEvaluations')
   getMyEvaluations(
     @Param('companyId', ParseIntPipe) companyId: number,
@@ -71,7 +71,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get('evaluation/:evaluationId/details')
   getEvaluationDetails(
     @Param('evaluationId', ParseIntPipe) evaluationId: number,

@@ -2,12 +2,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
 
+interface Comment {
+  id: number;
+  text: string;
+  created_by: number;
+  created_at: string;
+}
+
 interface Question {
   question_id: number;
   text: string;
   response: "Sí" | "No";
-  evidences?: string[] | null;
-  comments?: string | null;
+  evidences?: string[];
+  comments?: Comment[];
 }
 
 export function QuestionCard({ question }: { question: Question }) {
@@ -33,14 +40,21 @@ export function QuestionCard({ question }: { question: Question }) {
               {question.response}
             </Badge>
 
-            {/* Si hay comentarios (string) */}
-            {question.comments && (
-              <p className="mt-2 text-sm text-gray-600">
-                <strong>Comentarios:</strong> {question.comments}
-              </p>
+            {/* Render comments array */}
+            {question.comments && question.comments.length > 0 && (
+              <div className="mt-2">
+                <strong className="text-sm text-gray-800">Comentarios:</strong>
+                <ul className="list-disc list-inside text-sm text-gray-600">
+                  {question.comments.map((c) => (
+                    <div key={c.id} className="mt-1">
+                      <p>{c.text}</p>
+                    </div>
+                  ))}
+                </ul>
+              </div>
             )}
 
-            {/* Si hay evidencias (array de URLs) */}
+            {/* Render evidences array */}
             {question.evidences && question.evidences.length > 0 && (
               <div className="mt-2">
                 <h6 className="font-semibold text-sm text-gray-700">
@@ -48,7 +62,7 @@ export function QuestionCard({ question }: { question: Question }) {
                 </h6>
                 <ul className="list-disc list-inside text-sm text-gray-600">
                   {question.evidences.map((url, idx) => (
-                    <li key={idx}>
+                    <li key={idx} className="mt-1">
                       <a
                         href={url}
                         target="_blank"

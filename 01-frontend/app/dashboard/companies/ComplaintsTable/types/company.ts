@@ -40,9 +40,11 @@ export interface ApiEvaluation {
   evaluation_created_at: string;
   creator_name: string;
   company_id: number;
-  norm_id: number;
-  norm_name: string;
-  norm_code: string;
+  norm: {
+    id: number;
+    name: string;
+    code: string;
+  };
 }
 
 // — Tipo que usa tu tabla (un solo norm en vez de array)
