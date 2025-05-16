@@ -83,12 +83,12 @@ export function QuestionCard({ question }: { question: Question }) {
                 </strong>
                 <p className="text-sm text-gray-600 mt-1">
                   <a
-                    href={question.evidences[0]?.[0]?.[0] || "#"}
+                    href={question.evidences[0]}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 underline"
                   >
-                    {question.evidences[0]?.[0]?.[0]}
+                    {question.evidences[0]}
                   </a>
                 </p>
               </div>
