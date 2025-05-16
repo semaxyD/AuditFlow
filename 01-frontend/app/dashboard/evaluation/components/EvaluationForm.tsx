@@ -8,12 +8,16 @@ import { createEvaluationSchema } from "../schemas/evaluation.schema";
 import { AUDIT_FORM_MOCK } from "../mock/mock";
 import { Button } from "@/components/ui/button";
 import { SectionQuestions } from "./SectionQuestions";
+import { ObservationsModal } from "./ObservationsModal";
 
 type EvaluationSchema = z.infer<ReturnType<typeof createEvaluationSchema>>;
 
 export function EvaluationForm() {
   const [activeSection, setActiveSection] = useState(0);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [openObservationsModal, setOpenObservationsModal] = useState(false);
+  const [finalObservation, setFinalObservation] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Memoizamos el esquema para evitar recrearlo
   const schema = useMemo(() => createEvaluationSchema(AUDIT_FORM_MOCK), []);
@@ -45,7 +49,7 @@ export function EvaluationForm() {
 
   const {
     handleSubmit,
-    formState: { errors, isSubmitting, isValid, isDirty },
+    formState: { errors, isValid, isDirty },
     reset,
     trigger,
   } = methods;
@@ -58,35 +62,58 @@ export function EvaluationForm() {
     }
   }, [errors]);
 
-  const onSubmit = async (data: EvaluationSchema) => {
-    try {
-      setSubmitError(null);
-      console.log("Datos a enviar:", data);
+  const handleSaveObservation = (observation: string) => {
+    console.log("Observación recibida en el formulario:", observation);
+    setFinalObservation(observation);
+    handleSubmitForm(observation);
+  };
 
-      // Simulando una llamada a una API
+  const handleSubmitForm = async (currentObservation: string) => {
+    try {
+      setIsSubmitting(true);
+      setSubmitError(null);
+
+      const formData = methods.getValues();
+      const dataToSubmit = {
+        ...formData,
+        finalObservation: currentObservation,
+      };
+
+      console.log("Datos a enviar:", dataToSubmit);
+      console.log("Observación final actual:", currentObservation);
+
+      // Aquí iría tu lógica de envío a la API
       // const response = await fetch('/api/evaluations', {
       //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data),
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(dataToSubmit),
       // });
 
-      // if (!response.ok) {
-      //   throw new Error(`Error ${response.status}: ${response.statusText}`);
-      // }
-
-      // const result = await response.json();
-      // console.log("Respuesta del servidor:", result);
-
       alert("Formulario enviado con éxito!");
-      // reset(); // Reiniciar formulario después de envío exitoso
+      reset();
     } catch (error) {
       console.error("Error al enviar formulario:", error);
       setSubmitError(
         error instanceof Error
           ? error.message
           : "Error desconocido al enviar el formulario"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const onSubmit = async (data: EvaluationSchema) => {
+    try {
+      console.log("Formulario validado, abriendo modal");
+      setSubmitError(null);
+      setOpenObservationsModal(true);
+    } catch (error) {
+      console.error("Error al validar formulario:", error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Error desconocido al validar el formulario"
       );
     }
   };
@@ -121,6 +148,12 @@ export function EvaluationForm() {
             ))}
           </div>
         </div>
+        <ObservationsModal
+          openObservationsModal={openObservationsModal}
+          setOpenObservationsModal={setOpenObservationsModal}
+          onSaveObservation={handleSaveObservation}
+          initialObservation={finalObservation}
+        />
 
         {/* Solo renderizamos la sección activa */}
         <SectionQuestions section={AUDIT_FORM_MOCK.sections[activeSection]} />
