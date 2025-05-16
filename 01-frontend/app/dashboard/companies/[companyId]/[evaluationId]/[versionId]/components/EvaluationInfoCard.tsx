@@ -113,7 +113,7 @@ export function EvaluationInfoCard({
           <div className="flex flex-col items-center justify-center">
             <div className="relative w-64 aspect-[1/1]">
               <Pie data={chartData} options={chartOptions} />
-              <div className="absolute top-4/11 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+              <div className="absolute top-5/12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
                 <span className="text-4xl font-bold">
                   {compliancePercentage}%
                 </span>

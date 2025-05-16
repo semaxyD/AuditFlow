@@ -359,9 +359,9 @@ export async function getExternalAuditorEvaluationsByCompany(data: {
     evaluation_created_at: ev.created_at,
     creator_name: ev.creator.name,
     norm: {
-      norm_id: ev.norm.id,
-      norm_name: ev.norm.name,
-      norm_code: ev.norm.code,
+      id: ev.norm.id,
+      name: ev.norm.name,
+      code: ev.norm.code,
     },
   }));
 }
