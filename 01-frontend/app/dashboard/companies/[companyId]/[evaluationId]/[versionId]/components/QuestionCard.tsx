@@ -29,7 +29,7 @@ export interface Question {
   question_id: number;
   text: string;
   response: "Sí" | "No" | "No aplica" | "N/M";
-  evidences?: string[][][] | null;
+  evidences?: string[] | null;
   comments?: string[] | null;
 }
 
