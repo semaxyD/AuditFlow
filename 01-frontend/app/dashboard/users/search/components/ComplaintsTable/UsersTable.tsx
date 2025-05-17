@@ -49,6 +49,20 @@ export default function UsersTable({ columns }: UsersTableProps) {
         setData(json.data || []);
       } catch (error) {
         console.error("Error fetching users:", error);
+        setData([
+          {
+            id: "1",
+            name: "A",
+            email: "Asdas",
+            role: "admin",
+          },
+          {
+            id: "2",
+            name: "B",
+            email: "sdaca",
+            role: "aaaudito",
+          },
+        ]);
       } finally {
         setLoading(false);
       }
