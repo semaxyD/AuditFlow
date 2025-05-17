@@ -3,11 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Circle, Delete, Pencil, Trash } from "lucide-react";
-import "./../../../../evaluations-list/components/EvaluationsTable/EvaluationsTable.css";
-import { User } from "./types/users";
-import { DeleteUserModal } from "./components/DeleteUserModal";
-import EditUserModal from "./components/EditUserModal";
-import AuditFrecuencyModal from "./components/AuditFrecuencyModal";
+import "./UsersTable.css";
+import { User } from "./mock/users";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -43,9 +40,12 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2 justify-end">
-          <AuditFrecuencyModal userId={row.original.id} />
-          <EditUserModal user={row.original} />
-          <DeleteUserModal userId={row.original.id} />
+          <Button variant="outline" size="sm">
+            <Pencil />
+          </Button>
+          <Button variant="destructive" size="sm">
+            <Trash />
+          </Button>
         </div>
       );
     },

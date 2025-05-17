@@ -19,7 +19,7 @@ export const VALID_ANSWERS = [
   },
   {
     value: "NM",
-    label: "N/M",
+    label: "Necesita mejora",
     score: 50,
   },
 ] as const;
@@ -35,16 +35,9 @@ export const createEvaluationSchema = (formData: EvaluationForm) => {
       questionsShape[q.id] = z
         .object({
           answer: z.enum(
-            VALID_ANSWERS.map((answer) => answer.value) as [
-              string,
-              ...string[]
-            ],
-            {
-              message: "Por favor selecciona una respuesta",
-            }
+            VALID_ANSWERS.map((answer) => answer.value) as [string, ...string[]]
           ),
-          // es un string opcional porque no siempre se sube evidencia
-          evidence: z.string().optional(),
+          evidence: z.array(z.string()).optional(),
           observations: z.string().optional(),
           score: z.number(),
         })
@@ -55,12 +48,11 @@ export const createEvaluationSchema = (formData: EvaluationForm) => {
           ) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
-              message:
-                "Debe justificar por qué no aplica añadiendolo en observaciones",
+              message: "Debe justificar por qué no aplica añadiendolo en observaciones",
               path: ["observations"],
             });
           }
-        });
+        })
     });
 
     sectionsShape[section.id] = z.object(questionsShape);

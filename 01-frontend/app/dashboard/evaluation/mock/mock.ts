@@ -31,7 +31,6 @@ export const AUDIT_FORM_MOCK: EvaluationForm = {
         //   question:
         //     "¿La política ambiental es apropiada para la naturaleza, la escala y los impactos ambientales de las actividades, productos o servicios de la organización?",
         // },
-
         // {
         //   id: 203,
         //   question:
@@ -85,7 +84,6 @@ export const AUDIT_FORM_MOCK: EvaluationForm = {
     //   ],
     // },
     // {
-
     //   id: 4,
     //   title: "Requisitos legales y otros",
     //   questions: [

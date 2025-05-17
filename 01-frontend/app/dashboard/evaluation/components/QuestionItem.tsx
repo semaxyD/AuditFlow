@@ -177,7 +177,7 @@ export const QuestionItem = memo(function QuestionItem({
         open={showEvidence}
         onOpenChange={(open) => {
           if (!open) {
-            trigger(`${namePrefix}.evidence`);
+            trigger(`${namePrefix}.evidences`);
           }
           setShowEvidence(open);
         }}
@@ -191,12 +191,12 @@ export const QuestionItem = memo(function QuestionItem({
             <Input
               type="url"
               placeholder="https://ejemplo.com/evidencia.jpg"
-              {...register(`${namePrefix}.evidence`)}
-              className={fieldError?.evidence ? "border-red-400" : ""}
+              {...register(`${namePrefix}.evidences`)}
+              className={fieldError?.evidences ? "border-red-400" : ""}
             />
-            {fieldError?.evidence && (
+            {fieldError?.evidences && (
               <p className="text-red-500 text-sm mt-1">
-                {fieldError.evidence.message}
+                {fieldError.evidences.message}
               </p>
             )}
           </div>
