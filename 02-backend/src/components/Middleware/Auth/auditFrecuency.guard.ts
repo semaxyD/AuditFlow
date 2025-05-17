@@ -90,6 +90,15 @@ export class AuditFrequencyGuard implements CanActivate {
       }
     }
 
+    // Validación extra de la HU010: auditores externos solo pueden evaluar una vez a una empresa para una norma en especifico.
+    if (request.params?.companyId) {
+      if (lastEval) {
+        throw new ForbiddenException(
+          'Ya has realizado una evaluación como auditor externo para esta empresa y norma. No puedes crear otra.'
+        );
+      }
+    }
+
     return true;
   }
 }

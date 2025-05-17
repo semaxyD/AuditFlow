@@ -59,7 +59,7 @@ export class UserController {
   }
 
   
-  // HU017 - Trae las normas asociadas a un usuario para armar el formulario de configuración
+  // HU017 - Trae las empresas asociadas a un usuario para armar el formulario de configuración
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get(':id/companies')
@@ -67,7 +67,7 @@ export class UserController {
     return this.service.getCompaniesByUserId(id);
   }
 
-  // HU017 - Trae las empresas asociadas a un usuario para armar el formulario de configuración
+  // HU017 - Trae las normas donde se aplicara la frecuencia para armar el formulario de configuración
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get('config/norms')
