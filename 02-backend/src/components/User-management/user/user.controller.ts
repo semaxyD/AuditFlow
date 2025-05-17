@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { CreateCompanyDto } from './create-company.dto';
 import { UpdateCompanyDto } from './update-compant.dto';
+import { DeleteFrequencyDto } from './delete-frecuency.dto';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar el guardia JWT
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
@@ -82,12 +83,20 @@ export class UserController {
     return this.service.getIdByNormToConfig();
   }
 
-  //Endpoint HU017 para guardar la configuracion hecha con los datos recopilados con los endpoints anteriores
+  //Endpoint HU017 para guardar o actualizar la configuracion hecha con los datos recopilados con los endpoints anteriores
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Post('config/frequency')
   async updateAuditFrequency(@Body() updateFrequencyDto: UpdateFrequencyDto) {
     return this.service.updateFrequency(updateFrequencyDto);
+  }
+
+  //Endpoint HU017 para eliminar la configuracion hecha con los datos recopilados con los endpoints anteriores
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Delete('config/delete')
+  async deleteAuditFrequency(@Body() deleteFrequencyDto: DeleteFrequencyDto) {
+    return this.service.deleteFrequency(deleteFrequencyDto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -110,5 +119,7 @@ export class UserController {
   async deleteCompany(@Param('companyId', ParseIntPipe) companyId: number) {
     return this.service.deleteCompany(companyId);
   }
+
+  
 
 }

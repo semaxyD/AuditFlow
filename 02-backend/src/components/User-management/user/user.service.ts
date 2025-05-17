@@ -7,6 +7,7 @@ import {
 import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
 import { UpdateFrequencyDto } from './update-frecuency.dto';
+import { DeleteFrequencyDto } from './delete-frecuency.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateCompanyDto } from './create-company.dto';
@@ -243,6 +244,27 @@ export class UserService {
       'compound-deletes',
       id,
     );
+  }
+
+      //HU017 - eliminar configuraciones de frecuencias
+  async deleteFrequency(dto: DeleteFrequencyDto) {
+    try {
+      const deleted = await this.queryFilter.filterQuery(
+        'deleteFrequencyConfig',
+        'evaluation-frecuency-queries',
+        dto
+      );
+
+      return { message: 'Configuración eliminada correctamente' };
+    } catch (error) {
+      if (
+        error.code === 'P2025' ||
+        error.message?.includes('No Record found') // por si acaso en ambiente dev
+      ) {
+        throw new NotFoundException('No existe una configuración con esos datos');
+      }
+      throw new InternalServerErrorException('Error al eliminar la configuración');
+    }
   }
 
 }
