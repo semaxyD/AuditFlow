@@ -4,7 +4,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState, useEffect } from "react";
 import { z } from "zod";
-import { createEvaluationSchema, VALID_ANSWERS } from "../schemas/evaluation.schema";
+import {
+  createEvaluationSchema,
+  VALID_ANSWERS,
+} from "../schemas/evaluation.schema";
 import { AUDIT_FORM_MOCK } from "../mock/mock";
 import { Button } from "@/components/ui/button";
 import { SectionQuestions } from "./SectionQuestions";
@@ -91,20 +94,59 @@ export function EvaluationForm({ backendData }: EvaluationFormProps) {
   const onSubmit = async (data: EvaluationSchema) => {
     try {
       setSubmitError(null);
-      console.log(
-        isEditing ? "Editando evaluación:" : "Creando evaluación:",
-        data
-      );
 
-      // Aquí decidir si hacer POST o PUT dependiendo si es edición
-      // Ejemplo:
+      // 1. Transformamos el data del formulario al formato del backend
+      const payload = {
+        // Si tu schema incluye name u observations, sácalas de data.
+        // Si no, usa backendData?.name y backendData?.observations
+        name: data.name ?? backendData?.name ?? "",
+        observations: data.observations ?? backendData?.observations ?? "",
+        sections: Object.entries(data.sections).map(
+          ([sectionId, questionsObj]) => ({
+            id: Number(sectionId),
+            questions: Object.entries(questionsObj).map(([questionId, q]) => {
+              const question = q as {
+                answer: string;
+                evidence: string | string[];
+                observations: string;
+                score: number;
+              };
+              return {
+                id: Number(questionId),
+                answer: question.answer,
+                // pero el backend quiere un array de strings:
+                evidence: question.evidence
+                  ? Array.isArray(question.evidence)
+                    ? question.evidence
+                    : [question.evidence]
+                  : [],
+                comments: question.observations,
+                score: question.score,
+              };
+            }),
+          })
+        ),
+      };
+
+      // 2. Logs para validar
+      console.log("Payload preparado:", payload);
+      console.log("Payload JSON:\n", JSON.stringify(payload, null, 2));
+
+      // 3. Envío real (descomenta cuando tu API esté lista)
       /*
-      const response = await fetch(isEditing ? `/api/evaluations/${backendData.id}` : `/api/evaluations`, {
-        method: isEditing ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      */
+    const response = await fetch(
+      isEditing
+        ? `/api/evaluations/${backendData.id}`
+        : `/api/evaluations`,
+      {
+        method: isEditing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+    const result = await response.json();
+    console.log("Respuesta del servidor:", result);
+    */
     } catch (error) {
       console.error("Error en el envío:", error);
       setSubmitError(

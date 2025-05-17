@@ -156,15 +156,27 @@ export function AppSidebar() {
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>
-                        <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
-                          <Link
-                            href="/dashboard/evaluations-list"
-                            className="flex items-center gap-2 group-hover/subitem:text-white"
-                          >
-                            <List className="w-4 h-4" />
-                            <span>Listado</span>
-                          </Link>
-                        </SidebarMenuSubItem>
+                        {role === "admin" ? (
+                          <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
+                            <Link
+                              href="/dashboard/companies"
+                              className="flex items-center gap-2 group-hover/subitem:text-white"
+                            >
+                              <Building2 className="w-4 h-4" />
+                              <span>Empresas</span>
+                            </Link>
+                          </SidebarMenuSubItem>
+                        ) : (
+                          <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
+                            <Link
+                              href="/dashboard/companies"
+                              className="flex items-center gap-2 group-hover/subitem:text-white"
+                            >
+                              <FileSearch2 className="w-4 h-4" />
+                              <span>Mis auditorías</span>
+                            </Link>
+                          </SidebarMenuSubItem>
+                        )}
                         <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                           <Link
                             href="/dashboard/evaluation"
