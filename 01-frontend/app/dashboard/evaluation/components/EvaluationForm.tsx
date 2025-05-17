@@ -19,11 +19,12 @@ type EvaluationSchema = z.infer<ReturnType<typeof createEvaluationSchema>>;
 export function EvaluationForm({
   companies,
   rules,
+  backendData = null,
 }: {
   companies: any[];
   rules: any[];
+  backendData?: any; // ← nuevo prop opcional
 }) {
-
   const [activeSection, setActiveSection] = useState(0);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [openObservationsModal, setOpenObservationsModal] = useState(false);
@@ -32,14 +33,14 @@ export function EvaluationForm({
   const [openModal, setOpenModal] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [info, setInfo] = useState<{
-    ruleId: number | undefined;
-    companyId: number | undefined;
+    ruleId?: number;
+    companyId?: number;
   }>({
     ruleId: undefined,
     companyId: undefined,
   });
 
-  const isEditing = !!backendData;
+  const isEditing = Boolean(backendData); // ← usa el prop
 
   // Transformar datos si estamos editando
   const formData: EvaluationFormType = useMemo(() => {
@@ -64,18 +65,15 @@ export function EvaluationForm({
           );
 
           const answer = backendQuestion?.response ?? "";
-
-          // Si hay respuesta, buscamos su score en VALID_ANSWERS
           const answerScore =
             VALID_ANSWERS.find((valid) => valid.value === answer)?.score ?? 0;
 
           qAcc[q.id] = {
-            answer: backendQuestion?.response ?? "",
+            answer,
             evidence: backendQuestion?.evidence ?? "",
             observations: backendQuestion?.observations ?? "",
             score: answer ? answerScore : 0,
           };
-
           return qAcc;
         }, {} as any);
         return acc;
@@ -91,30 +89,22 @@ export function EvaluationForm({
 
   const {
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors },
     reset,
     trigger,
   } = methods;
 
   useEffect(() => {
-    if (info.ruleId && (info.companyId || companies.length === 1)) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
+    setIsLoading(!(info.ruleId && (info.companyId || companies.length === 1)));
   }, [info, companies.length]);
 
-  // Verificar errores globales
-
   useEffect(() => {
-    const errorKeys = Object.keys(errors);
-    if (errorKeys.length > 0) {
+    if (Object.keys(errors).length > 0) {
       console.log("Errores de validación:", errors);
     }
   }, [errors]);
 
   const handleSaveObservation = (observation: string) => {
-    console.log("Observación recibida en el formulario:", observation);
     setFinalObservation(observation);
     handleSubmitForm(observation);
   };
@@ -123,33 +113,23 @@ export function EvaluationForm({
     try {
       setIsSubmitting(true);
       setSubmitError(null);
+      const formValues = methods.getValues();
 
-      const formData = methods.getValues();
-
-      if (!info) {
-        alert("Seleccione una norma y compañia");
+      if (!info.ruleId || !info.companyId) {
+        alert("Seleccione una norma y compañía");
         return;
       }
 
       const dataToSubmit = {
-        ...formData,
+        ...formValues,
         finalObservation: currentObservation,
         companyId: info.companyId,
         ruleId: info.ruleId,
       };
 
-      // Aquí iría tu lógica de envío a la API
-      // const response = await fetch('/api/evaluations', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(dataToSubmit),
-      // });
-
-      console.log(dataToSubmit)
-
+      console.log(dataToSubmit);
       alert("Formulario enviado con éxito!");
       reset();
-
     } catch (error) {
       console.error("Error en el envío:", error);
       setSubmitError(
@@ -162,26 +142,13 @@ export function EvaluationForm({
     }
   };
 
-  const onSubmit = async (data: EvaluationSchema) => {
-    try {
-      console.log("Formulario validado, abriendo modal");
-      setSubmitError(null);
-      setOpenObservationsModal(true);
-    } catch (error) {
-      console.error("Error al validar formulario:", error);
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Error desconocido al validar el formulario"
-      );
-    }
+  const onSubmit = () => {
+    setOpenObservationsModal(true);
   };
 
   const handleValidateForm = async () => {
-    const result = await trigger();
-    if (!result) {
-      console.log("Errores de validación:", errors);
-    }
+    const valid = await trigger();
+    if (!valid) console.log("Errores de validación:", errors);
   };
 
   if (isLoading) {
@@ -228,6 +195,7 @@ export function EvaluationForm({
             ))}
           </div>
         </div>
+
         <ObservationsModal
           openObservationsModal={openObservationsModal}
           setOpenObservationsModal={setOpenObservationsModal}
@@ -235,7 +203,6 @@ export function EvaluationForm({
           initialObservation={finalObservation}
         />
 
-        {/* Solo renderizamos la sección activa */}
         <SectionQuestions section={formData.sections[activeSection]} />
 
         <div className="flex justify-between mt-6">
@@ -243,7 +210,7 @@ export function EvaluationForm({
             type="button"
             variant="outline"
             disabled={activeSection === 0}
-            onClick={() => setActiveSection((prev) => Math.max(0, prev - 1))}
+            onClick={() => setActiveSection((p) => Math.max(0, p - 1))}
           >
             Anterior
           </Button>
@@ -253,8 +220,8 @@ export function EvaluationForm({
               type="button"
               onClick={(e) => {
                 e.preventDefault();
-                setActiveSection((prev) =>
-                  Math.min(formData.sections.length - 1, prev + 1)
+                setActiveSection((p) =>
+                  Math.min(formData.sections.length - 1, p + 1)
                 );
               }}
             >
