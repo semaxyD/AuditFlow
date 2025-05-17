@@ -26,11 +26,12 @@ export const AUDIT_FORM_MOCK: EvaluationForm = {
           question:
             "¿Ha definido la alta dirección la política ambiental de la organización?",
         },
-        {
-          id: 202,
-          question:
-            "¿La política ambiental es apropiada para la naturaleza, la escala y los impactos ambientales de las actividades, productos o servicios de la organización?",
-        },
+        // {
+        //   id: 202,
+        //   question:
+        //     "¿La política ambiental es apropiada para la naturaleza, la escala y los impactos ambientales de las actividades, productos o servicios de la organización?",
+        // },
+
         // {
         //   id: 203,
         //   question:
@@ -57,33 +58,34 @@ export const AUDIT_FORM_MOCK: EvaluationForm = {
         // },
       ],
     },
-    {
-      id: 3,
-      title: "Planificación - Aspectos ambientales",
-      questions: [
-        {
-          id: 301,
-          question:
-            "¿La organización ha establecido y mantenido (a) procedimiento(s) para identificar los aspectos ambientales de sus actividades, productos o servicios que puede controlar y sobre los cuales se espera que tenga influencia?",
-        },
-        // {
-        //   id: 302,
-        //   question:
-        //     "¿Ha determinado la organización cuáles de sus aspectos tienen un impacto significativo en el medio ambiente?",
-        // },
-        // {
-        //   id: 303,
-        //   question:
-        //     "¿Se ha asegurado la organización de que sus aspectos e impactos significativos relacionados se consideren al establecer sus objetivos ambientales?",
-        // },
-        // {
-        //   id: 304,
-        //   question:
-        //     "¿La organización actualiza periódicamente la información sobre sus aspectos e impactos significativos?",
-        // },
-      ],
-    },
     // {
+    //   id: 3,
+    //   title: "Planificación - Aspectos ambientales",
+    //   questions: [
+    //     {
+    //       id: 301,
+    //       question:
+    //         "¿La organización ha establecido y mantenido (a) procedimiento(s) para identificar los aspectos ambientales de sus actividades, productos o servicios que puede controlar y sobre los cuales se espera que tenga influencia?",
+    //     },
+    //     {
+    //       id: 302,
+    //       question:
+    //         "¿Ha determinado la organización cuáles de sus aspectos tienen un impacto significativo en el medio ambiente?",
+    //     },
+    //     {
+    //       id: 303,
+    //       question:
+    //         "¿Se ha asegurado la organización de que sus aspectos e impactos significativos relacionados se consideren al establecer sus objetivos ambientales?",
+    //     },
+    //     {
+    //       id: 304,
+    //       question:
+    //         "¿La organización actualiza periódicamente la información sobre sus aspectos e impactos significativos?",
+    //     },
+    //   ],
+    // },
+    // {
+
     //   id: 4,
     //   title: "Requisitos legales y otros",
     //   questions: [

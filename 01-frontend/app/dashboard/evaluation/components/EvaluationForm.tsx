@@ -11,22 +11,33 @@ import {
 import { AUDIT_FORM_MOCK } from "../mock/mock";
 import { Button } from "@/components/ui/button";
 import { SectionQuestions } from "./SectionQuestions";
-import { toast } from "sonner";
-
-// Tipos
-import { EvaluationForm as EvaluationFormType } from "../types/evaluation-form.types";
-import { mapBackendEvaluationToForm } from "../edit/[evaluationId]/helpers/mapBackendEvaluationForm";
+import { ObservationsModal } from "./ObservationsModal";
+import { EvaluationSettingsModal } from "./EvaluationSettingsModal";
 
 type EvaluationSchema = z.infer<ReturnType<typeof createEvaluationSchema>>;
 
-// Props que recibe el componente
-interface EvaluationFormProps {
-  backendData?: any; // Lo que traes del back, puede ser undefined si estás creando
-}
+export function EvaluationForm({
+  companies,
+  rules,
+}: {
+  companies: any[];
+  rules: any[];
+}) {
 
-export function EvaluationForm({ backendData }: EvaluationFormProps) {
   const [activeSection, setActiveSection] = useState(0);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [openObservationsModal, setOpenObservationsModal] = useState(false);
+  const [finalObservation, setFinalObservation] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [info, setInfo] = useState<{
+    ruleId: number | undefined;
+    companyId: number | undefined;
+  }>({
+    ruleId: undefined,
+    companyId: undefined,
+  });
 
   const isEditing = !!backendData;
 
@@ -80,9 +91,20 @@ export function EvaluationForm({ backendData }: EvaluationFormProps) {
 
   const {
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isValid, isDirty },
+    reset,
     trigger,
   } = methods;
+
+  useEffect(() => {
+    if (info.ruleId && (info.companyId || companies.length === 1)) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [info, companies.length]);
+
+  // Verificar errores globales
 
   useEffect(() => {
     const errorKeys = Object.keys(errors);
@@ -91,68 +113,66 @@ export function EvaluationForm({ backendData }: EvaluationFormProps) {
     }
   }, [errors]);
 
-  const onSubmit = async (data: EvaluationSchema) => {
+  const handleSaveObservation = (observation: string) => {
+    console.log("Observación recibida en el formulario:", observation);
+    setFinalObservation(observation);
+    handleSubmitForm(observation);
+  };
+
+  const handleSubmitForm = async (currentObservation: string) => {
     try {
+      setIsSubmitting(true);
       setSubmitError(null);
 
-      // 1. Transformamos el data del formulario al formato del backend
-      const payload = {
-        // Si tu schema incluye name u observations, sácalas de data.
-        // Si no, usa backendData?.name y backendData?.observations
-        name: data.name ?? backendData?.name ?? "",
-        observations: data.observations ?? backendData?.observations ?? "",
-        sections: Object.entries(data.sections).map(
-          ([sectionId, questionsObj]) => ({
-            id: Number(sectionId),
-            questions: Object.entries(questionsObj).map(([questionId, q]) => {
-              const question = q as {
-                answer: string;
-                evidence: string | string[];
-                observations: string;
-                score: number;
-              };
-              return {
-                id: Number(questionId),
-                answer: question.answer,
-                // pero el backend quiere un array de strings:
-                evidence: question.evidence
-                  ? Array.isArray(question.evidence)
-                    ? question.evidence
-                    : [question.evidence]
-                  : [],
-                comments: question.observations,
-                score: question.score,
-              };
-            }),
-          })
-        ),
+      const formData = methods.getValues();
+
+      if (!info) {
+        alert("Seleccione una norma y compañia");
+        return;
+      }
+
+      const dataToSubmit = {
+        ...formData,
+        finalObservation: currentObservation,
+        companyId: info.companyId,
+        ruleId: info.ruleId,
       };
 
-      // 2. Logs para validar
-      console.log("Payload preparado:", payload);
-      console.log("Payload JSON:\n", JSON.stringify(payload, null, 2));
+      // Aquí iría tu lógica de envío a la API
+      // const response = await fetch('/api/evaluations', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(dataToSubmit),
+      // });
 
-      // 3. Envío real (descomenta cuando tu API esté lista)
-      /*
-    const response = await fetch(
-      isEditing
-        ? `/api/evaluations/${backendData.id}`
-        : `/api/evaluations`,
-      {
-        method: isEditing ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      }
-    );
-    const result = await response.json();
-    console.log("Respuesta del servidor:", result);
-    */
+      console.log(dataToSubmit)
+
+      alert("Formulario enviado con éxito!");
+      reset();
+
     } catch (error) {
       console.error("Error en el envío:", error);
       setSubmitError(
         error instanceof Error
           ? error.message
           : "Error desconocido al enviar el formulario"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const onSubmit = async (data: EvaluationSchema) => {
+    try {
+      console.log("Formulario validado, abriendo modal");
+      setSubmitError(null);
+      setOpenObservationsModal(true);
+    } catch (error) {
+      console.error("Error al validar formulario:", error);
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Error desconocido al validar el formulario"
       );
     }
   };
@@ -163,6 +183,28 @@ export function EvaluationForm({ backendData }: EvaluationFormProps) {
       console.log("Errores de validación:", errors);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-teal-700 mb-2">
+            Cargando formulario...
+          </h2>
+          <p className="text-gray-600">
+            Por favor, seleccione una norma y una empresa para continuar.
+          </p>
+        </div>
+        <EvaluationSettingsModal
+          companies={companies}
+          rules={rules}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          setInfo={setInfo}
+        />
+      </div>
+    );
+  }
 
   return (
     <FormProvider {...methods}>
@@ -186,6 +228,12 @@ export function EvaluationForm({ backendData }: EvaluationFormProps) {
             ))}
           </div>
         </div>
+        <ObservationsModal
+          openObservationsModal={openObservationsModal}
+          setOpenObservationsModal={setOpenObservationsModal}
+          onSaveObservation={handleSaveObservation}
+          initialObservation={finalObservation}
+        />
 
         {/* Solo renderizamos la sección activa */}
         <SectionQuestions section={formData.sections[activeSection]} />
