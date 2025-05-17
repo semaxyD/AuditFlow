@@ -4,7 +4,6 @@ import {
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { QueryFilterService } from '../../../imports-barrel';
 import { JwtPayloadUser } from './jwt-payload-user';
@@ -12,7 +11,6 @@ import { JwtPayloadUser } from './jwt-payload-user';
 @Injectable()
 export class AuditFrequencyGuard implements CanActivate {
   constructor(
-    private reflector: Reflector,
     private readonly queryFilter: QueryFilterService,
   ) {}
 
@@ -24,7 +22,6 @@ export class AuditFrequencyGuard implements CanActivate {
       throw new ForbiddenException('Usuario no autenticado');
     }
 
-    // Extraer normId desde los params
     const normId = parseInt(request.params?.normId);
     if (!normId) {
       throw new ForbiddenException('Falta el parámetro normId en la ruta');
@@ -32,32 +29,52 @@ export class AuditFrequencyGuard implements CanActivate {
 
     let companyId: number;
 
-    // Auditor externo → companyId viene en los params
     if (request.params?.companyId) {
+      // Auditor externo
       companyId = parseInt(request.params.companyId);
     } else {
-      // Auditor interno → hacer query con user.id para obtener companyId
-      const company_id = await this.queryFilter.filterQuery(
+      // Auditor interno
+      const result = await this.queryFilter.filterQuery(
         'getUserCompanyById',
         'user-queries',
-        user.id,
+        user.id
       );
-      if (!company_id === null) {
+
+      if (!result || !result.company_id) {
         throw new ForbiddenException('No se pudo obtener la empresa del auditor interno');
       }
-      companyId = company_id;
+
+      companyId = result.company_id;
     }
 
-    // ⚠️ Aquí deberíamos consultar la tabla de configuración (parte 2)
-    // y la última evaluación del auditor en esa empresa y norma.
+    // Obtener frecuencia mínima configurada
+    const config = await this.queryFilter.filterQuery(
+      'getFrequencyDaysForAudit',
+      'evaluation-frecuency-queries',
+      {
+        userId: user.id,
+        companyId,
+        normId,
+      },
+    );
 
-    // Simulamos valores:
-    const minDaysBetweenEvaluations = 90;
+    const minDaysBetweenEvaluations = config?.frequency_days;
 
+    if (!minDaysBetweenEvaluations) {
+      throw new ForbiddenException(
+        'No se ha configurado la frecuencia mínima para esta norma, empresa y usuario.'
+      );
+    }
+
+    // Obtener última evaluación
     const lastEval = await this.queryFilter.filterQuery(
       'getLastEvaluationByUserCompanyNorm',
-      'evaluation-queries',
-      { userId: user.id, companyId, normId },
+      'evaluation-frecuency-queries',
+      {
+        userId: user.id,
+        companyId,
+        normId,
+      },
     );
 
     if (lastEval && lastEval.created_at) {
@@ -68,7 +85,16 @@ export class AuditFrequencyGuard implements CanActivate {
       if (diffDays < minDaysBetweenEvaluations) {
         const remaining = Math.ceil(minDaysBetweenEvaluations - diffDays);
         throw new ForbiddenException(
-          `Debes esperar ${remaining} día(s) para volver a evaluar esta norma en esta empresa.`,
+          `Debes esperar ${remaining} día(s) para volver a evaluar esta norma en esta empresa.`
+        );
+      }
+    }
+
+    // Validación extra de la HU010: auditores externos solo pueden evaluar una vez a una empresa para una norma en especifico.
+    if (request.params?.companyId) {
+      if (lastEval) {
+        throw new ForbiddenException(
+          'Ya has realizado una evaluación como auditor externo para esta empresa y norma. No puedes crear otra.'
         );
       }
     }

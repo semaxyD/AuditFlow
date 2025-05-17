@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
+import { UpdateFrequencyDto } from './update-frecuency.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -151,18 +152,37 @@ export class UserService {
     };
   }
 
-  //hu17 en proceso
-  async updateFrequency(dto: {
-    userId: number;
-    companyId: number;
-    normId: number;
-    frequencyDays: number;
-  }) {
-    // Por ahora placeholder, para cuando este la tabla y hacer upsert con el queryFilter
+  //HU017 Trae las normas para armar el Body para el service updateFrequency
+  async getIdByNormToConfig() {
+    try {
+      const query = await this.queryFilter.filterQuery('getAllNormsBasicInfo', 'norm-queries');
+      return query
+    } catch (error) {
+      throw new InternalServerErrorException('Error al obtener las normas para configurar frecuencia', error);
+    }
+  }
 
-    // ejemplo:
-    // const obtenerUsuarioPorId = await this.queryFilter.filterQuery('auditFrequency', 'auditFrequency-queries',id);
+  //HU017 Trae las empresas del user elejido para armar el Body para el service updateFrequency
+  async getCompaniesByUserId(userId: number) {
+    return this.queryFilter.filterQuery(
+      'getCompaniesByUserId',
+      'user-queries',
+      userId
+    );
+  }
 
-    return { message: 'Frecuencia actualizada correctamente' };
+  //HU017 configuracion de frecuencia a un usuario para evaluar una norma para una empresa
+  async updateFrequency(frecuencyDto: UpdateFrequencyDto) {
+
+    const result = await this.queryFilter.filterQuery(
+      'upsertFrequencyConfig',
+      'evaluation-frecuency-queries',
+      frecuencyDto);
+
+    if (!result) {
+    throw new InternalServerErrorException('No se pudo actualizar la frecuencia');
+    }
+
+    return { message: 'Frecuencia actualizada correctamente', config: result};
   }
 }

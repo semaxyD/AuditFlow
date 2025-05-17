@@ -68,6 +68,11 @@ export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
  * 
  */
 export type Evidence = $Result.DefaultSelection<Prisma.$EvidencePayload>
+/**
+ * Model EvaluationFrequencyConfig
+ * 
+ */
+export type EvaluationFrequencyConfig = $Result.DefaultSelection<Prisma.$EvaluationFrequencyConfigPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -303,6 +308,16 @@ export class PrismaClient<
     * ```
     */
   get evidence(): Prisma.EvidenceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.evaluationFrequencyConfig`: Exposes CRUD operations for the **EvaluationFrequencyConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EvaluationFrequencyConfigs
+    * const evaluationFrequencyConfigs = await prisma.evaluationFrequencyConfig.findMany()
+    * ```
+    */
+  get evaluationFrequencyConfig(): Prisma.EvaluationFrequencyConfigDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -753,7 +768,8 @@ export namespace Prisma {
     EvaluationVersion: 'EvaluationVersion',
     Answer: 'Answer',
     Comment: 'Comment',
-    Evidence: 'Evidence'
+    Evidence: 'Evidence',
+    EvaluationFrequencyConfig: 'EvaluationFrequencyConfig'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -772,7 +788,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "company" | "norm" | "companyAuditor" | "criterion" | "question" | "evaluation" | "evaluationVersion" | "answer" | "comment" | "evidence"
+      modelProps: "user" | "company" | "norm" | "companyAuditor" | "criterion" | "question" | "evaluation" | "evaluationVersion" | "answer" | "comment" | "evidence" | "evaluationFrequencyConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1590,6 +1606,80 @@ export namespace Prisma {
           }
         }
       }
+      EvaluationFrequencyConfig: {
+        payload: Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>
+        fields: Prisma.EvaluationFrequencyConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EvaluationFrequencyConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EvaluationFrequencyConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.EvaluationFrequencyConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EvaluationFrequencyConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          findMany: {
+            args: Prisma.EvaluationFrequencyConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>[]
+          }
+          create: {
+            args: Prisma.EvaluationFrequencyConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          createMany: {
+            args: Prisma.EvaluationFrequencyConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.EvaluationFrequencyConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.EvaluationFrequencyConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          update: {
+            args: Prisma.EvaluationFrequencyConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.EvaluationFrequencyConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EvaluationFrequencyConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.EvaluationFrequencyConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.EvaluationFrequencyConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EvaluationFrequencyConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.EvaluationFrequencyConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEvaluationFrequencyConfig>
+          }
+          groupBy: {
+            args: Prisma.EvaluationFrequencyConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EvaluationFrequencyConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EvaluationFrequencyConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<EvaluationFrequencyConfigCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1685,6 +1775,7 @@ export namespace Prisma {
     answer?: AnswerOmit
     comment?: CommentOmit
     evidence?: EvidenceOmit
+    evaluationFrequencyConfig?: EvaluationFrequencyConfigOmit
   }
 
   /* Types for Logging */
@@ -1785,6 +1876,7 @@ export namespace Prisma {
     evidences: number
     comments: number
     companyAuditors: number
+    frequencyConfigs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1794,6 +1886,7 @@ export namespace Prisma {
     evidences?: boolean | UserCountOutputTypeCountEvidencesArgs
     comments?: boolean | UserCountOutputTypeCountCommentsArgs
     companyAuditors?: boolean | UserCountOutputTypeCountCompanyAuditorsArgs
+    frequencyConfigs?: boolean | UserCountOutputTypeCountFrequencyConfigsArgs
   }
 
   // Custom InputTypes
@@ -1849,6 +1942,13 @@ export namespace Prisma {
     where?: CompanyAuditorWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountFrequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EvaluationFrequencyConfigWhereInput
+  }
+
 
   /**
    * Count Type CompanyCountOutputType
@@ -1857,11 +1957,13 @@ export namespace Prisma {
   export type CompanyCountOutputType = {
     evaluations: number
     editorUsers: number
+    frequencyConfigs: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | CompanyCountOutputTypeCountEvaluationsArgs
     editorUsers?: boolean | CompanyCountOutputTypeCountEditorUsersArgs
+    frequencyConfigs?: boolean | CompanyCountOutputTypeCountFrequencyConfigsArgs
   }
 
   // Custom InputTypes
@@ -1889,6 +1991,13 @@ export namespace Prisma {
     where?: CompanyAuditorWhereInput
   }
 
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountFrequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EvaluationFrequencyConfigWhereInput
+  }
+
 
   /**
    * Count Type NormCountOutputType
@@ -1897,11 +2006,13 @@ export namespace Prisma {
   export type NormCountOutputType = {
     criteria: number
     evaluations: number
+    frequencyConfigs: number
   }
 
   export type NormCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criteria?: boolean | NormCountOutputTypeCountCriteriaArgs
     evaluations?: boolean | NormCountOutputTypeCountEvaluationsArgs
+    frequencyConfigs?: boolean | NormCountOutputTypeCountFrequencyConfigsArgs
   }
 
   // Custom InputTypes
@@ -1927,6 +2038,13 @@ export namespace Prisma {
    */
   export type NormCountOutputTypeCountEvaluationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EvaluationWhereInput
+  }
+
+  /**
+   * NormCountOutputType without action
+   */
+  export type NormCountOutputTypeCountFrequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EvaluationFrequencyConfigWhereInput
   }
 
 
@@ -2302,6 +2420,7 @@ export namespace Prisma {
     evidences?: boolean | User$evidencesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     companyAuditors?: boolean | User$companyAuditorsArgs<ExtArgs>
+    frequencyConfigs?: boolean | User$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2337,6 +2456,7 @@ export namespace Prisma {
     evidences?: boolean | User$evidencesArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
     companyAuditors?: boolean | User$companyAuditorsArgs<ExtArgs>
+    frequencyConfigs?: boolean | User$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2351,6 +2471,7 @@ export namespace Prisma {
       evidences: Prisma.$EvidencePayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
       companyAuditors: Prisma.$CompanyAuditorPayload<ExtArgs>[]
+      frequencyConfigs: Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -2758,6 +2879,7 @@ export namespace Prisma {
     evidences<T extends User$evidencesArgs<ExtArgs> = {}>(args?: Subset<T, User$evidencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvidencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     companyAuditors<T extends User$companyAuditorsArgs<ExtArgs> = {}>(args?: Subset<T, User$companyAuditorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyAuditorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    frequencyConfigs<T extends User$frequencyConfigsArgs<ExtArgs> = {}>(args?: Subset<T, User$frequencyConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3324,6 +3446,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.frequencyConfigs
+   */
+  export type User$frequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    where?: EvaluationFrequencyConfigWhereInput
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3562,6 +3708,7 @@ export namespace Prisma {
     phone?: boolean
     evaluations?: boolean | Company$evaluationsArgs<ExtArgs>
     editorUsers?: boolean | Company$editorUsersArgs<ExtArgs>
+    frequencyConfigs?: boolean | Company$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -3599,6 +3746,7 @@ export namespace Prisma {
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     evaluations?: boolean | Company$evaluationsArgs<ExtArgs>
     editorUsers?: boolean | Company$editorUsersArgs<ExtArgs>
+    frequencyConfigs?: boolean | Company$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3609,6 +3757,7 @@ export namespace Prisma {
     objects: {
       evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
       editorUsers: Prisma.$CompanyAuditorPayload<ExtArgs>[]
+      frequencyConfigs: Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -4014,6 +4163,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     evaluations<T extends Company$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     editorUsers<T extends Company$editorUsersArgs<ExtArgs> = {}>(args?: Subset<T, Company$editorUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyAuditorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    frequencyConfigs<T extends Company$frequencyConfigsArgs<ExtArgs> = {}>(args?: Subset<T, Company$frequencyConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4486,6 +4636,30 @@ export namespace Prisma {
   }
 
   /**
+   * Company.frequencyConfigs
+   */
+  export type Company$frequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    where?: EvaluationFrequencyConfigWhereInput
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
+  }
+
+  /**
    * Company without action
    */
   export type CompanyDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4688,6 +4862,7 @@ export namespace Prisma {
     name?: boolean
     criteria?: boolean | Norm$criteriaArgs<ExtArgs>
     evaluations?: boolean | Norm$evaluationsArgs<ExtArgs>
+    frequencyConfigs?: boolean | Norm$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | NormCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["norm"]>
 
@@ -4713,6 +4888,7 @@ export namespace Prisma {
   export type NormInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     criteria?: boolean | Norm$criteriaArgs<ExtArgs>
     evaluations?: boolean | Norm$evaluationsArgs<ExtArgs>
+    frequencyConfigs?: boolean | Norm$frequencyConfigsArgs<ExtArgs>
     _count?: boolean | NormCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type NormIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4723,6 +4899,7 @@ export namespace Prisma {
     objects: {
       criteria: Prisma.$CriterionPayload<ExtArgs>[]
       evaluations: Prisma.$EvaluationPayload<ExtArgs>[]
+      frequencyConfigs: Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -5124,6 +5301,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     criteria<T extends Norm$criteriaArgs<ExtArgs> = {}>(args?: Subset<T, Norm$criteriaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CriterionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     evaluations<T extends Norm$evaluationsArgs<ExtArgs> = {}>(args?: Subset<T, Norm$evaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    frequencyConfigs<T extends Norm$frequencyConfigsArgs<ExtArgs> = {}>(args?: Subset<T, Norm$frequencyConfigsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5589,6 +5767,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EvaluationScalarFieldEnum | EvaluationScalarFieldEnum[]
+  }
+
+  /**
+   * Norm.frequencyConfigs
+   */
+  export type Norm$frequencyConfigsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    where?: EvaluationFrequencyConfigWhereInput
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
   }
 
   /**
@@ -14695,6 +14897,1156 @@ export namespace Prisma {
 
 
   /**
+   * Model EvaluationFrequencyConfig
+   */
+
+  export type AggregateEvaluationFrequencyConfig = {
+    _count: EvaluationFrequencyConfigCountAggregateOutputType | null
+    _avg: EvaluationFrequencyConfigAvgAggregateOutputType | null
+    _sum: EvaluationFrequencyConfigSumAggregateOutputType | null
+    _min: EvaluationFrequencyConfigMinAggregateOutputType | null
+    _max: EvaluationFrequencyConfigMaxAggregateOutputType | null
+  }
+
+  export type EvaluationFrequencyConfigAvgAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    company_id: number | null
+    norm_id: number | null
+    frequency_days: number | null
+  }
+
+  export type EvaluationFrequencyConfigSumAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    company_id: number | null
+    norm_id: number | null
+    frequency_days: number | null
+  }
+
+  export type EvaluationFrequencyConfigMinAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    company_id: number | null
+    norm_id: number | null
+    frequency_days: number | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type EvaluationFrequencyConfigMaxAggregateOutputType = {
+    id: number | null
+    user_id: number | null
+    company_id: number | null
+    norm_id: number | null
+    frequency_days: number | null
+    created_at: Date | null
+    updated_at: Date | null
+  }
+
+  export type EvaluationFrequencyConfigCountAggregateOutputType = {
+    id: number
+    user_id: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at: number
+    updated_at: number
+    _all: number
+  }
+
+
+  export type EvaluationFrequencyConfigAvgAggregateInputType = {
+    id?: true
+    user_id?: true
+    company_id?: true
+    norm_id?: true
+    frequency_days?: true
+  }
+
+  export type EvaluationFrequencyConfigSumAggregateInputType = {
+    id?: true
+    user_id?: true
+    company_id?: true
+    norm_id?: true
+    frequency_days?: true
+  }
+
+  export type EvaluationFrequencyConfigMinAggregateInputType = {
+    id?: true
+    user_id?: true
+    company_id?: true
+    norm_id?: true
+    frequency_days?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type EvaluationFrequencyConfigMaxAggregateInputType = {
+    id?: true
+    user_id?: true
+    company_id?: true
+    norm_id?: true
+    frequency_days?: true
+    created_at?: true
+    updated_at?: true
+  }
+
+  export type EvaluationFrequencyConfigCountAggregateInputType = {
+    id?: true
+    user_id?: true
+    company_id?: true
+    norm_id?: true
+    frequency_days?: true
+    created_at?: true
+    updated_at?: true
+    _all?: true
+  }
+
+  export type EvaluationFrequencyConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EvaluationFrequencyConfig to aggregate.
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EvaluationFrequencyConfigs to fetch.
+     */
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EvaluationFrequencyConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EvaluationFrequencyConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EvaluationFrequencyConfigs
+    **/
+    _count?: true | EvaluationFrequencyConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EvaluationFrequencyConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EvaluationFrequencyConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EvaluationFrequencyConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EvaluationFrequencyConfigMaxAggregateInputType
+  }
+
+  export type GetEvaluationFrequencyConfigAggregateType<T extends EvaluationFrequencyConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateEvaluationFrequencyConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEvaluationFrequencyConfig[P]>
+      : GetScalarType<T[P], AggregateEvaluationFrequencyConfig[P]>
+  }
+
+
+
+
+  export type EvaluationFrequencyConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EvaluationFrequencyConfigWhereInput
+    orderBy?: EvaluationFrequencyConfigOrderByWithAggregationInput | EvaluationFrequencyConfigOrderByWithAggregationInput[]
+    by: EvaluationFrequencyConfigScalarFieldEnum[] | EvaluationFrequencyConfigScalarFieldEnum
+    having?: EvaluationFrequencyConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EvaluationFrequencyConfigCountAggregateInputType | true
+    _avg?: EvaluationFrequencyConfigAvgAggregateInputType
+    _sum?: EvaluationFrequencyConfigSumAggregateInputType
+    _min?: EvaluationFrequencyConfigMinAggregateInputType
+    _max?: EvaluationFrequencyConfigMaxAggregateInputType
+  }
+
+  export type EvaluationFrequencyConfigGroupByOutputType = {
+    id: number
+    user_id: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at: Date
+    updated_at: Date
+    _count: EvaluationFrequencyConfigCountAggregateOutputType | null
+    _avg: EvaluationFrequencyConfigAvgAggregateOutputType | null
+    _sum: EvaluationFrequencyConfigSumAggregateOutputType | null
+    _min: EvaluationFrequencyConfigMinAggregateOutputType | null
+    _max: EvaluationFrequencyConfigMaxAggregateOutputType | null
+  }
+
+  type GetEvaluationFrequencyConfigGroupByPayload<T extends EvaluationFrequencyConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EvaluationFrequencyConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EvaluationFrequencyConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EvaluationFrequencyConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], EvaluationFrequencyConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EvaluationFrequencyConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    company_id?: boolean
+    norm_id?: boolean
+    frequency_days?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["evaluationFrequencyConfig"]>
+
+  export type EvaluationFrequencyConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    company_id?: boolean
+    norm_id?: boolean
+    frequency_days?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["evaluationFrequencyConfig"]>
+
+  export type EvaluationFrequencyConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_id?: boolean
+    company_id?: boolean
+    norm_id?: boolean
+    frequency_days?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["evaluationFrequencyConfig"]>
+
+  export type EvaluationFrequencyConfigSelectScalar = {
+    id?: boolean
+    user_id?: boolean
+    company_id?: boolean
+    norm_id?: boolean
+    frequency_days?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+  }
+
+  export type EvaluationFrequencyConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "company_id" | "norm_id" | "frequency_days" | "created_at" | "updated_at", ExtArgs["result"]["evaluationFrequencyConfig"]>
+  export type EvaluationFrequencyConfigInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }
+  export type EvaluationFrequencyConfigIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }
+  export type EvaluationFrequencyConfigIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    company?: boolean | CompanyDefaultArgs<ExtArgs>
+    norm?: boolean | NormDefaultArgs<ExtArgs>
+  }
+
+  export type $EvaluationFrequencyConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EvaluationFrequencyConfig"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      company: Prisma.$CompanyPayload<ExtArgs>
+      norm: Prisma.$NormPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      user_id: number
+      company_id: number
+      norm_id: number
+      frequency_days: number
+      created_at: Date
+      updated_at: Date
+    }, ExtArgs["result"]["evaluationFrequencyConfig"]>
+    composites: {}
+  }
+
+  type EvaluationFrequencyConfigGetPayload<S extends boolean | null | undefined | EvaluationFrequencyConfigDefaultArgs> = $Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload, S>
+
+  type EvaluationFrequencyConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EvaluationFrequencyConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EvaluationFrequencyConfigCountAggregateInputType | true
+    }
+
+  export interface EvaluationFrequencyConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EvaluationFrequencyConfig'], meta: { name: 'EvaluationFrequencyConfig' } }
+    /**
+     * Find zero or one EvaluationFrequencyConfig that matches the filter.
+     * @param {EvaluationFrequencyConfigFindUniqueArgs} args - Arguments to find a EvaluationFrequencyConfig
+     * @example
+     * // Get one EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EvaluationFrequencyConfigFindUniqueArgs>(args: SelectSubset<T, EvaluationFrequencyConfigFindUniqueArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EvaluationFrequencyConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EvaluationFrequencyConfigFindUniqueOrThrowArgs} args - Arguments to find a EvaluationFrequencyConfig
+     * @example
+     * // Get one EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EvaluationFrequencyConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, EvaluationFrequencyConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EvaluationFrequencyConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigFindFirstArgs} args - Arguments to find a EvaluationFrequencyConfig
+     * @example
+     * // Get one EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EvaluationFrequencyConfigFindFirstArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigFindFirstArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EvaluationFrequencyConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigFindFirstOrThrowArgs} args - Arguments to find a EvaluationFrequencyConfig
+     * @example
+     * // Get one EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EvaluationFrequencyConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EvaluationFrequencyConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfigs = await prisma.evaluationFrequencyConfig.findMany()
+     * 
+     * // Get first 10 EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfigs = await prisma.evaluationFrequencyConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const evaluationFrequencyConfigWithIdOnly = await prisma.evaluationFrequencyConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EvaluationFrequencyConfigFindManyArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EvaluationFrequencyConfig.
+     * @param {EvaluationFrequencyConfigCreateArgs} args - Arguments to create a EvaluationFrequencyConfig.
+     * @example
+     * // Create one EvaluationFrequencyConfig
+     * const EvaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.create({
+     *   data: {
+     *     // ... data to create a EvaluationFrequencyConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends EvaluationFrequencyConfigCreateArgs>(args: SelectSubset<T, EvaluationFrequencyConfigCreateArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EvaluationFrequencyConfigs.
+     * @param {EvaluationFrequencyConfigCreateManyArgs} args - Arguments to create many EvaluationFrequencyConfigs.
+     * @example
+     * // Create many EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EvaluationFrequencyConfigCreateManyArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many EvaluationFrequencyConfigs and returns the data saved in the database.
+     * @param {EvaluationFrequencyConfigCreateManyAndReturnArgs} args - Arguments to create many EvaluationFrequencyConfigs.
+     * @example
+     * // Create many EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many EvaluationFrequencyConfigs and only return the `id`
+     * const evaluationFrequencyConfigWithIdOnly = await prisma.evaluationFrequencyConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends EvaluationFrequencyConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a EvaluationFrequencyConfig.
+     * @param {EvaluationFrequencyConfigDeleteArgs} args - Arguments to delete one EvaluationFrequencyConfig.
+     * @example
+     * // Delete one EvaluationFrequencyConfig
+     * const EvaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.delete({
+     *   where: {
+     *     // ... filter to delete one EvaluationFrequencyConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EvaluationFrequencyConfigDeleteArgs>(args: SelectSubset<T, EvaluationFrequencyConfigDeleteArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EvaluationFrequencyConfig.
+     * @param {EvaluationFrequencyConfigUpdateArgs} args - Arguments to update one EvaluationFrequencyConfig.
+     * @example
+     * // Update one EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EvaluationFrequencyConfigUpdateArgs>(args: SelectSubset<T, EvaluationFrequencyConfigUpdateArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EvaluationFrequencyConfigs.
+     * @param {EvaluationFrequencyConfigDeleteManyArgs} args - Arguments to filter EvaluationFrequencyConfigs to delete.
+     * @example
+     * // Delete a few EvaluationFrequencyConfigs
+     * const { count } = await prisma.evaluationFrequencyConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EvaluationFrequencyConfigDeleteManyArgs>(args?: SelectSubset<T, EvaluationFrequencyConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EvaluationFrequencyConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EvaluationFrequencyConfigUpdateManyArgs>(args: SelectSubset<T, EvaluationFrequencyConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EvaluationFrequencyConfigs and returns the data updated in the database.
+     * @param {EvaluationFrequencyConfigUpdateManyAndReturnArgs} args - Arguments to update many EvaluationFrequencyConfigs.
+     * @example
+     * // Update many EvaluationFrequencyConfigs
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more EvaluationFrequencyConfigs and only return the `id`
+     * const evaluationFrequencyConfigWithIdOnly = await prisma.evaluationFrequencyConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends EvaluationFrequencyConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, EvaluationFrequencyConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one EvaluationFrequencyConfig.
+     * @param {EvaluationFrequencyConfigUpsertArgs} args - Arguments to update or create a EvaluationFrequencyConfig.
+     * @example
+     * // Update or create a EvaluationFrequencyConfig
+     * const evaluationFrequencyConfig = await prisma.evaluationFrequencyConfig.upsert({
+     *   create: {
+     *     // ... data to create a EvaluationFrequencyConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EvaluationFrequencyConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EvaluationFrequencyConfigUpsertArgs>(args: SelectSubset<T, EvaluationFrequencyConfigUpsertArgs<ExtArgs>>): Prisma__EvaluationFrequencyConfigClient<$Result.GetResult<Prisma.$EvaluationFrequencyConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EvaluationFrequencyConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigCountArgs} args - Arguments to filter EvaluationFrequencyConfigs to count.
+     * @example
+     * // Count the number of EvaluationFrequencyConfigs
+     * const count = await prisma.evaluationFrequencyConfig.count({
+     *   where: {
+     *     // ... the filter for the EvaluationFrequencyConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends EvaluationFrequencyConfigCountArgs>(
+      args?: Subset<T, EvaluationFrequencyConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EvaluationFrequencyConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EvaluationFrequencyConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EvaluationFrequencyConfigAggregateArgs>(args: Subset<T, EvaluationFrequencyConfigAggregateArgs>): Prisma.PrismaPromise<GetEvaluationFrequencyConfigAggregateType<T>>
+
+    /**
+     * Group by EvaluationFrequencyConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EvaluationFrequencyConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EvaluationFrequencyConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EvaluationFrequencyConfigGroupByArgs['orderBy'] }
+        : { orderBy?: EvaluationFrequencyConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EvaluationFrequencyConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEvaluationFrequencyConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EvaluationFrequencyConfig model
+   */
+  readonly fields: EvaluationFrequencyConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EvaluationFrequencyConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EvaluationFrequencyConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    norm<T extends NormDefaultArgs<ExtArgs> = {}>(args?: Subset<T, NormDefaultArgs<ExtArgs>>): Prisma__NormClient<$Result.GetResult<Prisma.$NormPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EvaluationFrequencyConfig model
+   */
+  interface EvaluationFrequencyConfigFieldRefs {
+    readonly id: FieldRef<"EvaluationFrequencyConfig", 'Int'>
+    readonly user_id: FieldRef<"EvaluationFrequencyConfig", 'Int'>
+    readonly company_id: FieldRef<"EvaluationFrequencyConfig", 'Int'>
+    readonly norm_id: FieldRef<"EvaluationFrequencyConfig", 'Int'>
+    readonly frequency_days: FieldRef<"EvaluationFrequencyConfig", 'Int'>
+    readonly created_at: FieldRef<"EvaluationFrequencyConfig", 'DateTime'>
+    readonly updated_at: FieldRef<"EvaluationFrequencyConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EvaluationFrequencyConfig findUnique
+   */
+  export type EvaluationFrequencyConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which EvaluationFrequencyConfig to fetch.
+     */
+    where: EvaluationFrequencyConfigWhereUniqueInput
+  }
+
+  /**
+   * EvaluationFrequencyConfig findUniqueOrThrow
+   */
+  export type EvaluationFrequencyConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which EvaluationFrequencyConfig to fetch.
+     */
+    where: EvaluationFrequencyConfigWhereUniqueInput
+  }
+
+  /**
+   * EvaluationFrequencyConfig findFirst
+   */
+  export type EvaluationFrequencyConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which EvaluationFrequencyConfig to fetch.
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EvaluationFrequencyConfigs to fetch.
+     */
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EvaluationFrequencyConfigs.
+     */
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EvaluationFrequencyConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EvaluationFrequencyConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EvaluationFrequencyConfigs.
+     */
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
+  }
+
+  /**
+   * EvaluationFrequencyConfig findFirstOrThrow
+   */
+  export type EvaluationFrequencyConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which EvaluationFrequencyConfig to fetch.
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EvaluationFrequencyConfigs to fetch.
+     */
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EvaluationFrequencyConfigs.
+     */
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EvaluationFrequencyConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EvaluationFrequencyConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EvaluationFrequencyConfigs.
+     */
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
+  }
+
+  /**
+   * EvaluationFrequencyConfig findMany
+   */
+  export type EvaluationFrequencyConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter, which EvaluationFrequencyConfigs to fetch.
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EvaluationFrequencyConfigs to fetch.
+     */
+    orderBy?: EvaluationFrequencyConfigOrderByWithRelationInput | EvaluationFrequencyConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EvaluationFrequencyConfigs.
+     */
+    cursor?: EvaluationFrequencyConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EvaluationFrequencyConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EvaluationFrequencyConfigs.
+     */
+    skip?: number
+    distinct?: EvaluationFrequencyConfigScalarFieldEnum | EvaluationFrequencyConfigScalarFieldEnum[]
+  }
+
+  /**
+   * EvaluationFrequencyConfig create
+   */
+  export type EvaluationFrequencyConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EvaluationFrequencyConfig.
+     */
+    data: XOR<EvaluationFrequencyConfigCreateInput, EvaluationFrequencyConfigUncheckedCreateInput>
+  }
+
+  /**
+   * EvaluationFrequencyConfig createMany
+   */
+  export type EvaluationFrequencyConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EvaluationFrequencyConfigs.
+     */
+    data: EvaluationFrequencyConfigCreateManyInput | EvaluationFrequencyConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EvaluationFrequencyConfig createManyAndReturn
+   */
+  export type EvaluationFrequencyConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many EvaluationFrequencyConfigs.
+     */
+    data: EvaluationFrequencyConfigCreateManyInput | EvaluationFrequencyConfigCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EvaluationFrequencyConfig update
+   */
+  export type EvaluationFrequencyConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EvaluationFrequencyConfig.
+     */
+    data: XOR<EvaluationFrequencyConfigUpdateInput, EvaluationFrequencyConfigUncheckedUpdateInput>
+    /**
+     * Choose, which EvaluationFrequencyConfig to update.
+     */
+    where: EvaluationFrequencyConfigWhereUniqueInput
+  }
+
+  /**
+   * EvaluationFrequencyConfig updateMany
+   */
+  export type EvaluationFrequencyConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EvaluationFrequencyConfigs.
+     */
+    data: XOR<EvaluationFrequencyConfigUpdateManyMutationInput, EvaluationFrequencyConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which EvaluationFrequencyConfigs to update
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * Limit how many EvaluationFrequencyConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EvaluationFrequencyConfig updateManyAndReturn
+   */
+  export type EvaluationFrequencyConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update EvaluationFrequencyConfigs.
+     */
+    data: XOR<EvaluationFrequencyConfigUpdateManyMutationInput, EvaluationFrequencyConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which EvaluationFrequencyConfigs to update
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * Limit how many EvaluationFrequencyConfigs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * EvaluationFrequencyConfig upsert
+   */
+  export type EvaluationFrequencyConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EvaluationFrequencyConfig to update in case it exists.
+     */
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    /**
+     * In case the EvaluationFrequencyConfig found by the `where` argument doesn't exist, create a new EvaluationFrequencyConfig with this data.
+     */
+    create: XOR<EvaluationFrequencyConfigCreateInput, EvaluationFrequencyConfigUncheckedCreateInput>
+    /**
+     * In case the EvaluationFrequencyConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EvaluationFrequencyConfigUpdateInput, EvaluationFrequencyConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * EvaluationFrequencyConfig delete
+   */
+  export type EvaluationFrequencyConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+    /**
+     * Filter which EvaluationFrequencyConfig to delete.
+     */
+    where: EvaluationFrequencyConfigWhereUniqueInput
+  }
+
+  /**
+   * EvaluationFrequencyConfig deleteMany
+   */
+  export type EvaluationFrequencyConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EvaluationFrequencyConfigs to delete
+     */
+    where?: EvaluationFrequencyConfigWhereInput
+    /**
+     * Limit how many EvaluationFrequencyConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EvaluationFrequencyConfig without action
+   */
+  export type EvaluationFrequencyConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EvaluationFrequencyConfig
+     */
+    select?: EvaluationFrequencyConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EvaluationFrequencyConfig
+     */
+    omit?: EvaluationFrequencyConfigOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EvaluationFrequencyConfigInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14831,6 +16183,19 @@ export namespace Prisma {
   export type EvidenceScalarFieldEnum = (typeof EvidenceScalarFieldEnum)[keyof typeof EvidenceScalarFieldEnum]
 
 
+  export const EvaluationFrequencyConfigScalarFieldEnum: {
+    id: 'id',
+    user_id: 'user_id',
+    company_id: 'company_id',
+    norm_id: 'norm_id',
+    frequency_days: 'frequency_days',
+    created_at: 'created_at',
+    updated_at: 'updated_at'
+  };
+
+  export type EvaluationFrequencyConfigScalarFieldEnum = (typeof EvaluationFrequencyConfigScalarFieldEnum)[keyof typeof EvaluationFrequencyConfigScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -14941,6 +16306,7 @@ export namespace Prisma {
     evidences?: EvidenceListRelationFilter
     comments?: CommentListRelationFilter
     companyAuditors?: CompanyAuditorListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -14955,6 +16321,7 @@ export namespace Prisma {
     evidences?: EvidenceOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
     companyAuditors?: CompanyAuditorOrderByRelationAggregateInput
+    frequencyConfigs?: EvaluationFrequencyConfigOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -14972,6 +16339,7 @@ export namespace Prisma {
     evidences?: EvidenceListRelationFilter
     comments?: CommentListRelationFilter
     companyAuditors?: CompanyAuditorListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -15011,6 +16379,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"Company"> | string | null
     evaluations?: EvaluationListRelationFilter
     editorUsers?: CompanyAuditorListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -15023,6 +16392,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     evaluations?: EvaluationOrderByRelationAggregateInput
     editorUsers?: CompanyAuditorOrderByRelationAggregateInput
+    frequencyConfigs?: EvaluationFrequencyConfigOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -15038,6 +16408,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"Company"> | string | null
     evaluations?: EvaluationListRelationFilter
     editorUsers?: CompanyAuditorListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }, "id">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -15077,6 +16448,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"Norm"> | string | null
     criteria?: CriterionListRelationFilter
     evaluations?: EvaluationListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }
 
   export type NormOrderByWithRelationInput = {
@@ -15085,6 +16457,7 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     criteria?: CriterionOrderByRelationAggregateInput
     evaluations?: EvaluationOrderByRelationAggregateInput
+    frequencyConfigs?: EvaluationFrequencyConfigOrderByRelationAggregateInput
   }
 
   export type NormWhereUniqueInput = Prisma.AtLeast<{
@@ -15096,6 +16469,7 @@ export namespace Prisma {
     name?: StringNullableFilter<"Norm"> | string | null
     criteria?: CriterionListRelationFilter
     evaluations?: EvaluationListRelationFilter
+    frequencyConfigs?: EvaluationFrequencyConfigListRelationFilter
   }, "id">
 
   export type NormOrderByWithAggregationInput = {
@@ -15627,6 +17001,80 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"Evidence"> | Date | string
   }
 
+  export type EvaluationFrequencyConfigWhereInput = {
+    AND?: EvaluationFrequencyConfigWhereInput | EvaluationFrequencyConfigWhereInput[]
+    OR?: EvaluationFrequencyConfigWhereInput[]
+    NOT?: EvaluationFrequencyConfigWhereInput | EvaluationFrequencyConfigWhereInput[]
+    id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    user_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    company_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    norm_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    frequency_days?: IntFilter<"EvaluationFrequencyConfig"> | number
+    created_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+    updated_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    norm?: XOR<NormScalarRelationFilter, NormWhereInput>
+  }
+
+  export type EvaluationFrequencyConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    user?: UserOrderByWithRelationInput
+    company?: CompanyOrderByWithRelationInput
+    norm?: NormOrderByWithRelationInput
+  }
+
+  export type EvaluationFrequencyConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    user_id_company_id_norm_id?: EvaluationFrequencyConfigUser_id_company_id_norm_idCompoundUniqueInput
+    AND?: EvaluationFrequencyConfigWhereInput | EvaluationFrequencyConfigWhereInput[]
+    OR?: EvaluationFrequencyConfigWhereInput[]
+    NOT?: EvaluationFrequencyConfigWhereInput | EvaluationFrequencyConfigWhereInput[]
+    user_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    company_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    norm_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    frequency_days?: IntFilter<"EvaluationFrequencyConfig"> | number
+    created_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+    updated_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
+    norm?: XOR<NormScalarRelationFilter, NormWhereInput>
+  }, "id" | "user_id_company_id_norm_id">
+
+  export type EvaluationFrequencyConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    _count?: EvaluationFrequencyConfigCountOrderByAggregateInput
+    _avg?: EvaluationFrequencyConfigAvgOrderByAggregateInput
+    _max?: EvaluationFrequencyConfigMaxOrderByAggregateInput
+    _min?: EvaluationFrequencyConfigMinOrderByAggregateInput
+    _sum?: EvaluationFrequencyConfigSumOrderByAggregateInput
+  }
+
+  export type EvaluationFrequencyConfigScalarWhereWithAggregatesInput = {
+    AND?: EvaluationFrequencyConfigScalarWhereWithAggregatesInput | EvaluationFrequencyConfigScalarWhereWithAggregatesInput[]
+    OR?: EvaluationFrequencyConfigScalarWhereWithAggregatesInput[]
+    NOT?: EvaluationFrequencyConfigScalarWhereWithAggregatesInput | EvaluationFrequencyConfigScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"EvaluationFrequencyConfig"> | number
+    user_id?: IntWithAggregatesFilter<"EvaluationFrequencyConfig"> | number
+    company_id?: IntWithAggregatesFilter<"EvaluationFrequencyConfig"> | number
+    norm_id?: IntWithAggregatesFilter<"EvaluationFrequencyConfig"> | number
+    frequency_days?: IntWithAggregatesFilter<"EvaluationFrequencyConfig"> | number
+    created_at?: DateTimeWithAggregatesFilter<"EvaluationFrequencyConfig"> | Date | string
+    updated_at?: DateTimeWithAggregatesFilter<"EvaluationFrequencyConfig"> | Date | string
+  }
+
   export type UserCreateInput = {
     name: string
     email: string
@@ -15638,6 +17086,7 @@ export namespace Prisma {
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -15652,6 +17101,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -15665,6 +17115,7 @@ export namespace Prisma {
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -15679,6 +17130,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -15713,6 +17165,7 @@ export namespace Prisma {
     phone?: string | null
     evaluations?: EvaluationCreateNestedManyWithoutCompanyInput
     editorUsers?: CompanyAuditorCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -15725,6 +17178,7 @@ export namespace Prisma {
     phone?: string | null
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCompanyInput
     editorUsers?: CompanyAuditorUncheckedCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -15736,6 +17190,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUpdateManyWithoutCompanyNestedInput
     editorUsers?: CompanyAuditorUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -15748,6 +17203,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
     editorUsers?: CompanyAuditorUncheckedUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -15784,6 +17240,7 @@ export namespace Prisma {
     name?: string | null
     criteria?: CriterionCreateNestedManyWithoutNormInput
     evaluations?: EvaluationCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutNormInput
   }
 
   export type NormUncheckedCreateInput = {
@@ -15792,6 +17249,7 @@ export namespace Prisma {
     name?: string | null
     criteria?: CriterionUncheckedCreateNestedManyWithoutNormInput
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutNormInput
   }
 
   export type NormUpdateInput = {
@@ -15799,6 +17257,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUpdateManyWithoutNormNestedInput
     evaluations?: EvaluationUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutNormNestedInput
   }
 
   export type NormUncheckedUpdateInput = {
@@ -15807,6 +17266,7 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUncheckedUpdateManyWithoutNormNestedInput
     evaluations?: EvaluationUncheckedUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type NormCreateManyInput = {
@@ -16276,6 +17736,70 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EvaluationFrequencyConfigCreateInput = {
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutFrequencyConfigsInput
+    company: CompanyCreateNestedOneWithoutFrequencyConfigsInput
+    norm: NormCreateNestedOneWithoutFrequencyConfigsInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateInput = {
+    id?: number
+    user_id: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type EvaluationFrequencyConfigUpdateInput = {
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+    norm?: NormUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EvaluationFrequencyConfigCreateManyInput = {
+    id?: number
+    user_id: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type EvaluationFrequencyConfigUpdateManyMutationInput = {
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -16338,6 +17862,12 @@ export namespace Prisma {
     none?: CompanyAuditorWhereInput
   }
 
+  export type EvaluationFrequencyConfigListRelationFilter = {
+    every?: EvaluationFrequencyConfigWhereInput
+    some?: EvaluationFrequencyConfigWhereInput
+    none?: EvaluationFrequencyConfigWhereInput
+  }
+
   export type EvaluationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -16359,6 +17889,10 @@ export namespace Prisma {
   }
 
   export type CompanyAuditorOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EvaluationFrequencyConfigOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16999,6 +18533,58 @@ export namespace Prisma {
     created_by?: SortOrder
   }
 
+  export type EvaluationFrequencyConfigUser_id_company_id_norm_idCompoundUniqueInput = {
+    user_id: number
+    company_id: number
+    norm_id: number
+  }
+
+  export type EvaluationFrequencyConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type EvaluationFrequencyConfigAvgOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+  }
+
+  export type EvaluationFrequencyConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type EvaluationFrequencyConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+  }
+
+  export type EvaluationFrequencyConfigSumOrderByAggregateInput = {
+    id?: SortOrder
+    user_id?: SortOrder
+    company_id?: SortOrder
+    norm_id?: SortOrder
+    frequency_days?: SortOrder
+  }
+
   export type EvaluationCreateNestedManyWithoutCreatorInput = {
     create?: XOR<EvaluationCreateWithoutCreatorInput, EvaluationUncheckedCreateWithoutCreatorInput> | EvaluationCreateWithoutCreatorInput[] | EvaluationUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCreatorInput | EvaluationCreateOrConnectWithoutCreatorInput[]
@@ -17041,6 +18627,13 @@ export namespace Prisma {
     connect?: CompanyAuditorWhereUniqueInput | CompanyAuditorWhereUniqueInput[]
   }
 
+  export type EvaluationFrequencyConfigCreateNestedManyWithoutUserInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput> | EvaluationFrequencyConfigCreateWithoutUserInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutUserInput | EvaluationFrequencyConfigCreateOrConnectWithoutUserInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyUserInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+  }
+
   export type EvaluationUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<EvaluationCreateWithoutCreatorInput, EvaluationUncheckedCreateWithoutCreatorInput> | EvaluationCreateWithoutCreatorInput[] | EvaluationUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCreatorInput | EvaluationCreateOrConnectWithoutCreatorInput[]
@@ -17081,6 +18674,13 @@ export namespace Prisma {
     connectOrCreate?: CompanyAuditorCreateOrConnectWithoutUserInput | CompanyAuditorCreateOrConnectWithoutUserInput[]
     createMany?: CompanyAuditorCreateManyUserInputEnvelope
     connect?: CompanyAuditorWhereUniqueInput | CompanyAuditorWhereUniqueInput[]
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput> | EvaluationFrequencyConfigCreateWithoutUserInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutUserInput | EvaluationFrequencyConfigCreateOrConnectWithoutUserInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyUserInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -17169,6 +18769,20 @@ export namespace Prisma {
     update?: CompanyAuditorUpdateWithWhereUniqueWithoutUserInput | CompanyAuditorUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: CompanyAuditorUpdateManyWithWhereWithoutUserInput | CompanyAuditorUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: CompanyAuditorScalarWhereInput | CompanyAuditorScalarWhereInput[]
+  }
+
+  export type EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput> | EvaluationFrequencyConfigCreateWithoutUserInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutUserInput | EvaluationFrequencyConfigCreateOrConnectWithoutUserInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutUserInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyUserInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutUserInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutUserInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -17263,6 +18877,20 @@ export namespace Prisma {
     deleteMany?: CompanyAuditorScalarWhereInput | CompanyAuditorScalarWhereInput[]
   }
 
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput> | EvaluationFrequencyConfigCreateWithoutUserInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutUserInput | EvaluationFrequencyConfigCreateOrConnectWithoutUserInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutUserInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyUserInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutUserInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutUserInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+  }
+
   export type EvaluationCreateNestedManyWithoutCompanyInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
@@ -17277,6 +18905,13 @@ export namespace Prisma {
     connect?: CompanyAuditorWhereUniqueInput | CompanyAuditorWhereUniqueInput[]
   }
 
+  export type EvaluationFrequencyConfigCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput> | EvaluationFrequencyConfigCreateWithoutCompanyInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput | EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyCompanyInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+  }
+
   export type EvaluationUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
@@ -17289,6 +18924,13 @@ export namespace Prisma {
     connectOrCreate?: CompanyAuditorCreateOrConnectWithoutCompanyInput | CompanyAuditorCreateOrConnectWithoutCompanyInput[]
     createMany?: CompanyAuditorCreateManyCompanyInputEnvelope
     connect?: CompanyAuditorWhereUniqueInput | CompanyAuditorWhereUniqueInput[]
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput> | EvaluationFrequencyConfigCreateWithoutCompanyInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput | EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyCompanyInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -17323,6 +18965,20 @@ export namespace Prisma {
     deleteMany?: CompanyAuditorScalarWhereInput | CompanyAuditorScalarWhereInput[]
   }
 
+  export type EvaluationFrequencyConfigUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput> | EvaluationFrequencyConfigCreateWithoutCompanyInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput | EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutCompanyInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyCompanyInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutCompanyInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutCompanyInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+  }
+
   export type EvaluationUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<EvaluationCreateWithoutCompanyInput, EvaluationUncheckedCreateWithoutCompanyInput> | EvaluationCreateWithoutCompanyInput[] | EvaluationUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: EvaluationCreateOrConnectWithoutCompanyInput | EvaluationCreateOrConnectWithoutCompanyInput[]
@@ -17351,6 +19007,20 @@ export namespace Prisma {
     deleteMany?: CompanyAuditorScalarWhereInput | CompanyAuditorScalarWhereInput[]
   }
 
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput> | EvaluationFrequencyConfigCreateWithoutCompanyInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput | EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutCompanyInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyCompanyInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutCompanyInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutCompanyInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+  }
+
   export type CriterionCreateNestedManyWithoutNormInput = {
     create?: XOR<CriterionCreateWithoutNormInput, CriterionUncheckedCreateWithoutNormInput> | CriterionCreateWithoutNormInput[] | CriterionUncheckedCreateWithoutNormInput[]
     connectOrCreate?: CriterionCreateOrConnectWithoutNormInput | CriterionCreateOrConnectWithoutNormInput[]
@@ -17365,6 +19035,13 @@ export namespace Prisma {
     connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
   }
 
+  export type EvaluationFrequencyConfigCreateNestedManyWithoutNormInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput> | EvaluationFrequencyConfigCreateWithoutNormInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutNormInput | EvaluationFrequencyConfigCreateOrConnectWithoutNormInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyNormInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+  }
+
   export type CriterionUncheckedCreateNestedManyWithoutNormInput = {
     create?: XOR<CriterionCreateWithoutNormInput, CriterionUncheckedCreateWithoutNormInput> | CriterionCreateWithoutNormInput[] | CriterionUncheckedCreateWithoutNormInput[]
     connectOrCreate?: CriterionCreateOrConnectWithoutNormInput | CriterionCreateOrConnectWithoutNormInput[]
@@ -17377,6 +19054,13 @@ export namespace Prisma {
     connectOrCreate?: EvaluationCreateOrConnectWithoutNormInput | EvaluationCreateOrConnectWithoutNormInput[]
     createMany?: EvaluationCreateManyNormInputEnvelope
     connect?: EvaluationWhereUniqueInput | EvaluationWhereUniqueInput[]
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutNormInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput> | EvaluationFrequencyConfigCreateWithoutNormInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutNormInput | EvaluationFrequencyConfigCreateOrConnectWithoutNormInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyNormInputEnvelope
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
   }
 
   export type CriterionUpdateManyWithoutNormNestedInput = {
@@ -17407,6 +19091,20 @@ export namespace Prisma {
     deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
   }
 
+  export type EvaluationFrequencyConfigUpdateManyWithoutNormNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput> | EvaluationFrequencyConfigCreateWithoutNormInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutNormInput | EvaluationFrequencyConfigCreateOrConnectWithoutNormInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutNormInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutNormInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyNormInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutNormInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutNormInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutNormInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutNormInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+  }
+
   export type CriterionUncheckedUpdateManyWithoutNormNestedInput = {
     create?: XOR<CriterionCreateWithoutNormInput, CriterionUncheckedCreateWithoutNormInput> | CriterionCreateWithoutNormInput[] | CriterionUncheckedCreateWithoutNormInput[]
     connectOrCreate?: CriterionCreateOrConnectWithoutNormInput | CriterionCreateOrConnectWithoutNormInput[]
@@ -17433,6 +19131,20 @@ export namespace Prisma {
     update?: EvaluationUpdateWithWhereUniqueWithoutNormInput | EvaluationUpdateWithWhereUniqueWithoutNormInput[]
     updateMany?: EvaluationUpdateManyWithWhereWithoutNormInput | EvaluationUpdateManyWithWhereWithoutNormInput[]
     deleteMany?: EvaluationScalarWhereInput | EvaluationScalarWhereInput[]
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormNestedInput = {
+    create?: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput> | EvaluationFrequencyConfigCreateWithoutNormInput[] | EvaluationFrequencyConfigUncheckedCreateWithoutNormInput[]
+    connectOrCreate?: EvaluationFrequencyConfigCreateOrConnectWithoutNormInput | EvaluationFrequencyConfigCreateOrConnectWithoutNormInput[]
+    upsert?: EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutNormInput | EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutNormInput[]
+    createMany?: EvaluationFrequencyConfigCreateManyNormInputEnvelope
+    set?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    disconnect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    delete?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    connect?: EvaluationFrequencyConfigWhereUniqueInput | EvaluationFrequencyConfigWhereUniqueInput[]
+    update?: EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutNormInput | EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutNormInput[]
+    updateMany?: EvaluationFrequencyConfigUpdateManyWithWhereWithoutNormInput | EvaluationFrequencyConfigUpdateManyWithWhereWithoutNormInput[]
+    deleteMany?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
   }
 
   export type CompanyCreateNestedOneWithoutEditorUsersInput = {
@@ -17944,6 +19656,48 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEvidencesInput, UserUpdateWithoutEvidencesInput>, UserUncheckedUpdateWithoutEvidencesInput>
   }
 
+  export type UserCreateNestedOneWithoutFrequencyConfigsInput = {
+    create?: XOR<UserCreateWithoutFrequencyConfigsInput, UserUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFrequencyConfigsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CompanyCreateNestedOneWithoutFrequencyConfigsInput = {
+    create?: XOR<CompanyCreateWithoutFrequencyConfigsInput, CompanyUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutFrequencyConfigsInput
+    connect?: CompanyWhereUniqueInput
+  }
+
+  export type NormCreateNestedOneWithoutFrequencyConfigsInput = {
+    create?: XOR<NormCreateWithoutFrequencyConfigsInput, NormUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: NormCreateOrConnectWithoutFrequencyConfigsInput
+    connect?: NormWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFrequencyConfigsNestedInput = {
+    create?: XOR<UserCreateWithoutFrequencyConfigsInput, UserUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFrequencyConfigsInput
+    upsert?: UserUpsertWithoutFrequencyConfigsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFrequencyConfigsInput, UserUpdateWithoutFrequencyConfigsInput>, UserUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
+  export type CompanyUpdateOneRequiredWithoutFrequencyConfigsNestedInput = {
+    create?: XOR<CompanyCreateWithoutFrequencyConfigsInput, CompanyUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: CompanyCreateOrConnectWithoutFrequencyConfigsInput
+    upsert?: CompanyUpsertWithoutFrequencyConfigsInput
+    connect?: CompanyWhereUniqueInput
+    update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutFrequencyConfigsInput, CompanyUpdateWithoutFrequencyConfigsInput>, CompanyUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
+  export type NormUpdateOneRequiredWithoutFrequencyConfigsNestedInput = {
+    create?: XOR<NormCreateWithoutFrequencyConfigsInput, NormUncheckedCreateWithoutFrequencyConfigsInput>
+    connectOrCreate?: NormCreateOrConnectWithoutFrequencyConfigsInput
+    upsert?: NormUpsertWithoutFrequencyConfigsInput
+    connect?: NormWhereUniqueInput
+    update?: XOR<XOR<NormUpdateToOneWithWhereWithoutFrequencyConfigsInput, NormUpdateWithoutFrequencyConfigsInput>, NormUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -18295,6 +20049,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EvaluationFrequencyConfigCreateWithoutUserInput = {
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    company: CompanyCreateNestedOneWithoutFrequencyConfigsInput
+    norm: NormCreateNestedOneWithoutFrequencyConfigsInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateWithoutUserInput = {
+    id?: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type EvaluationFrequencyConfigCreateOrConnectWithoutUserInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    create: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput>
+  }
+
+  export type EvaluationFrequencyConfigCreateManyUserInputEnvelope = {
+    data: EvaluationFrequencyConfigCreateManyUserInput | EvaluationFrequencyConfigCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EvaluationUpsertWithWhereUniqueWithoutCreatorInput = {
     where: EvaluationWhereUniqueInput
     update: XOR<EvaluationUpdateWithoutCreatorInput, EvaluationUncheckedUpdateWithoutCreatorInput>
@@ -18463,6 +20244,35 @@ export namespace Prisma {
     user_id?: IntFilter<"CompanyAuditor"> | number
   }
 
+  export type EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutUserInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    update: XOR<EvaluationFrequencyConfigUpdateWithoutUserInput, EvaluationFrequencyConfigUncheckedUpdateWithoutUserInput>
+    create: XOR<EvaluationFrequencyConfigCreateWithoutUserInput, EvaluationFrequencyConfigUncheckedCreateWithoutUserInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutUserInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    data: XOR<EvaluationFrequencyConfigUpdateWithoutUserInput, EvaluationFrequencyConfigUncheckedUpdateWithoutUserInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateManyWithWhereWithoutUserInput = {
+    where: EvaluationFrequencyConfigScalarWhereInput
+    data: XOR<EvaluationFrequencyConfigUpdateManyMutationInput, EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type EvaluationFrequencyConfigScalarWhereInput = {
+    AND?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+    OR?: EvaluationFrequencyConfigScalarWhereInput[]
+    NOT?: EvaluationFrequencyConfigScalarWhereInput | EvaluationFrequencyConfigScalarWhereInput[]
+    id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    user_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    company_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    norm_id?: IntFilter<"EvaluationFrequencyConfig"> | number
+    frequency_days?: IntFilter<"EvaluationFrequencyConfig"> | number
+    created_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+    updated_at?: DateTimeFilter<"EvaluationFrequencyConfig"> | Date | string
+  }
+
   export type EvaluationCreateWithoutCompanyInput = {
     created_at?: Date | string
     observations?: string | null
@@ -18508,6 +20318,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EvaluationFrequencyConfigCreateWithoutCompanyInput = {
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutFrequencyConfigsInput
+    norm: NormCreateNestedOneWithoutFrequencyConfigsInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput = {
+    id?: number
+    user_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type EvaluationFrequencyConfigCreateOrConnectWithoutCompanyInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    create: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type EvaluationFrequencyConfigCreateManyCompanyInputEnvelope = {
+    data: EvaluationFrequencyConfigCreateManyCompanyInput | EvaluationFrequencyConfigCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
   export type EvaluationUpsertWithWhereUniqueWithoutCompanyInput = {
     where: EvaluationWhereUniqueInput
     update: XOR<EvaluationUpdateWithoutCompanyInput, EvaluationUncheckedUpdateWithoutCompanyInput>
@@ -18538,6 +20375,22 @@ export namespace Prisma {
   export type CompanyAuditorUpdateManyWithWhereWithoutCompanyInput = {
     where: CompanyAuditorScalarWhereInput
     data: XOR<CompanyAuditorUpdateManyMutationInput, CompanyAuditorUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    update: XOR<EvaluationFrequencyConfigUpdateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedUpdateWithoutCompanyInput>
+    create: XOR<EvaluationFrequencyConfigCreateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    data: XOR<EvaluationFrequencyConfigUpdateWithoutCompanyInput, EvaluationFrequencyConfigUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateManyWithWhereWithoutCompanyInput = {
+    where: EvaluationFrequencyConfigScalarWhereInput
+    data: XOR<EvaluationFrequencyConfigUpdateManyMutationInput, EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyInput>
   }
 
   export type CriterionCreateWithoutNormInput = {
@@ -18588,6 +20441,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EvaluationFrequencyConfigCreateWithoutNormInput = {
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutFrequencyConfigsInput
+    company: CompanyCreateNestedOneWithoutFrequencyConfigsInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedCreateWithoutNormInput = {
+    id?: number
+    user_id: number
+    company_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type EvaluationFrequencyConfigCreateOrConnectWithoutNormInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    create: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput>
+  }
+
+  export type EvaluationFrequencyConfigCreateManyNormInputEnvelope = {
+    data: EvaluationFrequencyConfigCreateManyNormInput | EvaluationFrequencyConfigCreateManyNormInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CriterionUpsertWithWhereUniqueWithoutNormInput = {
     where: CriterionWhereUniqueInput
     update: XOR<CriterionUpdateWithoutNormInput, CriterionUncheckedUpdateWithoutNormInput>
@@ -18629,6 +20509,22 @@ export namespace Prisma {
     data: XOR<EvaluationUpdateManyMutationInput, EvaluationUncheckedUpdateManyWithoutNormInput>
   }
 
+  export type EvaluationFrequencyConfigUpsertWithWhereUniqueWithoutNormInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    update: XOR<EvaluationFrequencyConfigUpdateWithoutNormInput, EvaluationFrequencyConfigUncheckedUpdateWithoutNormInput>
+    create: XOR<EvaluationFrequencyConfigCreateWithoutNormInput, EvaluationFrequencyConfigUncheckedCreateWithoutNormInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateWithWhereUniqueWithoutNormInput = {
+    where: EvaluationFrequencyConfigWhereUniqueInput
+    data: XOR<EvaluationFrequencyConfigUpdateWithoutNormInput, EvaluationFrequencyConfigUncheckedUpdateWithoutNormInput>
+  }
+
+  export type EvaluationFrequencyConfigUpdateManyWithWhereWithoutNormInput = {
+    where: EvaluationFrequencyConfigScalarWhereInput
+    data: XOR<EvaluationFrequencyConfigUpdateManyMutationInput, EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormInput>
+  }
+
   export type CompanyCreateWithoutEditorUsersInput = {
     name: string
     nit: number
@@ -18637,6 +20533,7 @@ export namespace Prisma {
     contact_email?: string | null
     phone?: string | null
     evaluations?: EvaluationCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutEditorUsersInput = {
@@ -18648,6 +20545,7 @@ export namespace Prisma {
     contact_email?: string | null
     phone?: string | null
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutEditorUsersInput = {
@@ -18665,6 +20563,7 @@ export namespace Prisma {
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCompanyAuditorsInput = {
@@ -18678,6 +20577,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCompanyAuditorsInput = {
@@ -18704,6 +20604,7 @@ export namespace Prisma {
     contact_email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutEditorUsersInput = {
@@ -18715,6 +20616,7 @@ export namespace Prisma {
     contact_email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutCompanyAuditorsInput = {
@@ -18738,6 +20640,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCompanyAuditorsInput = {
@@ -18751,12 +20654,14 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type NormCreateWithoutCriteriaInput = {
     code: string
     name?: string | null
     evaluations?: EvaluationCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutNormInput
   }
 
   export type NormUncheckedCreateWithoutCriteriaInput = {
@@ -18764,6 +20669,7 @@ export namespace Prisma {
     code: string
     name?: string | null
     evaluations?: EvaluationUncheckedCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutNormInput
   }
 
   export type NormCreateOrConnectWithoutCriteriaInput = {
@@ -18807,6 +20713,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutNormNestedInput
   }
 
   export type NormUncheckedUpdateWithoutCriteriaInput = {
@@ -18814,6 +20721,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     evaluations?: EvaluationUncheckedUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type QuestionUpsertWithWhereUniqueWithoutCriterionInput = {
@@ -18934,6 +20842,7 @@ export namespace Prisma {
     contact_email?: string | null
     phone?: string | null
     editorUsers?: CompanyAuditorCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutEvaluationsInput = {
@@ -18945,6 +20854,7 @@ export namespace Prisma {
     contact_email?: string | null
     phone?: string | null
     editorUsers?: CompanyAuditorUncheckedCreateNestedManyWithoutCompanyInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutEvaluationsInput = {
@@ -18962,6 +20872,7 @@ export namespace Prisma {
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEvaluationsInput = {
@@ -18975,6 +20886,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEvaluationsInput = {
@@ -18986,6 +20898,7 @@ export namespace Prisma {
     code: string
     name?: string | null
     criteria?: CriterionCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutNormInput
   }
 
   export type NormUncheckedCreateWithoutEvaluationsInput = {
@@ -18993,6 +20906,7 @@ export namespace Prisma {
     code: string
     name?: string | null
     criteria?: CriterionUncheckedCreateNestedManyWithoutNormInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutNormInput
   }
 
   export type NormCreateOrConnectWithoutEvaluationsInput = {
@@ -19056,6 +20970,7 @@ export namespace Prisma {
     contact_email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     editorUsers?: CompanyAuditorUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutEvaluationsInput = {
@@ -19067,6 +20982,7 @@ export namespace Prisma {
     contact_email?: NullableStringFieldUpdateOperationsInput | string | null
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     editorUsers?: CompanyAuditorUncheckedUpdateManyWithoutCompanyNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type UserUpsertWithoutEvaluationsInput = {
@@ -19090,6 +21006,7 @@ export namespace Prisma {
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluationsInput = {
@@ -19103,6 +21020,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type NormUpsertWithoutEvaluationsInput = {
@@ -19120,6 +21038,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutNormNestedInput
   }
 
   export type NormUncheckedUpdateWithoutEvaluationsInput = {
@@ -19127,6 +21046,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     criteria?: CriterionUncheckedUpdateManyWithoutNormNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type EvaluationVersionUpsertWithWhereUniqueWithoutEvaluationInput = {
@@ -19177,6 +21097,7 @@ export namespace Prisma {
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutVersionsCreatedInput = {
@@ -19190,6 +21111,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutVersionsCreatedInput = {
@@ -19277,6 +21199,7 @@ export namespace Prisma {
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutVersionsCreatedInput = {
@@ -19290,6 +21213,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerUpsertWithWhereUniqueWithoutEvaluationVersionInput = {
@@ -19389,6 +21313,7 @@ export namespace Prisma {
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnswersInput = {
@@ -19402,6 +21327,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnswersInput = {
@@ -19529,6 +21455,7 @@ export namespace Prisma {
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -19542,6 +21469,7 @@ export namespace Prisma {
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type EvidenceUpsertWithWhereUniqueWithoutAnswerInput = {
@@ -19570,6 +21498,7 @@ export namespace Prisma {
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -19583,6 +21512,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -19637,6 +21567,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -19650,6 +21581,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerUpsertWithoutCommentsInput = {
@@ -19720,6 +21652,7 @@ export namespace Prisma {
     answers?: AnswerCreateNestedManyWithoutCreatorInput
     comments?: CommentCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEvidencesInput = {
@@ -19733,6 +21666,7 @@ export namespace Prisma {
     answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
     comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
     companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEvidencesInput = {
@@ -19793,6 +21727,7 @@ export namespace Prisma {
     answers?: AnswerUpdateManyWithoutCreatorNestedInput
     comments?: CommentUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvidencesInput = {
@@ -19806,6 +21741,185 @@ export namespace Prisma {
     answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
     comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
     companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+    frequencyConfigs?: EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutFrequencyConfigsInput = {
+    name: string
+    email: string
+    password: string
+    role: string
+    evaluations?: EvaluationCreateNestedManyWithoutCreatorInput
+    versionsCreated?: EvaluationVersionCreateNestedManyWithoutCreatorInput
+    answers?: AnswerCreateNestedManyWithoutCreatorInput
+    evidences?: EvidenceCreateNestedManyWithoutCreatorInput
+    comments?: CommentCreateNestedManyWithoutCreatorInput
+    companyAuditors?: CompanyAuditorCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutFrequencyConfigsInput = {
+    id?: number
+    name: string
+    email: string
+    password: string
+    role: string
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutCreatorInput
+    versionsCreated?: EvaluationVersionUncheckedCreateNestedManyWithoutCreatorInput
+    answers?: AnswerUncheckedCreateNestedManyWithoutCreatorInput
+    evidences?: EvidenceUncheckedCreateNestedManyWithoutCreatorInput
+    comments?: CommentUncheckedCreateNestedManyWithoutCreatorInput
+    companyAuditors?: CompanyAuditorUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutFrequencyConfigsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFrequencyConfigsInput, UserUncheckedCreateWithoutFrequencyConfigsInput>
+  }
+
+  export type CompanyCreateWithoutFrequencyConfigsInput = {
+    name: string
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    evaluations?: EvaluationCreateNestedManyWithoutCompanyInput
+    editorUsers?: CompanyAuditorCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyUncheckedCreateWithoutFrequencyConfigsInput = {
+    id?: number
+    name: string
+    nit: number
+    address?: string | null
+    contact_name?: string | null
+    contact_email?: string | null
+    phone?: string | null
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutCompanyInput
+    editorUsers?: CompanyAuditorUncheckedCreateNestedManyWithoutCompanyInput
+  }
+
+  export type CompanyCreateOrConnectWithoutFrequencyConfigsInput = {
+    where: CompanyWhereUniqueInput
+    create: XOR<CompanyCreateWithoutFrequencyConfigsInput, CompanyUncheckedCreateWithoutFrequencyConfigsInput>
+  }
+
+  export type NormCreateWithoutFrequencyConfigsInput = {
+    code: string
+    name?: string | null
+    criteria?: CriterionCreateNestedManyWithoutNormInput
+    evaluations?: EvaluationCreateNestedManyWithoutNormInput
+  }
+
+  export type NormUncheckedCreateWithoutFrequencyConfigsInput = {
+    id?: number
+    code: string
+    name?: string | null
+    criteria?: CriterionUncheckedCreateNestedManyWithoutNormInput
+    evaluations?: EvaluationUncheckedCreateNestedManyWithoutNormInput
+  }
+
+  export type NormCreateOrConnectWithoutFrequencyConfigsInput = {
+    where: NormWhereUniqueInput
+    create: XOR<NormCreateWithoutFrequencyConfigsInput, NormUncheckedCreateWithoutFrequencyConfigsInput>
+  }
+
+  export type UserUpsertWithoutFrequencyConfigsInput = {
+    update: XOR<UserUpdateWithoutFrequencyConfigsInput, UserUncheckedUpdateWithoutFrequencyConfigsInput>
+    create: XOR<UserCreateWithoutFrequencyConfigsInput, UserUncheckedCreateWithoutFrequencyConfigsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFrequencyConfigsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFrequencyConfigsInput, UserUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
+  export type UserUpdateWithoutFrequencyConfigsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    evaluations?: EvaluationUpdateManyWithoutCreatorNestedInput
+    versionsCreated?: EvaluationVersionUpdateManyWithoutCreatorNestedInput
+    answers?: AnswerUpdateManyWithoutCreatorNestedInput
+    evidences?: EvidenceUpdateManyWithoutCreatorNestedInput
+    comments?: CommentUpdateManyWithoutCreatorNestedInput
+    companyAuditors?: CompanyAuditorUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFrequencyConfigsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    evaluations?: EvaluationUncheckedUpdateManyWithoutCreatorNestedInput
+    versionsCreated?: EvaluationVersionUncheckedUpdateManyWithoutCreatorNestedInput
+    answers?: AnswerUncheckedUpdateManyWithoutCreatorNestedInput
+    evidences?: EvidenceUncheckedUpdateManyWithoutCreatorNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutCreatorNestedInput
+    companyAuditors?: CompanyAuditorUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CompanyUpsertWithoutFrequencyConfigsInput = {
+    update: XOR<CompanyUpdateWithoutFrequencyConfigsInput, CompanyUncheckedUpdateWithoutFrequencyConfigsInput>
+    create: XOR<CompanyCreateWithoutFrequencyConfigsInput, CompanyUncheckedCreateWithoutFrequencyConfigsInput>
+    where?: CompanyWhereInput
+  }
+
+  export type CompanyUpdateToOneWithWhereWithoutFrequencyConfigsInput = {
+    where?: CompanyWhereInput
+    data: XOR<CompanyUpdateWithoutFrequencyConfigsInput, CompanyUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
+  export type CompanyUpdateWithoutFrequencyConfigsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUpdateManyWithoutCompanyNestedInput
+    editorUsers?: CompanyAuditorUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type CompanyUncheckedUpdateWithoutFrequencyConfigsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    nit?: IntFieldUpdateOperationsInput | number
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_name?: NullableStringFieldUpdateOperationsInput | string | null
+    contact_email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    evaluations?: EvaluationUncheckedUpdateManyWithoutCompanyNestedInput
+    editorUsers?: CompanyAuditorUncheckedUpdateManyWithoutCompanyNestedInput
+  }
+
+  export type NormUpsertWithoutFrequencyConfigsInput = {
+    update: XOR<NormUpdateWithoutFrequencyConfigsInput, NormUncheckedUpdateWithoutFrequencyConfigsInput>
+    create: XOR<NormCreateWithoutFrequencyConfigsInput, NormUncheckedCreateWithoutFrequencyConfigsInput>
+    where?: NormWhereInput
+  }
+
+  export type NormUpdateToOneWithWhereWithoutFrequencyConfigsInput = {
+    where?: NormWhereInput
+    data: XOR<NormUpdateWithoutFrequencyConfigsInput, NormUncheckedUpdateWithoutFrequencyConfigsInput>
+  }
+
+  export type NormUpdateWithoutFrequencyConfigsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    criteria?: CriterionUpdateManyWithoutNormNestedInput
+    evaluations?: EvaluationUpdateManyWithoutNormNestedInput
+  }
+
+  export type NormUncheckedUpdateWithoutFrequencyConfigsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    criteria?: CriterionUncheckedUpdateManyWithoutNormNestedInput
+    evaluations?: EvaluationUncheckedUpdateManyWithoutNormNestedInput
   }
 
   export type EvaluationCreateManyCreatorInput = {
@@ -19854,6 +21968,15 @@ export namespace Prisma {
 
   export type CompanyAuditorCreateManyUserInput = {
     company_id: number
+  }
+
+  export type EvaluationFrequencyConfigCreateManyUserInput = {
+    id?: number
+    company_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type EvaluationUpdateWithoutCreatorInput = {
@@ -20003,6 +22126,32 @@ export namespace Prisma {
     company_id?: IntFieldUpdateOperationsInput | number
   }
 
+  export type EvaluationFrequencyConfigUpdateWithoutUserInput = {
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    company?: CompanyUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+    norm?: NormUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EvaluationCreateManyCompanyInput = {
     id?: number
     created_by: number
@@ -20013,6 +22162,15 @@ export namespace Prisma {
 
   export type CompanyAuditorCreateManyCompanyInput = {
     user_id: number
+  }
+
+  export type EvaluationFrequencyConfigCreateManyCompanyInput = {
+    id?: number
+    user_id: number
+    norm_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type EvaluationUpdateWithoutCompanyInput = {
@@ -20052,6 +22210,32 @@ export namespace Prisma {
     user_id?: IntFieldUpdateOperationsInput | number
   }
 
+  export type EvaluationFrequencyConfigUpdateWithoutCompanyInput = {
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+    norm?: NormUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutCompanyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    norm_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CriterionCreateManyNormInput = {
     id?: number
     description?: string | null
@@ -20063,6 +22247,15 @@ export namespace Prisma {
     created_by: number
     created_at?: Date | string
     observations?: string | null
+  }
+
+  export type EvaluationFrequencyConfigCreateManyNormInput = {
+    id?: number
+    user_id: number
+    company_id: number
+    frequency_days: number
+    created_at?: Date | string
+    updated_at?: Date | string
   }
 
   export type CriterionUpdateWithoutNormInput = {
@@ -20104,6 +22297,32 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     observations?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EvaluationFrequencyConfigUpdateWithoutNormInput = {
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+    company?: CompanyUpdateOneRequiredWithoutFrequencyConfigsNestedInput
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateWithoutNormInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EvaluationFrequencyConfigUncheckedUpdateManyWithoutNormInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    user_id?: IntFieldUpdateOperationsInput | number
+    company_id?: IntFieldUpdateOperationsInput | number
+    frequency_days?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type QuestionCreateManyCriterionInput = {

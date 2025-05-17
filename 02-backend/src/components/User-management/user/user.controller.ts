@@ -39,7 +39,8 @@ export class UserController {
   }
 
 
-  //endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  //HU002 y HU017 endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  //Sirve para listar los usuarios y asi seleccionar a quien se va a configurar
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get('search')
@@ -57,9 +58,27 @@ export class UserController {
   return this.service.obtenerUsuarioPorId(id); 
   }
 
-  @Post('auditFrequency')
+  
+  // HU017 - Trae las empresas asociadas a un usuario para armar el formulario de configuración
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @Get(':id/companies')
+  async getCompaniesByUser(@Param('id', ParseIntPipe) id: number) {
+    return this.service.getCompaniesByUserId(id);
+  }
+
+  // HU017 - Trae las normas donde se aplicara la frecuencia para armar el formulario de configuración
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get('config/norms')
+  getIdByNorms() {
+    return this.service.getIdByNormToConfig();
+  }
+
+  //Endpoint HU017 para guardar la configuracion hecha con los datos recopilados con los endpoints anteriores
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('config/frequency')
   async updateAuditFrequency(@Body() updateFrequencyDto: UpdateFrequencyDto) {
     return this.service.updateFrequency(updateFrequencyDto);
   }

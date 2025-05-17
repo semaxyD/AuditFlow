@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
+import { AuditFrequencyGuard } from 'src/components/Middleware/Auth/auditFrecuency.guard';
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { CurrentUser } from 'src/components/Middleware/decorators/current-user.decorator';
 import { CreateEvaluationDto } from './evaluation.dto';
@@ -41,7 +42,7 @@ export class EvaluationController {
   //ENDPOINTS ESPECIFICOS ENTRE LA HU008 y HU010
 
   //Endpoint especifico para guardar de la HU008 - auditor interno
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, AuditFrequencyGuard)
   @Roles('auditor_interno')
   @Post('/:normId/save')
   submitEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number },) {
@@ -59,7 +60,7 @@ export class EvaluationController {
   }
 
   //Endpoint especifico para guardar de la HU010
-  @UseGuards(JwtAuthGuard, RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard, AuditFrequencyGuard)
   @Roles('auditor_externo')
   @Post('/:normId/:companyId/saveExternal')
   submitExternalEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Param('companyId', ParseIntPipe) companyIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number }) {
