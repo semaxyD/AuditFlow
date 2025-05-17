@@ -25,15 +25,12 @@ export function ObservationsModal({
   const [observation, setObservation] = useState(initialObservation);
 
   useEffect(() => {
-    console.log("Modal abierto:", openObservationsModal);
-    console.log("Valor inicial recibido:", initialObservation);
     if (openObservationsModal) {
       setObservation(initialObservation);
     }
   }, [openObservationsModal, initialObservation]);
 
   const handleSave = () => {
-    console.log("Guardando observación:", observation);
     if (observation.trim()) {
       onSaveObservation(observation);
       setOpenObservationsModal(false);
@@ -41,7 +38,10 @@ export function ObservationsModal({
   };
 
   return (
-    <Dialog open={openObservationsModal} onOpenChange={setOpenObservationsModal}>
+    <Dialog
+      open={openObservationsModal}
+      onOpenChange={setOpenObservationsModal}
+    >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Añadir observación final</DialogTitle>
@@ -54,21 +54,21 @@ export function ObservationsModal({
             <Label htmlFor="observation" className="text-right">
               Observación
             </Label>
-            <Textarea 
-              id="observation" 
+            <Textarea
+              id="observation"
               value={observation}
               onChange={(e) => {
                 console.log("Nuevo valor:", e.target.value);
                 setObservation(e.target.value);
               }}
-              className="col-span-3 resize-none" 
+              className="col-span-3 resize-none"
               placeholder="Escriba su observación aquí..."
             />
           </div>
         </div>
         <DialogFooter>
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             onClick={handleSave}
             disabled={!observation.trim()}
           >
