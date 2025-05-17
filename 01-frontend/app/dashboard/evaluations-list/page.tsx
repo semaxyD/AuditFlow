@@ -11,6 +11,14 @@ export default function Evaluation() {
       <p className="text-gray-500">
         Aquí puedes ver todas las evaluaciones que has realizado para la norma.
       </p>
+
+      <canvas
+        id="chartCanvas"
+        width="400"
+        height="200"
+        style={{ display: "none" }}
+      ></canvas>
+
       <EvaluationsTable
         columns={columns}
         data={MOCK_EVALUATIONS}

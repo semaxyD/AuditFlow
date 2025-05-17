@@ -1,3 +1,4 @@
+// src/app/dashboard/companies/[companyId]/version/[versionId]/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -17,9 +18,9 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CompanyHeader } from "./components/CompanyHeader";
 import { EvaluationInfoCard } from "./components/EvaluationInfoCard";
-import { QuestionsList } from "./components/QuestionsList";
-import { set } from "zod";
+import { CriteriaList } from "./components/CriteriaList";
 import { Loading } from "@/components/Loading";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 ChartJS.register(
   Title,
@@ -34,102 +35,97 @@ export default function EvaluationPage() {
   const params = useParams();
   const companyId = params?.companyId as string;
   const versionId = params?.versionId as string;
+  const { role, status } = useRoleCheck(["auditor_interno", "auditor_externo"]);
 
   const [showObs, setShowObs] = useState(false);
-  const [total_questions, setTotal_questions] = useState<string>("");
-  const [answered_questions, setAnswered_questions] = useState<string>("");
-  const [completion_percentage, setCompletion_percentage] =
-    useState<string>("");
-  const [normName, setNormName] = useState<string>("");
-  const [companyName, setCompanyName] = useState<string>("");
-  const [companyNit, setCompanyNit] = useState<string>("");
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [observations, setObservations] = useState<string>("");
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState(0);
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [normName, setNormName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyNit, setCompanyNit] = useState("");
+  const [criteria, setCriteria] = useState<any[]>([]);
+  const [observations, setObservations] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (status === "loading" || role === null) return;
     if (!companyId || !versionId) {
       setError("Parámetros de ruta no disponibles");
       setLoading(false);
       return;
     }
-
-    const url = `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
+    setLoading(true);
     const token = localStorage.getItem("token") || "";
+    const endpoint =
+      role === "auditor_externo"
+        ? `http://localhost:3001/reports-evaluation/evaluation/${versionId}/details`
+        : `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
 
-    fetch(url, {
+    fetch(endpoint, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        if (!res.ok) {
-          return res.text().then((text) => {
-            throw new Error(`Error ${res.status}: ${text}`);
-          });
-        }
-        return res.json();
-      })
+      .then((res) =>
+        res.ok
+          ? res.json()
+          : res.text().then((t) => {
+              throw new Error(t);
+            })
+      )
       .then((data) => {
         const payload = Array.isArray(data) ? data[0] : data;
-        if (!payload || !Array.isArray(payload.questions)) {
-          throw new Error("Formato inesperado de respuesta");
-        }
-
         setCompanyName(payload.company_name);
         setNormName(payload.norm_name);
-        setTotal_questions(payload.total_questions);
-        setAnswered_questions(payload.answered_questions);
-        setCompletion_percentage(payload.completion_percentage);
+        setTotalQuestions(payload.total_questions);
+        setAnsweredQuestions(payload.answered_questions);
+        setCompletionPercentage(payload.completion_percentage);
         setCompanyNit(payload.nit);
-        setQuestions(payload.questions);
+        setCriteria(payload.criteria);
         setObservations(payload.observations || "");
       })
-      .catch((err) => {
-        setError(err.message);
-      })
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [companyId, versionId]);
+  }, [companyId, versionId, role, status]);
 
   if (loading) return <Loading message="Cargando evaluación…" />;
   if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
 
-  // Cálculo de 'Sí' y 'No'
-  const yesCount = questions.filter((q) => q.response === "Sí").length;
-  const noCount = questions.filter((q) => q.response === "No").length;
-  const totalQuestions = questions.length;
-  const compliancePercentage = Math.round((yesCount / totalQuestions) * 100);
+  // Aplana todas las preguntas para los cálculos
+  const allQuestions = criteria.flatMap((c) => c.questions);
+  const yesCount = allQuestions.filter((q) => q.response === "Sí").length;
+  const noCount = allQuestions.filter((q) => q.response === "No").length;
+  const naCount = allQuestions.filter((q) => q.response === "No aplica").length;
+  const improveCount = allQuestions.filter((q) => q.response === "N/M").length;
+  const totalCount = allQuestions.length;
+  const compliancePerc =
+    totalCount > 0 ? Math.round((yesCount / totalCount) * 100) : 0;
 
-  const data = {
-    labels: ["Sí", "No"],
+  const chartData = {
+    labels: ["Sí", "No", "N/A", "N/M"],
     datasets: [
       {
         label: "Respuestas",
-        data: [yesCount, noCount],
-        backgroundColor: ["#00786f", "#ef4444"],
-        borderColor: ["#00786f", "#ef4444"],
+        data: [yesCount, noCount, naCount, improveCount],
+        backgroundColor: ["#00786f", "#ef4444", "#6b7280", "#f59e0b"],
+        borderColor: ["#00786f", "#ef4444", "#6b7280", "#f59e0b"],
         borderWidth: 1,
       },
     ],
   };
-
-  const options = {
+  const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: "bottom" as const,
-        labels: {
-          padding: 20,
-          font: { size: 14 },
-        },
-      },
+      legend: { position: "bottom" as const },
       tooltip: {
         callbacks: {
-          label: (ctx: any) => {
-            const pct = Math.round((ctx.raw / totalQuestions) * 100);
+          label: (ctx) => {
+            const pct =
+              totalCount > 0 ? Math.round((ctx.raw / totalCount) * 100) : 0;
             return `${ctx.label}: ${ctx.raw} (${pct}%)`;
           },
         },
@@ -151,48 +147,43 @@ export default function EvaluationPage() {
 
       <EvaluationInfoCard
         norm={normName}
-        total_questions={Number(total_questions)}
-        answered_questions={Number(answered_questions)}
-        completion_percentage={Number(completion_percentage)}
         version={{
           version_id: Number(versionId),
-          created_at: questions[0]?.created_at,
+          created_at: allQuestions[0]?.created_at,
         }}
         yesCount={yesCount}
         noCount={noCount}
-        totalQuestions={totalQuestions}
-        compliancePercentage={compliancePercentage}
-        chartData={data}
-        chartOptions={options}
+        naCount={naCount}
+        improveCount={improveCount}
+        totalQuestions={totalCount}
+        compliancePercentage={compliancePerc}
+        answered_questions={answeredQuestions}
+        total_questions={totalQuestions}
+        completion_percentage={completionPercentage}
+        chartData={chartData}
+        chartOptions={chartOptions}
         formatDate={formatDate}
       />
 
-      {/* Observaciones: Tarjeta interactiva con collapse */}
       {observations && (
-        <Card className="border-teal-700">
+        <Card className="border-teal-700 mb-8">
           <CardHeader
-            className="flex justify-between items-center cursor-pointer"
             onClick={() => setShowObs((v) => !v)}
+            className="cursor-pointer"
           >
             <CardTitle className="flex items-center gap-2 text-teal-700">
-              <span>📝 Observaciones</span>
-              {showObs ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              📝 Observaciones {showObs ? <ChevronUp /> : <ChevronDown />}
             </CardTitle>
           </CardHeader>
-
           <AnimatePresence initial={false}>
             {showObs && (
               <motion.div
-                key="obs-content"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                initial={{ height: 0 }}
+                animate={{ height: "auto" }}
+                exit={{ height: 0 }}
               >
-                <CardContent className="pt-0">
-                  <p className="text-sm leading-relaxed text-gray-800">
-                    {observations}
-                  </p>
+                <CardContent>
+                  <p className="text-sm">{observations}</p>
                 </CardContent>
               </motion.div>
             )}
@@ -200,11 +191,10 @@ export default function EvaluationPage() {
         </Card>
       )}
 
-      <h2 className="text-2xl font-semibold text-teal-700 mb-6 mt-2.5">
+      <h2 className="text-2xl font-semibold text-teal-700 mb-6">
         Preguntas y Respuestas
       </h2>
-
-      <QuestionsList questions={questions} />
+      <CriteriaList criteria={criteria} />
     </div>
   );
 }

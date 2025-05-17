@@ -11,7 +11,6 @@ import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
 import { CurrentUser } from 'src/components/Middleware/decorators/current-user.decorator';
-import { version } from 'os';
 
 @Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
 export class ReportEvaluationController {
@@ -33,7 +32,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'auditor_interno')
   @Get(':evaluationId/version/:versionId')
   getEvaluationDetail(
     @Param('evaluationId', ParseIntPipe) evaluationId: number,
@@ -43,7 +42,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
+  @Roles('admin', 'auditor_interno')
   @Get(':evaluationId/evolution')
   getEvolution(@Param('evaluationId', ParseIntPipe) evaluationId: number) {
     return this.service.getEvolutionEvaluation(evaluationId);
@@ -51,14 +50,14 @@ export class ReportEvaluationController {
 
   // Endpoints Hu009
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get('myCompanies')
   getMyCompanies(@CurrentUser() user: { id: number }) {
     return this.service.getExternalAuditorCompaniesById(user.id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get(':companyId/myEvaluations')
   getMyEvaluations(
     @Param('companyId', ParseIntPipe) companyId: number,
@@ -71,7 +70,7 @@ export class ReportEvaluationController {
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_externo')
+  @Roles('auditor_externo', 'auditor_interno')
   @Get('evaluation/:evaluationId/details')
   getEvaluationDetails(
     @Param('evaluationId', ParseIntPipe) evaluationId: number,

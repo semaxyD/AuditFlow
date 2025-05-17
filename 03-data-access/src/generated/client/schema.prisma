@@ -15,17 +15,18 @@ datasource db {
 }
 
 model User {
-  id              Int                 @id @default(autoincrement())
-  name            String
-  email           String              @unique
-  password        String
-  role            String
-  evaluations     Evaluation[]        @relation("EvaluationCreatedBy")
-  versionsCreated EvaluationVersion[] @relation("VersionCreatedBy")
-  answers         Answer[]            @relation("AnswerCreatedBy")
-  evidences       Evidence[]          @relation("EvidenceCreatedBy")
-  comments        Comment[]           @relation("CommentCreatedBy")
-  companyAuditors CompanyAuditor[]
+  id               Int                         @id @default(autoincrement())
+  name             String
+  email            String                      @unique
+  password         String
+  role             String
+  evaluations      Evaluation[]                @relation("EvaluationCreatedBy")
+  versionsCreated  EvaluationVersion[]         @relation("VersionCreatedBy")
+  answers          Answer[]                    @relation("AnswerCreatedBy")
+  evidences        Evidence[]                  @relation("EvidenceCreatedBy")
+  comments         Comment[]                   @relation("CommentCreatedBy")
+  companyAuditors  CompanyAuditor[]
+  frequencyConfigs EvaluationFrequencyConfig[]
 
   @@map("user")
 }
@@ -41,6 +42,8 @@ model Company {
   evaluations   Evaluation[]
   editorUsers   CompanyAuditor[]
 
+  frequencyConfigs EvaluationFrequencyConfig[]
+
   @@map("company")
 }
 
@@ -50,6 +53,8 @@ model Norm {
   name        String?
   criteria    Criterion[]
   evaluations Evaluation[]
+
+  frequencyConfigs EvaluationFrequencyConfig[]
 
   @@map("norm")
 }
@@ -157,4 +162,21 @@ model Evidence {
   creator    User     @relation("EvidenceCreatedBy", fields: [created_by], references: [id])
 
   @@map("evidence")
+}
+
+model EvaluationFrequencyConfig {
+  id             Int      @id @default(autoincrement())
+  user_id        Int
+  company_id     Int
+  norm_id        Int
+  frequency_days Int
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+
+  user    User    @relation(fields: [user_id], references: [id])
+  company Company @relation(fields: [company_id], references: [id])
+  norm    Norm    @relation(fields: [norm_id], references: [id])
+
+  @@unique([user_id, company_id, norm_id], name: "user_id_company_id_norm_id")
+  @@map("evaluation_frequency_config")
 }

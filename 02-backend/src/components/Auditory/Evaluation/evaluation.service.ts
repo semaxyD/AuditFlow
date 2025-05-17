@@ -49,7 +49,7 @@ export class EvaluationService {
     for (const section of dto.sections) {
       for (const question of section.questions) {
         const validScores = [0, 50, 100, null];
-        const validAnswers = ['Si', 'No', 'NM', 'NA'];
+        const validAnswers = ['Sí', 'No', 'NM', 'NA'];
 
         if (!validScores.includes(question.score)) {
           throw new BadRequestException(
@@ -198,7 +198,7 @@ export class EvaluationService {
     }
 
     const completionPercentage = maxScore > 0 ? (totalScore / maxScore) * 100 : 0;
-
+    console.log("completionPercentaje: ",completionPercentage)
     let maturityLevel: String;
     if (completionPercentage >= 80) maturityLevel = 'Aprobado';
     else if (completionPercentage >= 50) maturityLevel = 'Intermedio';

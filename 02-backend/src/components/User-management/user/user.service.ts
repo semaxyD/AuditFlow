@@ -1,67 +1,94 @@
-import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException} from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { QueryFilterService } from '../../../imports-barrel';
 import { LoginDto } from './login.dto';
+import { UpdateFrequencyDto } from './update-frecuency.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly queryFilter: QueryFilterService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   async CompaniesList() {
-  try{
-      const companies = await this.queryFilter.filterQuery('getListCompanies', 'company-queries');
-      return companies
-    }catch(error){
-      throw new InternalServerErrorException('Error fetching evaluations',error);
-    };
+    try {
+      const companies = await this.queryFilter.filterQuery(
+        'getListCompanies',
+        'company-queries',
+      );
+      return companies;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error fetching evaluations',
+        error,
+      );
+    }
   }
 
   //Crear users(Solo para Admins)
   async crearUsuario(data: any) {
     const { name, email, password, role, companyIds } = data;
-  
-    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', email);
-  
+
+    const buscarUsuarioPorEmail = await this.queryFilter.filterQuery(
+      'getUserByEmail',
+      'user-queries',
+      email,
+    );
+
     if (buscarUsuarioPorEmail) {
       throw new BadRequestException('El correo ya está registrado');
     }
 
-    if(role === 'auditor_interno'){
+    if (role === 'auditor_interno') {
       if (!companyIds || companyIds.length !== 1) {
-      throw new BadRequestException('El auditor interno debe estar asociado a una única empresa');
+        throw new BadRequestException(
+          'El auditor interno debe estar asociado a una única empresa',
+        );
       }
     } else if (role === 'auditor_externo') {
       if (!companyIds || companyIds.length < 1) {
-        throw new BadRequestException('El auditor externo debe estar asociado al menos a una empresa');
+        throw new BadRequestException(
+          'El auditor externo debe estar asociado al menos a una empresa',
+        );
       }
     }
-  
+
     const hashedPassword = await bcrypt.hash(password, 10);
-  
-    const nuevoUsuario = await this.queryFilter.filterQuery('createUser', 'user-queries',
+
+    const nuevoUsuario = await this.queryFilter.filterQuery(
+      'createUser',
+      'user-queries',
       {
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      companyIds: role == 'admin' ? [] : companyIds,
-      });
-      
+        name,
+        email,
+        password: hashedPassword,
+        role,
+        companyIds: role == 'admin' ? [] : companyIds,
+      },
+    );
+
     return {
       message: 'Usuario registrado correctamente',
       id: nuevoUsuario.id,
     };
   }
-  
 
-  async login(dto: LoginDto): Promise<{ message: string; access_token: string }> {
+  async login(
+    dto: LoginDto,
+  ): Promise<{ message: string; access_token: string }> {
     // Buscar al usuario en la base de datos usando su correo electrónico
-    const user = await this.queryFilter.filterQuery('getUserByEmail', 'user-queries', dto.email);
+    const user = await this.queryFilter.filterQuery(
+      'getUserByEmail',
+      'user-queries',
+      dto.email,
+    );
 
     // Si no se encuentra el usuario, se lanza una excepción
     if (!user) {
@@ -81,6 +108,7 @@ export class UserService {
       email: user.email,
       id: user.id,
       role: user.role,
+      name: user.name,
     };
 
     const access_token = this.jwtService.sign(payload);
@@ -91,11 +119,14 @@ export class UserService {
       access_token,
     };
   }
-  
+
   // solo admins
   // método que devuelve los usuarios
   async buscarUsuarios() {
-    const usuarios = await this.queryFilter.filterQuery('searchUser', 'user-queries');
+    const usuarios = await this.queryFilter.filterQuery(
+      'searchUser',
+      'user-queries',
+    );
 
     return {
       message: 'Usuarios encontrados correctamente',
@@ -105,18 +136,53 @@ export class UserService {
 
   // devuelve los campos del usuario por id
   async obtenerUsuarioPorId(id: number) {
+    const obtenerUsuarioPorId = await this.queryFilter.filterQuery(
+      'getUserById',
+      'user-queries',
+      id,
+    );
 
-  
-  const obtenerUsuarioPorId = await this.queryFilter.filterQuery('getUserById', 'user-queries',id);
+    if (!obtenerUsuarioPorId) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
 
-  if (!obtenerUsuarioPorId) {
-    throw new NotFoundException('Usuario no encontrado');
+    return {
+      message: 'Usuario cargado correctamente',
+      data: obtenerUsuarioPorId,
+    };
   }
 
-  return {
-    message: 'Usuario cargado correctamente',
-    data: obtenerUsuarioPorId,
-    };
-  
+  //HU017 Trae las normas para armar el Body para el service updateFrequency
+  async getIdByNormToConfig() {
+    try {
+      const query = await this.queryFilter.filterQuery('getAllNormsBasicInfo', 'norm-queries');
+      return query
+    } catch (error) {
+      throw new InternalServerErrorException('Error al obtener las normas para configurar frecuencia', error);
+    }
+  }
+
+  //HU017 Trae las empresas del user elejido para armar el Body para el service updateFrequency
+  async getCompaniesByUserId(userId: number) {
+    return this.queryFilter.filterQuery(
+      'getCompaniesByUserId',
+      'user-queries',
+      userId
+    );
+  }
+
+  //HU017 configuracion de frecuencia a un usuario para evaluar una norma para una empresa
+  async updateFrequency(frecuencyDto: UpdateFrequencyDto) {
+
+    const result = await this.queryFilter.filterQuery(
+      'upsertFrequencyConfig',
+      'evaluation-frecuency-queries',
+      frecuencyDto);
+
+    if (!result) {
+    throw new InternalServerErrorException('No se pudo actualizar la frecuencia');
+    }
+
+    return { message: 'Frecuencia actualizada correctamente', config: result};
   }
 }

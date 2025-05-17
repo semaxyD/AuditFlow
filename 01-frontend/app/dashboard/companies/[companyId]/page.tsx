@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import EvaluationTable from "./ComplatainsTable/TableEvaluations";
-import { evaluationColumns } from "./ComplatainsTable/columns";
+import { getEvaluationColumns } from "./ComplatainsTable/columns";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
+
 import type {
   ApiEvaluation,
   Evaluation,
@@ -20,8 +22,13 @@ export default function CompanyPage() {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
 
   useEffect(() => {
+    if (status === "loading" || role === null) return;
+    setLoading(true);
+    setError(null);
+
     if (!companyId) {
       setError("ID de compañía no disponible");
       setLoading(false);
@@ -30,13 +37,19 @@ export default function CompanyPage() {
 
     const token = window.localStorage.getItem("token") || "";
 
-    fetch(`http://localhost:3001/reports-evaluation/${companyId}/evaluations`, {
+    const endpoint =
+      role === "auditor_interno" || role === "auditor_externo"
+        ? `http://localhost:3001/reports-evaluation/${companyId}/myEvaluations`
+        : `http://localhost:3001/reports-evaluation/${companyId}/evaluations`;
+
+    fetch(endpoint, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
+        console.log("Respuesta de la API:", res);
         if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
         return res.json() as Promise<ApiEvaluation[]>;
       })
@@ -52,9 +65,9 @@ export default function CompanyPage() {
           creator_name: ev.creator_name,
           company_id: Number(companyId),
           norm: {
-            norm_id: ev.norm_id,
-            norm_name: ev.norm_name,
-            norm_code: ev.norm_code,
+            norm_id: ev.norm.id,
+            norm_name: ev.norm.name,
+            norm_code: ev.norm.code,
           },
         }));
         console.log("Datos mapeados:", mapped);
@@ -62,7 +75,7 @@ export default function CompanyPage() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [companyId]);
+  }, [companyId, role, status]);
 
   if (loading) return <Loading message="Cargando evaluaciones…" />;
   if (error)
@@ -79,7 +92,11 @@ export default function CompanyPage() {
       </h1>
       <div className="bg-white rounded-lg shadow p-6 pt-2 mt-4">
         <h2 className="text-xl mt-6 font-semibold">Evaluaciones</h2>
-        <EvaluationTable columns={evaluationColumns} data={evaluations} />
+        <EvaluationTable
+          columns={getEvaluationColumns(role!)}
+          data={evaluations}
+          role={role}
+        />
       </div>
     </div>
   );

@@ -210,6 +210,16 @@ exports.Prisma.EvidenceScalarFieldEnum = {
   created_at: 'created_at'
 };
 
+exports.Prisma.EvaluationFrequencyConfigScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  company_id: 'company_id',
+  norm_id: 'norm_id',
+  frequency_days: 'frequency_days',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -237,7 +247,8 @@ exports.Prisma.ModelName = {
   EvaluationVersion: 'EvaluationVersion',
   Answer: 'Answer',
   Comment: 'Comment',
-  Evidence: 'Evidence'
+  Evidence: 'Evidence',
+  EvaluationFrequencyConfig: 'EvaluationFrequencyConfig'
 };
 
 /**

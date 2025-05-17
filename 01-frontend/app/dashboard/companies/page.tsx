@@ -5,37 +5,45 @@ import { columns } from "./ComplaintsTable/columns";
 import { Company } from "./ComplaintsTable/types/company";
 import CompaniesTable from "./ComplaintsTable/CompaniesTable";
 import { Loading } from "@/components/Loading";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 export default function SearchUsersPage() {
-  const fetchCompanies = async (token: string): Promise<Company[]> => {
-    const res = await fetch(
-      "http://localhost:3001/reports-evaluation/companies",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error(`Error ${res.status}: ${res.statusText}`);
-    }
-    return res.json();
-  };
-
+  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
   const [data, setData] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (status === "loading" || role === null) return;
+    setLoading(true);
+    setError(null);
+
     const token = window.localStorage.getItem("token") || "";
-    fetchCompanies(token)
-      .then((companies) => setData(companies))
+
+    const endpoint =
+      role === "auditor_interno" || role === "auditor_externo"
+        ? "http://localhost:3001/reports-evaluation/myCompanies"
+        : "http://localhost:3001/reports-evaluation/companies";
+
+    fetch(endpoint, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
+        return res.json();
+      })
+      .then((companies: Company[]) => setData(companies))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [role, status]);
 
-  if (loading) return <Loading message="Cargando empresas…" />;
+  if (status === "loading" || loading) {
+    return <Loading message="Cargando empresas…" />;
+  }
+
   if (error) {
     return (
       <div className="p-6">

@@ -6,6 +6,7 @@ import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { Param } from '@nestjs/common';
+import { UpdateFrequencyDto } from './update-frecuency.dto'
 
 @Controller('user') // Ruta base: http://localhost:3001/user
 export class UserController {
@@ -38,7 +39,8 @@ export class UserController {
   }
 
 
-  //endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  //HU002 y HU017 endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
+  //Sirve para listar los usuarios y asi seleccionar a quien se va a configurar
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get('search')
@@ -54,6 +56,31 @@ export class UserController {
   async obtenerUsuario(@Param('id',ParseIntPipe) id: number) {
   //  Solo accesible si el token es válido y el rol es ADMIN
   return this.service.obtenerUsuarioPorId(id); 
-}
+  }
+
+  
+  // HU017 - Trae las empresas asociadas a un usuario para armar el formulario de configuración
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get(':id/companies')
+  async getCompaniesByUser(@Param('id', ParseIntPipe) id: number) {
+    return this.service.getCompaniesByUserId(id);
+  }
+
+  // HU017 - Trae las normas donde se aplicara la frecuencia para armar el formulario de configuración
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get('config/norms')
+  getIdByNorms() {
+    return this.service.getIdByNormToConfig();
+  }
+
+  //Endpoint HU017 para guardar la configuracion hecha con los datos recopilados con los endpoints anteriores
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('config/frequency')
+  async updateAuditFrequency(@Body() updateFrequencyDto: UpdateFrequencyDto) {
+    return this.service.updateFrequency(updateFrequencyDto);
+  }
 
 }
