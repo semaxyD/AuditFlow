@@ -9,6 +9,8 @@ import { LoginDto } from './login.dto';
 import { UpdateFrequencyDto } from './update-frecuency.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateCompanyDto } from './create-company.dto';
+import { UpdateCompanyDto } from './update-compant.dto';
 
 @Injectable()
 export class UserService {
@@ -185,4 +187,62 @@ export class UserService {
 
     return { message: 'Frecuencia actualizada correctamente', config: result};
   }
+
+  //HU016 - crear compañia
+  async createCompany(dto: CreateCompanyDto) {
+    const existing = await this.queryFilter.filterQuery(
+      'getCompanyByName',
+      'company-queries',
+      dto.name,
+    );
+
+    if (existing) {
+      throw new BadRequestException('Ya existe una empresa con ese nombre');
+    }
+
+    return this.queryFilter.filterQuery(
+      'createCompany',
+      'company-queries',
+      dto,
+    );
+  }
+
+  //HU016 - modificar compañia
+  async updateCompany(companyId: number, dto: UpdateCompanyDto) {
+    const company = await this.queryFilter.filterQuery(
+      'getCompanyById',
+      'company-queries',
+      companyId,
+    );
+
+    if (!company) {
+      throw new NotFoundException('Empresa no encontrada para modificar');
+    }
+
+    return this.queryFilter.filterQuery(
+      'updateCompany',
+      'company-queries',
+      { companyId, ...dto },
+    );
+  }
+
+    //HU016 - eliminar compañia
+  async deleteCompany(id: number) {
+    const company = await this.queryFilter.filterQuery(
+      'getCompanyById',
+      'company-queries',
+      id,
+    );
+
+    if (!company) {
+      throw new NotFoundException('Empresa no encontrada para eliminar');
+    }
+
+    return this.queryFilter.filterQuery(
+      'deleteCompany',
+      'compound-deletes',
+      id,
+    );
+  }
+
 }

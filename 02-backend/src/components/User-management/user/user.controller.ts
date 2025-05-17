@@ -1,7 +1,9 @@
 // src/components/user-management/user/user.controller.ts
-import { Body, Controller, Post, UseGuards, Get,Req, ParseIntPipe } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Get,Delete, ParseIntPipe, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
+import { CreateCompanyDto } from './create-company.dto';
+import { UpdateCompanyDto } from './update-compant.dto';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar el guardia JWT
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
@@ -91,20 +93,20 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Post('create/company') // Ruta para crear una nueva empresa
-  async createCompany(@Body() body: any) {
+  async createCompany(@Body() body: CreateCompanyDto) {
     return this.service.createCompany(body);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Post('update/company/:companyId') // Ruta para modificar una nueva empresa
-  async updateCompany(@Param('companyId', ParseIntPipe) companyId: number,@Body() body: any) {
+  @Put('update/company/:companyId') // Ruta para modificar una nueva empresa
+  async updateCompany(@Param('companyId', ParseIntPipe) companyId: number,@Body() body: UpdateCompanyDto) {
     return this.service.updateCompany(companyId,body);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Post('delete/company/:companyId') // Ruta para modificar una nueva empresa
+  @Delete('delete/company/:companyId') // Ruta para eliminar una nueva empresa
   async deleteCompany(@Param('companyId', ParseIntPipe) companyId: number) {
     return this.service.deleteCompany(companyId);
   }

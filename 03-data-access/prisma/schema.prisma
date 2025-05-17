@@ -33,7 +33,7 @@ model User {
 
 model Company {
   id              Int              @id @default(autoincrement())
-  name            String
+  name            String           @unique
   nit             Int
   address         String?
   contact_name    String?
