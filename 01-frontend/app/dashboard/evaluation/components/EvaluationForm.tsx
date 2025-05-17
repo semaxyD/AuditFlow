@@ -2,9 +2,12 @@
 
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { useMemo, useState, useEffect } from "react";
-import { createEvaluationSchema } from "../schemas/evaluation.schema";
+import { z } from "zod";
+import {
+  createEvaluationSchema,
+  VALID_ANSWERS,
+} from "../schemas/evaluation.schema";
 import { AUDIT_FORM_MOCK } from "../mock/mock";
 import { Button } from "@/components/ui/button";
 import { SectionQuestions } from "./SectionQuestions";
@@ -20,6 +23,7 @@ export function EvaluationForm({
   companies: any[];
   rules: any[];
 }) {
+
   const [activeSection, setActiveSection] = useState(0);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [openObservationsModal, setOpenObservationsModal] = useState(false);
@@ -35,27 +39,49 @@ export function EvaluationForm({
     companyId: undefined,
   });
 
-  // Memoizamos el esquema para evitar recrearlo
-  const schema = useMemo(() => createEvaluationSchema(AUDIT_FORM_MOCK), []);
+  const isEditing = !!backendData;
 
-  // Preparamos valores iniciales una sola vez
+  // Transformar datos si estamos editando
+  const formData: EvaluationFormType = useMemo(() => {
+    return isEditing
+      ? mapBackendEvaluationToForm(backendData)
+      : AUDIT_FORM_MOCK;
+  }, [backendData, isEditing]);
+
+  // Crear el schema dinámico
+  const schema = useMemo(() => createEvaluationSchema(formData), [formData]);
+
   const defaultValues = useMemo(() => {
     return {
-      totalQuestions: AUDIT_FORM_MOCK.totalQuestions,
-      sections: AUDIT_FORM_MOCK.sections.reduce((acc, section) => {
+      totalQuestions: formData.totalQuestions,
+      sections: formData.sections.reduce((acc, section) => {
         acc[section.id] = section.questions.reduce((qAcc, q) => {
+          const backendSection = backendData?.sections.find(
+            (s: any) => s.id === section.id
+          );
+          const backendQuestion = backendSection?.questions.find(
+            (bq: any) => bq.id === q.id
+          );
+
+          const answer = backendQuestion?.response ?? "";
+
+          // Si hay respuesta, buscamos su score en VALID_ANSWERS
+          const answerScore =
+            VALID_ANSWERS.find((valid) => valid.value === answer)?.score ?? 0;
+
           qAcc[q.id] = {
-            answer: "",
-            evidence: [],
-            observations: "",
-            score: 100,
+            answer: backendQuestion?.response ?? "",
+            evidence: backendQuestion?.evidence ?? "",
+            observations: backendQuestion?.observations ?? "",
+            score: answer ? answerScore : 0,
           };
+
           return qAcc;
         }, {} as any);
         return acc;
       }, {} as any),
     };
-  }, []);
+  }, [formData, backendData]);
 
   const methods = useForm<EvaluationSchema>({
     resolver: zodResolver(schema),
@@ -79,6 +105,7 @@ export function EvaluationForm({
   }, [info, companies.length]);
 
   // Verificar errores globales
+
   useEffect(() => {
     const errorKeys = Object.keys(errors);
     if (errorKeys.length > 0) {
@@ -122,8 +149,9 @@ export function EvaluationForm({
 
       alert("Formulario enviado con éxito!");
       reset();
+
     } catch (error) {
-      console.error("Error al enviar formulario:", error);
+      console.error("Error en el envío:", error);
       setSubmitError(
         error instanceof Error
           ? error.message
@@ -151,7 +179,6 @@ export function EvaluationForm({
 
   const handleValidateForm = async () => {
     const result = await trigger();
-    console.log("Resultado de validación:", result);
     if (!result) {
       console.log("Errores de validación:", errors);
     }
@@ -182,13 +209,13 @@ export function EvaluationForm({
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
-        {/* Navegación entre secciones */}
         <div className="mb-4">
           <h2 className="text-lg font-semibold text-teal-700">
-            Secciones de la evaluación
+            {isEditing ? "Editar evaluación" : "Crear nueva evaluación"}
           </h2>
+
           <div className="flex flex-wrap gap-2 mt-4 mb-8">
-            {AUDIT_FORM_MOCK.sections.map((section, index) => (
+            {formData.sections.map((section, index) => (
               <Button
                 key={section.id}
                 type="button"
@@ -209,7 +236,7 @@ export function EvaluationForm({
         />
 
         {/* Solo renderizamos la sección activa */}
-        <SectionQuestions section={AUDIT_FORM_MOCK.sections[activeSection]} />
+        <SectionQuestions section={formData.sections[activeSection]} />
 
         <div className="flex justify-between mt-6">
           <Button
@@ -221,23 +248,28 @@ export function EvaluationForm({
             Anterior
           </Button>
 
-          {activeSection < AUDIT_FORM_MOCK.sections.length - 1 ? (
+          {activeSection < formData.sections.length - 1 ? (
             <Button
               type="button"
-              onClick={() =>
+              onClick={(e) => {
+                e.preventDefault();
                 setActiveSection((prev) =>
-                  Math.min(AUDIT_FORM_MOCK.sections.length - 1, prev + 1)
-                )
-              }
+                  Math.min(formData.sections.length - 1, prev + 1)
+                );
+              }}
             >
               Siguiente
             </Button>
           ) : (
-            <div className="flex gap-2">
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Enviando..." : "Enviar"}
-              </Button>
-            </div>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? isEditing
+                  ? "Actualizando..."
+                  : "Enviando..."
+                : isEditing
+                ? "Actualizar"
+                : "Enviar"}
+            </Button>
           )}
         </div>
       </form>
