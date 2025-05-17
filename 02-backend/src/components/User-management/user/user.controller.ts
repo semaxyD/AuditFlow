@@ -12,12 +12,17 @@ import { UpdateFrequencyDto } from './update-frecuency.dto'
 export class UserController {
   constructor(private readonly service: UserService) {}
 
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Get('companiesList') //Ruta para conseguir los ID's de las compañias disponibles
   async CompaniesList(){
     return this.service.CompaniesList();
   }
 
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Post('create') // Ruta para crear un nuevo usuario
   async crearUsuario(@Body() body: any) {
     return this.service.crearUsuario(body);
@@ -81,6 +86,27 @@ export class UserController {
   @Post('config/frequency')
   async updateAuditFrequency(@Body() updateFrequencyDto: UpdateFrequencyDto) {
     return this.service.updateFrequency(updateFrequencyDto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('create/company') // Ruta para crear una nueva empresa
+  async createCompany(@Body() body: any) {
+    return this.service.createCompany(body);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('update/company/:companyId') // Ruta para modificar una nueva empresa
+  async updateCompany(@Param('companyId', ParseIntPipe) companyId: number,@Body() body: any) {
+    return this.service.updateCompany(companyId,body);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('delete/company/:companyId') // Ruta para modificar una nueva empresa
+  async deleteCompany(@Param('companyId', ParseIntPipe) companyId: number) {
+    return this.service.deleteCompany(companyId);
   }
 
 }
