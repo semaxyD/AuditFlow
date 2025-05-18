@@ -21,34 +21,30 @@ import { useState, useEffect } from "react";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 type Norm = { id: number; name: string };
+type Company = { id: number; name: string };
 
 export function EvaluationSettingsModal({
-  companies,
   openModal,
   setOpenModal,
   setInfo,
 }: {
-  companies: { id: number; name: string }[];
   openModal: boolean;
   setOpenModal: (v: boolean) => void;
   setInfo: (info: { companyId?: number; ruleId: number }) => void;
 }) {
-  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
+  const { role } = useRoleCheck("auditor_interno", "auditor_externo");
   const isInternal = role === "auditor_interno";
 
   const [norms, setNorms] = useState<Norm[]>([]);
   const [loadingNorms, setLoadingNorms] = useState(true);
+
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loadingCompanies, setLoadingCompanies] = useState(true);
+
   const [selectedRule, setSelectedRule] = useState<string>("");
   const [selectedCompany, setSelectedCompany] = useState<string>("");
 
-  // Si sólo hay una empresa y además usuario externo, preselecciónala
-  useEffect(() => {
-    if (!isInternal && companies.length === 1) {
-      setSelectedCompany(companies[0].id.toString());
-    }
-  }, [companies, isInternal]);
-
-  // Carga todas las normas
+  // 1) Cargar normas
   useEffect(() => {
     (async () => {
       setLoadingNorms(true);
@@ -58,8 +54,11 @@ export function EvaluationSettingsModal({
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(res.statusText);
-        setNorms(await res.json());
-      } catch {
+        const data: Norm[] = await res.json();
+        console.log("Normas cargadas:", data);
+        setNorms(data);
+      } catch (e) {
+        console.error("Error al cargar normas:", e);
         setNorms([]);
       } finally {
         setLoadingNorms(false);
@@ -67,28 +66,57 @@ export function EvaluationSettingsModal({
     })();
   }, []);
 
+  // 2) Cargar empresas
+  useEffect(() => {
+    if (isInternal) {
+      setLoadingCompanies(false);
+      setCompanies([]);
+      return;
+    }
+
+    (async () => {
+      setLoadingCompanies(true);
+      try {
+        const token = localStorage.getItem("token") || "";
+        const res = await fetch("http://localhost:3001/auditory/myCompanies", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error(res.statusText);
+        const data: Company[] = await res.json();
+        console.log("Empresas cargadas:", data);
+        setCompanies(data);
+        if (data.length === 1) {
+          setSelectedCompany(data[0].id.toString());
+        }
+      } catch (e) {
+        console.error("Error al cargar empresas:", e);
+        setCompanies([]);
+      } finally {
+        setLoadingCompanies(false);
+      }
+    })();
+  }, [isInternal]);
+
   const handleContinue = () => {
-    // Para interno, basta with selectedRule
     if (isInternal) {
       if (!selectedRule) {
         alert("Debes seleccionar una norma");
         return;
       }
-      setInfo({ ruleId: parseInt(selectedRule, 10) });
+      setInfo({ ruleId: +selectedRule });
       setOpenModal(false);
       return;
     }
 
-    // Para externo, normas + empresa
-    if (selectedRule && selectedCompany) {
-      setInfo({
-        ruleId: parseInt(selectedRule, 10),
-        companyId: parseInt(selectedCompany, 10),
-      });
-      setOpenModal(false);
-    } else {
+    if (!selectedRule || !selectedCompany) {
       alert("Debes seleccionar norma y empresa");
+      return;
     }
+    setInfo({
+      ruleId: +selectedRule,
+      companyId: +selectedCompany,
+    });
+    setOpenModal(false);
   };
 
   return (
@@ -107,7 +135,7 @@ export function EvaluationSettingsModal({
         </DialogHeader>
 
         <div className="grid grid-cols-1 gap-4 py-4">
-          {/* Selector de norma: siempre visible */}
+          {/* Selector de norma */}
           <div className="flex flex-col gap-2">
             <Label>Seleccionar norma</Label>
             <Select
@@ -138,24 +166,34 @@ export function EvaluationSettingsModal({
             </Select>
           </div>
 
-          {/* Selector de empresa: sólo para externos */}
+          {/* Selector de empresa (sólo externo) */}
           {!isInternal && (
             <div className="flex flex-col gap-2">
               <Label>Seleccionar empresa</Label>
               <Select
                 value={selectedCompany}
                 onValueChange={setSelectedCompany}
-                disabled={companies.length === 1}
+                disabled={loadingCompanies}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Elige empresa..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {companies.map((c) => (
-                    <SelectItem key={c.id} value={c.id.toString()}>
-                      {c.name}
+                  {loadingCompanies ? (
+                    <SelectItem value="loading" disabled>
+                      Cargando…
                     </SelectItem>
-                  ))}
+                  ) : companies.length === 0 ? (
+                    <SelectItem value="none" disabled>
+                      No hay empresas
+                    </SelectItem>
+                  ) : (
+                    companies.map((c) => (
+                      <SelectItem key={c.id} value={c.id.toString()}>
+                        {c.name}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>

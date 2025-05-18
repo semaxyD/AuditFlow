@@ -166,7 +166,12 @@ export function EvaluationForm({
     console.log("Payload reestructurado:", JSON.stringify(payload, null, 2));
 
     const token = window.localStorage.getItem("token") || "";
-    fetch(`http://localhost:3001/auditory/${info.ruleId}/save`, {
+    const endpoint =
+      role === "auditor_interno" || role === "auditor_externo"
+        ? `http://localhost:3001/auditory/${info.ruleId}/${info.companyId}/saveExternal`
+        : `http://localhost:3001/auditory/${info.ruleId}/save`;
+
+    fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
