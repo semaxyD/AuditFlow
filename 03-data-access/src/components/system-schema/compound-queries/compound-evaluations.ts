@@ -623,6 +623,22 @@ export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
   });
 }
 
+export async function getLatestVersionIdByEvaluationId(evaluationId: number) {
+  const result = await Prisma.evaluationVersion.findFirst({
+    where: {
+      evaluation_id: evaluationId,
+      is_latest: true,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!result) throw new Error('No se encontró la versión activa para esta evaluación');
+
+  return { version_id: result.id };
+}
+
 export async function getEvaluationsByCreator(userId: number) {
   const evaluations = await Prisma.evaluation.findMany({
     where: { created_by: userId },

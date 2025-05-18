@@ -1,9 +1,9 @@
 import { Client } from 'pg';
 import * as dotenv from 'dotenv';
 
-dotenv.config(); // Lee DATABASE_URL
+dotenv.config();
 
-async function listarUsuarios() {
+async function consultarUsuarios() {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
   });
@@ -17,13 +17,19 @@ async function listarUsuarios() {
       email,
       role
     FROM "user"
-    ORDER BY id ASC;
+    ORDER BY id;
   `);
 
-  console.log("👥 Lista de usuarios:");
-  console.table(res.rows);
+  console.log(`👥 Lista de usuarios en el sistema:`);
+  res.rows.forEach((u) => {
+    console.log('──────────────────────────────');
+    console.log(`🆔 ID Usuario      : ${u.id}`);
+    console.log(`👤 Nombre          : ${u.name}`);
+    console.log(`📧 Correo          : ${u.email}`);
+    console.log(`🎭 Rol             : ${u.role}`);
+  });
 
   await client.end();
 }
 
-listarUsuarios();
+consultarUsuarios();

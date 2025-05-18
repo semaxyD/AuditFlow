@@ -244,7 +244,55 @@ export class EvaluationService {
     }
   }
 
-  
+
+  async getEvaluationReportData(evaluationId: number, userId: number): Promise<any> {
+  try {
+    // 1. Obtener el version_id más reciente
+    const { version_id } = await this.queryFilter.filterQuery(
+      'getLatestVersionIdByEvaluationId',
+      'compound-evaluations',
+      evaluationId
+    );
+
+    // 2. Obtener los datos completos usando versionId
+    const results = await this.queryFilter.filterQuery(
+      'getEvaluationDetail',
+      'compound-evaluations',
+      { evaluationId, versionId: version_id }
+    );
+
+    const data = results[0]; 
+
+    // 3. Armar la respuesta estructurada como la espera el frontend
+    return {
+      id: evaluationId,
+      name: `${data.norm_name} - ${data.company_name}`,
+      date: new Date().toISOString(), 
+      status:
+        data.completion_percentage >= 80
+          ? 'Aprobado'
+          : data.completion_percentage >= 50
+          ? 'Intermedio'
+          : 'No aprobado',
+      score: data.completion_percentage,
+      totalQuestions: data.total_questions,
+      evaluationFeedback: data.observations,
+      sections: data.criteria.map((section: any) => ({
+        title: section.title,
+        questions: section.questions.map((q: any) => ({
+          id: q.question_id,
+          question: q.text,
+          response: q.response,
+          observations: q.comments?.join('; ') || '',
+          evidence: q.evidences ?? [],
+        })),
+      })),
+    };
+  } catch (error) {
+    console.error('Error generating evaluation report data:', error);
+    throw new InternalServerErrorException('Error generating evaluation report');
+  }
+}  
 
   async updateEvaluation(
   evaluationId: number,
@@ -284,5 +332,32 @@ export class EvaluationService {
       }
     }
   }
+
+  async deleteEvaluationVersion(versionId: number, userId: number) {
+    try {
+
+      const data = {
+        versionId,
+        userId
+      }
+
+      const result = await this.queryFilter.filterQuery(
+        'deleteEvaluationVersion',
+        'compound-deletes',
+        data
+      );
+
+      if(!result){
+        throw new InternalServerErrorException('No fue posible eliminar una evaluacion');
+      }
+
+      return result;
+  
+  
+    } catch (error) {
+      throw new InternalServerErrorException('Error eliminando la versión de evaluación');
+    }
+  }
+
 }
 
