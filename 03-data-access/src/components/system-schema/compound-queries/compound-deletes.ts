@@ -72,7 +72,53 @@ export async function deleteCompany( companyId: number) {
   return Prisma.company.delete({
     where: { id: companyId },
   });
+
+
+  
 }
+
+export async function deleteUser(userId: number) {
+  // 1. Eliminar comentarios
+  await Prisma.comment.deleteMany({
+    where: { created_by: userId },
+  });
+
+  // 2. Eliminar evidencias
+  await Prisma.evidence.deleteMany({
+    where: { created_by: userId },
+  });
+
+  // 3. Eliminar respuestas
+  await Prisma.answer.deleteMany({
+    where: { created_by: userId },
+  });
+
+  // 4. Eliminar versiones de evaluación
+  await Prisma.evaluationVersion.deleteMany({
+    where: { created_by: userId },
+  });
+
+  // 5. Eliminar evaluaciones
+  await Prisma.evaluation.deleteMany({
+    where: { created_by: userId },
+  });
+
+  // 6. Eliminar configuraciones de frecuencia
+  await Prisma.evaluationFrequencyConfig.deleteMany({
+    where: { user_id: userId },
+  });
+
+  // 7. Eliminar relación con empresas
+  await Prisma.companyAuditor.deleteMany({
+    where: { user_id: userId },
+  });
+
+  // 8. Eliminar el usuario
+  return await Prisma.user.delete({
+    where: { id: userId },
+  });
+}
+
 
 export async function deleteEvaluationVersion(dto: DeleteEvaluationData) {
   // Paso 1: validar propiedad de la versión
