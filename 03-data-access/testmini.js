@@ -36,11 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// testear conexion con bd supabase
 var pg_1 = require("pg");
 var dotenv = require("dotenv");
-dotenv.config(); // Para leer tu .env 
-function verContenidoTabla(nombreTabla) {
+dotenv.config();
+function listarEvaluaciones() {
     return __awaiter(this, void 0, void 0, function () {
         var client, res;
         return __generator(this, function (_a) {
@@ -52,10 +51,10 @@ function verContenidoTabla(nombreTabla) {
                     return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, client.query("SELECT * FROM ".concat(nombreTabla, " LIMIT 10;"))];
+                    return [4 /*yield*/, client.query("\n    SELECT \n      e.id AS evaluation_id,\n      c.name AS company,\n      n.name AS norm,\n      e.created_at\n    FROM evaluation e\n    JOIN company c ON e.company_id = c.id\n    JOIN norm n ON e.norm_id = n.id\n    ORDER BY e.id ASC;\n  ")];
                 case 2:
                     res = _a.sent();
-                    console.log("Contenido de la tabla ".concat(nombreTabla, ":"));
+                    console.log("📋 Evaluaciones disponibles:");
                     console.table(res.rows);
                     return [4 /*yield*/, client.end()];
                 case 3:
@@ -65,5 +64,4 @@ function verContenidoTabla(nombreTabla) {
         });
     });
 }
-// Llamar la función:
-verContenidoTabla('evaluation');
+listarEvaluaciones();
