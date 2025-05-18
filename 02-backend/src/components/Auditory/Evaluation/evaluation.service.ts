@@ -284,5 +284,32 @@ export class EvaluationService {
       }
     }
   }
+
+  async deleteEvaluationVersion(versionId: number, userId: number) {
+    try {
+
+      const data = {
+        versionId,
+        userId
+      }
+
+      const result = await this.queryFilter.filterQuery(
+        'deleteEvaluationVersion',
+        'compound-deletes',
+        data
+      );
+
+      if(!result){
+        throw new InternalServerErrorException('No fue posible eliminar una evaluacion');
+      }
+
+      return result;
+  
+  
+    } catch (error) {
+      throw new InternalServerErrorException('Error eliminando la versión de evaluación');
+    }
+  }
+
 }
 

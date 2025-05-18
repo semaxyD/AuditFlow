@@ -1,3 +1,4 @@
+import { ForbiddenException } from "@nestjs/common";
 import { Prisma } from "../../../prismaconfig/prisma-client";
 
 export async function deleteCompany( companyId: number) {
@@ -71,4 +72,56 @@ export async function deleteCompany( companyId: number) {
   return Prisma.company.delete({
     where: { id: companyId },
   });
+}
+
+export async function deleteEvaluationVersion(dto: DeleteEvaluationData) {
+  // Paso 1: validar propiedad de la versión
+  const version = await Prisma.evaluationVersion.findUnique({
+    where: { id: dto.versionId },
+    select: { created_by: true },
+  });
+
+  if (!version || version.created_by !== dto.userId) {
+    throw new ForbiddenException('No tienes permiso para eliminar esta versión.');
+  }
+
+  // Paso 2: eliminar en orden seguro
+  await Prisma.$transaction(async (tx) => {
+    // Obtener los IDs de respuestas de la versión
+    const answers = await tx.answer.findMany({
+      where: { version_id: dto.versionId },
+      select: { id: true },
+    });
+    const answerIds = answers.map((a) => a.id);
+
+    if (answerIds.length > 0) {
+      // Eliminar comentarios
+      await tx.comment.deleteMany({
+        where: { answer_id: { in: answerIds } },
+      });
+
+      // Eliminar evidencias
+      await tx.evidence.deleteMany({
+        where: { answer_id: { in: answerIds } },
+      });
+
+      // Eliminar respuestas
+      await tx.answer.deleteMany({
+        where: { id: { in: answerIds } },
+      });
+    }
+
+    // Eliminar la versión
+    await tx.evaluationVersion.delete({
+      where: { id: dto.versionId },
+    });
+  });
+
+  return { message: 'Versión eliminada correctamente' };
+}
+
+//Interfaces de datos usado en la HU008
+export interface DeleteEvaluationData {
+  versionId: number;
+  userId: number;
 }

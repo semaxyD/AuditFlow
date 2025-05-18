@@ -11,7 +11,7 @@ import { DeleteFrequencyDto } from './delete-frecuency.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateCompanyDto } from './create-company.dto';
-import { UpdateCompanyDto } from './update-compant.dto';
+import { UpdateCompanyDto } from './update-company.dto';
 
 @Injectable()
 export class UserService {

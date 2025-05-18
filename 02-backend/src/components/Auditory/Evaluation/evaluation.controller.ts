@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UseGuards, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { AuditFrequencyGuard } from 'src/components/Middleware/Auth/auditFrecuency.guard';
@@ -89,6 +89,12 @@ export class EvaluationController {
     return this.service.getEvaluationsByCreator(user.id);
   }
 
-
+  //HU013 - Endpoint para eliminar una version especifica de una evaluacion
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno', 'auditor_externo')
+  @Delete('delete/version/:versionId') // Ruta para eliminar una version de evaluacion
+  async deleteEvaluationVersion(@Param('versionId', ParseIntPipe) versionId: number,@CurrentUser() user: { id: number }) {
+    return this.service.deleteEvaluationVersion(versionId,user.id);
+  }
 
 }

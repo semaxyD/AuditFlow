@@ -3,7 +3,7 @@ import { Body, Controller, Post, UseGuards, Get,Delete, ParseIntPipe, Put } from
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { CreateCompanyDto } from './create-company.dto';
-import { UpdateCompanyDto } from './update-compant.dto';
+import { UpdateCompanyDto } from './update-company.dto';
 import { DeleteFrequencyDto } from './delete-frecuency.dto';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar el guardia JWT
 import { Roles } from '../../Middleware/decorators/roles.decorator';
@@ -120,6 +120,5 @@ export class UserController {
     return this.service.deleteCompany(companyId);
   }
 
-  
 
 }
