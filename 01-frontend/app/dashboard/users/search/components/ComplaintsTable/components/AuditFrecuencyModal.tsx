@@ -24,7 +24,7 @@ export default function AuditFrecuencyModal({ userId }: { userId: string }) {
           <Timer />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg" aria-describedby={undefined}>
+      <DialogContent className="sm:max-w-2xl" aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Editar frecuencia de evaluación</DialogTitle>
         </DialogHeader>

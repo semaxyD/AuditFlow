@@ -77,6 +77,38 @@ export default function EditUserForm({
   }
   //Backend------------------------------------------------------
 
+  async function handleDelete() {
+    setIsLoading(true);
+    try {
+      if (!userId) {
+        alert("El ID del usuario es requerido");
+        return;
+      }
+      if (!form.getValues("companyId")) {
+        alert("La compañia es requerida");
+        return;
+      }
+      if (!form.getValues("normId")) {
+        alert("La norma es requerida");
+        return;
+      }
+
+      const payload = {
+        userId: Number(userId),
+        companyId: Number(form.getValues("companyId")),
+        normId: Number(form.getValues("normId")),
+      };
+
+      // Manejar que si la respuestaa del backend es 403 (segun semaxy) se debe mostrar que no existe la frecuencia
+      console.log("Datos enviados:", payload);
+    } catch (error) {
+      alert("Error al eliminar frecuencia de auditorias. Intente más tarde.");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <Form {...form}>
       <form
@@ -126,7 +158,7 @@ export default function EditUserForm({
                   value={field.value?.toString()}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una norma"/>
+                    <SelectValue placeholder="Seleccione una norma" />
                   </SelectTrigger>
                   <SelectContent>
                     {rules.map((rule) => (
@@ -161,13 +193,14 @@ export default function EditUserForm({
           )}
         />
 
-        <Button
-          type="submit"
-          className="w-full col-span-full"
-          disabled={isLoading}
-        >
-          {isLoading ? "Editando..." : "Editar frecuencia de evaluación"}
-        </Button>
+        <div className="flex gap-2 col-span-full self-end justify-end">
+          <Button type="button" variant="destructive" onClick={handleDelete}>
+            Eliminar actual
+          </Button>
+          <Button type="submit" className="" disabled={isLoading}>
+            {isLoading ? "Editando..." : "Editar frecuencia de evaluación"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
