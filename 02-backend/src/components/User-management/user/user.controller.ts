@@ -131,6 +131,14 @@ export class UserController {
     return this.service.updateUser(id, body);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Delete('delete/:id')
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.service.deleteUser(id);
+  }
+
+
 
 
 

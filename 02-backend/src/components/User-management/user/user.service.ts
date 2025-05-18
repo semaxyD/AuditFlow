@@ -303,5 +303,31 @@ export class UserService {
     };
   }
 
+  //Eliminar usuario
+
+  async deleteUser(userId: number) {
+  const user = await this.queryFilter.filterQuery(
+    'getUserById',
+    'user-queries',
+    userId,
+  );
+
+  if (!user) {
+    throw new NotFoundException('Usuario no encontrado');
+  }
+
+  const deleted = await this.queryFilter.filterQuery(
+    'deleteUser',
+    'compound-deletes',
+    userId,
+  );
+
+  return {
+    message: 'Usuario eliminado correctamente junto con sus datos relacionados',
+    data: deleted,
+  };
+}
+
+
 
 }
