@@ -67,9 +67,18 @@ export function RegisterForm() {
     async function load() {
       try {
         const res = await fetch("http://localhost:3001/user/companiesList");
-        const data: Company[] = await res.json();
-        setCompanies(data);
+        const data = await res.json();
+        console.log("companiesList response:", data);
+        if (Array.isArray(data)) {
+          setCompanies(data);
+        } else if (Array.isArray(data.companies)) {
+          setCompanies(data.companies);
+        } else {
+          setCompanies([]);
+          toast.error("Formato inesperado de empresas");
+        }
       } catch (err) {
+        console.error(err);
         toast.error("No se pudieron cargar las empresas.");
       }
     }

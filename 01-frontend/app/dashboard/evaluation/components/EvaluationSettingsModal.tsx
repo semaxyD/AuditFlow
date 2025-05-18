@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,118 +13,157 @@ import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
+
+type Norm = { id: number; name: string };
 
 export function EvaluationSettingsModal({
   companies,
-  rules,
   openModal,
   setOpenModal,
   setInfo,
 }: {
-  companies: any[];
-  rules: any[];
+  companies: { id: number; name: string }[];
   openModal: boolean;
-  setOpenModal: (value: boolean) => void;
-  setInfo: (info: {
-    companyId: number | undefined;
-    ruleId: number | undefined;
-  }) => void;
+  setOpenModal: (v: boolean) => void;
+  setInfo: (info: { companyId?: number; ruleId: number }) => void;
 }) {
+  const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
+  const isInternal = role === "auditor_interno";
+
+  const [norms, setNorms] = useState<Norm[]>([]);
+  const [loadingNorms, setLoadingNorms] = useState(true);
   const [selectedRule, setSelectedRule] = useState<string>("");
   const [selectedCompany, setSelectedCompany] = useState<string>("");
 
+  // Si sólo hay una empresa y además usuario externo, preselecciónala
   useEffect(() => {
-    if (companies.length === 1) {
+    if (!isInternal && companies.length === 1) {
       setSelectedCompany(companies[0].id.toString());
-      setInfo({
-        companyId: companies[0].id,
-        ruleId: undefined
-      });
     }
-  }, [companies]);
+  }, [companies, isInternal]);
 
-  const handleRuleChange = (value: string) => {
-    setSelectedRule(value);
-    setInfo({
-      companyId: selectedCompany ? parseInt(selectedCompany) : undefined,
-      ruleId: parseInt(value)
-    });
-  };
-
-  const handleCompanyChange = (value: string) => {
-    setSelectedCompany(value);
-    setInfo({
-      companyId: parseInt(value),
-      ruleId: selectedRule ? parseInt(selectedRule) : undefined
-    });
-  };
+  // Carga todas las normas
+  useEffect(() => {
+    (async () => {
+      setLoadingNorms(true);
+      try {
+        const token = localStorage.getItem("token") || "";
+        const res = await fetch("http://localhost:3001/auditory/allNorms", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error(res.statusText);
+        setNorms(await res.json());
+      } catch {
+        setNorms([]);
+      } finally {
+        setLoadingNorms(false);
+      }
+    })();
+  }, []);
 
   const handleContinue = () => {
-    if (selectedRule && (selectedCompany || companies.length === 1)) {
+    // Para interno, basta with selectedRule
+    if (isInternal) {
+      if (!selectedRule) {
+        alert("Debes seleccionar una norma");
+        return;
+      }
+      setInfo({ ruleId: parseInt(selectedRule, 10) });
       setOpenModal(false);
+      return;
+    }
+
+    // Para externo, normas + empresa
+    if (selectedRule && selectedCompany) {
+      setInfo({
+        ruleId: parseInt(selectedRule, 10),
+        companyId: parseInt(selectedCompany, 10),
+      });
+      setOpenModal(false);
+    } else {
+      alert("Debes seleccionar norma y empresa");
     }
   };
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
-      <DialogContent className="sm:max-w-[550px]" onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        className="sm:max-w-[550px]"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
-          <DialogTitle>Parametros de la evaluación</DialogTitle>
+          <DialogTitle>Parámetros de la evaluación</DialogTitle>
           <DialogDescription>
-            Seleccione la norma y la empresa a la que realizará la evaluación
-            (si aplica).
+            {isInternal
+              ? "Selecciona la norma."
+              : "Selecciona la norma y la empresa."}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-4 py-4">
+
+        <div className="grid grid-cols-1 gap-4 py-4">
+          {/* Selector de norma: siempre visible */}
           <div className="flex flex-col gap-2">
             <Label>Seleccionar norma</Label>
-            <Select value={selectedRule} onValueChange={handleRuleChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="ISO 14001..." />
-              </SelectTrigger>
-              <SelectContent>
-                {rules.map((rule) => (
-                  <SelectItem key={rule.id} value={rule.id.toString()}>
-                    {rule.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>Seleccionar empresa</Label>
-            <Select 
-              value={selectedCompany} 
-              onValueChange={handleCompanyChange}
-              disabled={companies.length === 1}
+            <Select
+              value={selectedRule}
+              onValueChange={setSelectedRule}
+              disabled={loadingNorms}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="ASOCI S.A.S" />
+                <SelectValue placeholder="Elige norma..." />
               </SelectTrigger>
               <SelectContent>
-                {companies.map((company) => (
-                  <SelectItem key={company.id} value={company.id.toString()}>
-                    {company.name}
+                {loadingNorms ? (
+                  <SelectItem value="loading" disabled>
+                    Cargando…
                   </SelectItem>
-                ))}
+                ) : norms.length === 0 ? (
+                  <SelectItem value="none" disabled>
+                    No hay normas
+                  </SelectItem>
+                ) : (
+                  norms.map((n) => (
+                    <SelectItem key={n.id} value={n.id.toString()}>
+                      {n.name}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>
+
+          {/* Selector de empresa: sólo para externos */}
+          {!isInternal && (
+            <div className="flex flex-col gap-2">
+              <Label>Seleccionar empresa</Label>
+              <Select
+                value={selectedCompany}
+                onValueChange={setSelectedCompany}
+                disabled={companies.length === 1}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Elige empresa..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {companies.map((c) => (
+                    <SelectItem key={c.id} value={c.id.toString()}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
+
         <DialogFooter>
-          <Button 
-            type="button" 
-            onClick={handleContinue}
-            disabled={!selectedRule || (!selectedCompany && companies.length > 1)}
-          >
+          <Button type="button" onClick={handleContinue}>
             Continuar
           </Button>
         </DialogFooter>

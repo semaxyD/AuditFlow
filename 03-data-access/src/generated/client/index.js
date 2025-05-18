@@ -234,7 +234,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\sebuc\\Documents\\GitHub\\AuditFlow\\03-data-access\\src\\generated\\client",
+      "value": "C:\\Users\\USER\\OneDrive\\Documentos\\GitHub\\AuditFlow\\03-data-access\\src\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -248,7 +248,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\sebuc\\Documents\\GitHub\\AuditFlow\\03-data-access\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\USER\\OneDrive\\Documentos\\GitHub\\AuditFlow\\03-data-access\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
