@@ -18,6 +18,7 @@ export class AuditFrequencyGuard implements CanActivate {
     const request: Request = context.switchToHttp().getRequest();
     const user = request.user as JwtPayloadUser;
 
+
     if (!user?.id) {
       throw new ForbiddenException('Usuario no autenticado');
     }
@@ -40,16 +41,16 @@ export class AuditFrequencyGuard implements CanActivate {
         user.id
       );
 
-      if (!result || !result.company_id) {
+      if (!result) {
         throw new ForbiddenException('No se pudo obtener la empresa del auditor interno');
       }
 
-      companyId = result.company_id;
+      companyId = result;
     }
 
     // Obtener frecuencia mínima configurada
     const config = await this.queryFilter.filterQuery(
-      'getFrequencyDaysForAudit',
+      'getFrequencyConfigByUserCompanyNorm',
       'evaluation-frecuency-queries',
       {
         userId: user.id,
@@ -60,10 +61,9 @@ export class AuditFrequencyGuard implements CanActivate {
 
     const minDaysBetweenEvaluations = config?.frequency_days;
 
-    if (!minDaysBetweenEvaluations) {
-      throw new ForbiddenException(
-        'No se ha configurado la frecuencia mínima para esta norma, empresa y usuario.'
-      );
+    // Si no hay una frecuencia mínima configurada, no se aplica restricción
+    if (!config || typeof config.frequency_days !== 'number') {
+      return true;
     }
 
     // Obtener última evaluación

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, UseGuards, Delete } from '@nestjs/common';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { AuditFrequencyGuard } from 'src/components/Middleware/Auth/auditFrecuency.guard';
@@ -45,9 +45,9 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard, RolesGuard, AuditFrequencyGuard)
   @Roles('auditor_interno')
   @Post('/:normId/save')
-  submitEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number },) {
+  submitEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number },) {
     const type = AuditorType.Interno;
-    return this.service.submitEvaluation(normIdSelect,0, body, user.id, type);
+    return this.service.submitEvaluation(normIdSelect, 0, body, user.id, type);
   }
 
   //Endpoint para que el auditor externo escoja la compañia a la cual va a auditar(Recordemos que solo es para el externo ya que este tiene varias empresas)
@@ -63,9 +63,9 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard, RolesGuard, AuditFrequencyGuard)
   @Roles('auditor_externo')
   @Post('/:normId/:companyId/saveExternal')
-  submitExternalEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number,@Param('companyId', ParseIntPipe) companyIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number }) {
+  submitExternalEvaluation(@Param('normId', ParseIntPipe) normIdSelect: number, @Param('companyId', ParseIntPipe) companyIdSelect: number, @Body() body: CreateEvaluationDto, @CurrentUser() user: { id: number }) {
     const type = AuditorType.Externo;
-    return this.service.submitEvaluation(normIdSelect,companyIdSelect, body, user.id, type);
+    return this.service.submitEvaluation(normIdSelect, companyIdSelect, body, user.id, type);
   }
 
 
@@ -82,12 +82,31 @@ export class EvaluationController {
   }
 
   // Endpoint para listar evaluaciones creadas por el auditor interno
-  @UseGuards(JwtAuthGuard, RolesGuard)  
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_interno')
   @Get('assigned')
   getAssignedEvaluations(@CurrentUser() user: { id: number }) {
     return this.service.getEvaluationsByCreator(user.id);
   }
+
+  //HU013 - Endpoint para eliminar una version especifica de una evaluacion
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno', 'auditor_externo')
+  @Delete('delete/version/:versionId') // Ruta para eliminar una version de evaluacion
+  async deleteEvaluationVersion(@Param('versionId', ParseIntPipe) versionId: number,@CurrentUser() user: { id: number }) {
+    return this.service.deleteEvaluationVersion(versionId,user.id);
+  }
+  // Endpoint para obtener los datos de la evaluación para exportación (HU 14)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno', 'auditor_externo',)
+  @Get('report-data/:evaluationId')
+  getEvaluationReportData(
+    @Param('evaluationId', ParseIntPipe) evaluationId: number,
+    @CurrentUser() user: { id: number }
+  ) {
+    return this.service.getEvaluationReportData(evaluationId, user.id);
+  }
+
 
 
 

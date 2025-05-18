@@ -78,3 +78,24 @@ export async function getLastEvaluationByUserCompanyNorm({
     },
   });
 }
+
+// QUERY: Eliminar configuración de frecuencia para un auditor, empresa y norma
+export async function deleteFrequencyConfig({
+  userId,
+  companyId,
+  normId,
+}: {
+  userId: number;
+  companyId: number;
+  normId: number;
+}) {
+  return await Prisma.evaluationFrequencyConfig.delete({
+    where: {
+      user_id_company_id_norm_id: {
+        user_id: userId,
+        company_id: companyId,
+        norm_id: normId,
+      },
+    },
+  });
+}
