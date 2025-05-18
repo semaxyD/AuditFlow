@@ -3,7 +3,7 @@ import { Body, Controller, Post, UseGuards, Get, Delete, ParseIntPipe, Put } fro
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { CreateCompanyDto } from './create-company.dto';
-import { UpdateCompanyDto } from './update-compant.dto';
+import { UpdateCompanyDto } from './update-company.dto';
 import { UpdateUserDto } from './update-user.dto';
 import { DeleteFrequencyDto } from './delete-frecuency.dto';
 import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar el guardia JWT
