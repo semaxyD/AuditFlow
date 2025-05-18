@@ -12,13 +12,14 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { CreateCompanyDto } from './create-company.dto';
 import { UpdateCompanyDto } from './update-compant.dto';
+import { UpdateUserDto } from './update-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly queryFilter: QueryFilterService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async CompaniesList() {
     try {
@@ -183,10 +184,10 @@ export class UserService {
       frecuencyDto);
 
     if (!result) {
-    throw new InternalServerErrorException('No se pudo actualizar la frecuencia');
+      throw new InternalServerErrorException('No se pudo actualizar la frecuencia');
     }
 
-    return { message: 'Frecuencia actualizada correctamente', config: result};
+    return { message: 'Frecuencia actualizada correctamente', config: result };
   }
 
   //HU016 - crear compañia
@@ -227,7 +228,7 @@ export class UserService {
     );
   }
 
-    //HU016 - eliminar compañia
+  //HU016 - eliminar compañia
   async deleteCompany(id: number) {
     const company = await this.queryFilter.filterQuery(
       'getCompanyById',
@@ -246,7 +247,7 @@ export class UserService {
     );
   }
 
-      //HU017 - eliminar configuraciones de frecuencias
+  //HU017 - eliminar configuraciones de frecuencias
   async deleteFrequency(dto: DeleteFrequencyDto) {
     try {
       const deleted = await this.queryFilter.filterQuery(
@@ -266,5 +267,41 @@ export class UserService {
       throw new InternalServerErrorException('Error al eliminar la configuración');
     }
   }
+  //modificar usuario
+  async updateUser(id: number, dto: UpdateUserDto) {
+    const user = await this.queryFilter.filterQuery(
+      'getUserById',
+      'user-queries',
+      id,
+    );
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    if (dto.email) {
+      const emailExists = await this.queryFilter.filterQuery(
+        'getUserByEmail',
+        'user-queries',
+        dto.email,
+      );
+
+      if (emailExists && emailExists.id !== id) {
+        throw new BadRequestException('El correo ya está en uso');
+      }
+    }
+
+    const updated = await this.queryFilter.filterQuery(
+      'updateUserById',
+      'user-queries',
+      { id, ...dto },
+    );
+
+    return {
+      message: 'Usuario actualizado correctamente',
+      data: updated,
+    };
+  }
+
 
 }
