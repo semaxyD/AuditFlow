@@ -26,15 +26,16 @@ import { getColumns } from "./columns";
 type Props = {
   data: Company[];
   onDeleted: () => void;
+  onUpdated: () => void;
 };
 
-export default function CompaniesTable({ data, onDeleted }: Props) {
+export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState<Company[]>(data);
 
   // Genera dinámicamente las columnas inyectando onDeleted
-  const columns = getColumns(onDeleted);
+  const columns = getColumns(onDeleted, onUpdated);
 
   const table = useReactTable({
     data: tableData,

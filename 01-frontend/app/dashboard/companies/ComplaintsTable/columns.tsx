@@ -10,7 +10,10 @@ import EditCompanyModal from "../components/EditCompanyModal/EditCompanyModal";
 import DeleteCompanyModal from "../components/DeleteCompanyModal/DeleteCompanyModal";
 
 // 1) Cambiamos export const columns => export function getColumns
-export function getColumns(onDeleted: () => void): ColumnDef<Company>[] {
+export function getColumns(
+  onDeleted: () => void,
+  onUpdated: () => void
+): ColumnDef<Company>[] {
   return [
     {
       accessorKey: "name",
@@ -57,7 +60,7 @@ export function getColumns(onDeleted: () => void): ColumnDef<Company>[] {
                 <Eye />
               </Button>
             </Link>
-            <EditCompanyModal company={row.original} />
+            <EditCompanyModal onUpdated={onUpdated} company={row.original} />
             {/* Aquí recibe onDeleted */}
             <DeleteCompanyModal companyId={companyId} onDeleted={onDeleted} />
           </div>

@@ -1,21 +1,21 @@
+// src/components/CompanyForm/companyUpdate.schema.ts
 import { z } from "zod";
 
-export interface CompanyDTO {
-  name: string;
-  nit: string;
-  address: string;
-  phone: string;
-  contact_name: string;
-  contact_email: string;
-}
+// Este es tu esquema original,
+export const companyUpdateSchema = z
+  .object({
+    name: z.string().min(1),
+    nit: z.coerce
+      .number({
+        invalid_type_error: "El NIT debe ser un número",
+      })
+      .int("El NIT debe ser un entero")
+      .positive("El NIT debe ser positivo"),
+    address: z.string().min(1),
+    phone: z.string().min(1),
+    contact_name: z.string().min(1),
+    contact_email: z.string().email(),
+  })
+  .partial(); // <-- todos opcionales
 
-export const companySchema = z.object({
-  name: z.string().min(1, { message: "Nombre es requerido" }),
-  nit: z.string().min(1, { message: "NIT es requerido" }),
-  address: z.string().min(1, { message: "Dirección es requerida" }),
-  phone: z.string().min(1, { message: "Teléfono es requerido" }),
-  contact_name: z
-    .string()
-    .min(1, { message: "Nombre de contacto es requerido" }),
-  contact_email: z.string().email({ message: "Email inválido" }),
-});
+export type CompanyUpdate = z.infer<typeof companyUpdateSchema>;

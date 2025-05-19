@@ -13,17 +13,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Company } from "../../mock/mock";
-import { companySchema } from "../CompanyForm/CompanyForm.schema";
+import { companyUpdateSchema } from "../CompanyForm/CompanyForm.schema";
 import { z } from "zod";
 
-export function EditCompanyForm({ company }: { company: Company }) {
+export type Company = {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+  contact_name: string;
+  contact_email: string;
+};
+import { toast } from "sonner";
+
+interface EditCompanyFormProps {
+  company: Company;
+  onUpdated?: () => void;
+}
+
+export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof companySchema>>({
-    resolver: zodResolver(companySchema),
+
+  const {
+    handleSubmit,
+    control,
+    formState: { dirtyFields },
+    getValues,
+    reset,
+  } = useForm<z.infer<typeof companyUpdateSchema>>({
+    resolver: zodResolver(companyUpdateSchema),
     defaultValues: {
       name: company.name,
-      nit: company.nit,
       address: company.address,
       phone: company.phone,
       contact_name: company.contact_name,
@@ -31,134 +51,141 @@ export function EditCompanyForm({ company }: { company: Company }) {
     },
   });
 
-  //Backend------------------------------------------------
-  async function onSubmit(data: z.infer<typeof companySchema>) {
-    setIsLoading(true); // Activa el estado de carga mientras se envía el formulario
+  async function onSubmit() {
+    setIsLoading(true);
+
+    // Recopilamos sólo los campos que están "sucios"
+    const allValues = getValues();
+    const changedFields: Partial<z.infer<typeof companyUpdateSchema>> = {};
+    for (const key of Object.keys(dirtyFields) as Array<
+      keyof typeof dirtyFields
+    >) {
+      // dirtyFields[key] === true si cambió
+      // @ts-ignore
+      changedFields[key] = allValues[key];
+    }
+
+    // Payload sólo con los cambios (y el id, si tu endpoint lo requiere)
+    const payload = {
+      id: company.id,
+      ...changedFields,
+    };
+    console.log("Payload a enviar:", payload);
 
     try {
-      // Preparamos los datos que espera el backend
+      const token = window.localStorage.getItem("token") ?? "";
+      const res = await fetch(
+        `http://localhost:3001/user/update/company/${company.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
-      // Enviamos los datos al backend
-      //   const res = await fetch("http://localhost:3001/usuarios", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(payload),
-      //   });
+      console.log("Respuesta del servidor:", res);
+      const result = await res.json();
 
-      //   const result = await res.json(); // Obtenemos la respuesta del backend
-
-      //   if (res.ok) {
-      // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
-
-      // alert(result.message || "Usuario registrado correctamente");
-      // form.reset(); // Limpia el formulario
-      //   } else {
-      //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
-      // alert(result.message || "Ocurrió un error al registrar");
-      //   }
-
-      let payload = {
-        id: company.id,
-        ...data,
-      };
-
-      console.log("Datos enviados:", payload);
+      if (res.ok) {
+        toast.success("Compañía actualizada correctamente", {
+          description: result.message,
+        });
+        reset(allValues); // reset con los nuevos valores como "limpios"
+        onUpdated?.();
+      } else {
+        toast.error("Error al actualizar compañía", {
+          description: result.message,
+        });
+      }
     } catch (error) {
-      //mostramos error genérico
-      alert("Error al registrar usuario. Intente más tarde.");
-      console.error(error);
+      console.error("Error al actualizar compañía:", error);
+      alert("Error al actualizar compañía. Intenta más tarde.");
     } finally {
-      setIsLoading(false); // Apagamos el estado de carga
+      setIsLoading(false);
     }
   }
-  //Backend------------------------------------------------------
 
   return (
-    <Form {...form}>
+    <Form control={control}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-3 grid grid-cols-2 gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 grid grid-cols-2 gap-4"
       >
+        {/* Nombre */}
         <FormField
-          control={form.control}
+          control={control}
           name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombre o Razón social</FormLabel>
               <FormControl>
-                <Input placeholder="Electricos S.A." {...field} />
+                <Input {...field} placeholder="Electricos S.A." />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* Dirección */}
         <FormField
-          control={form.control}
-          name="nit"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>NIT</FormLabel>
-              <FormControl>
-                <Input placeholder="9001234567" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
+          control={control}
           name="address"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Dirección</FormLabel>
               <FormControl>
-                <Input placeholder="Calle 123 #45-67" {...field} />
+                <Input {...field} placeholder="Calle 123 #45-67" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Teléfono */}
         <FormField
-          control={form.control}
+          control={control}
           name="phone"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Teléfono</FormLabel>
               <FormControl>
-                <Input placeholder="123 456 7890" {...field} />
+                <Input {...field} placeholder="123 456 7890" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
+        {/* Nombre representante */}
         <FormField
-          control={form.control}
+          control={control}
           name="contact_name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Nombre de representante</FormLabel>
               <FormControl>
-                <Input placeholder="Juan Pérez" {...field} />
+                <Input {...field} placeholder="Juan Pérez" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* Correo representante */}
         <FormField
-          control={form.control}
+          control={control}
           name="contact_email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Correo del representante</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="example@gmail.com"
                   type="email"
                   {...field}
+                  placeholder="example@gmail.com"
                 />
               </FormControl>
               <FormMessage />
@@ -171,7 +198,7 @@ export function EditCompanyForm({ company }: { company: Company }) {
           className="w-full col-span-full"
           disabled={isLoading}
         >
-          {isLoading ? "Editando..." : "Editando compañía"}
+          {isLoading ? "Editando..." : "Editar compañía"}
         </Button>
       </form>
     </Form>
