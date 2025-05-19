@@ -89,12 +89,12 @@ export class EvaluationController {
     return this.service.getEvaluationsByCreator(user.id);
   }
 
-  //HU013 - Endpoint para eliminar una version especifica de una evaluacion
+  //HU013 - Endpoint para eliminar una evaluacion especifica
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_interno', 'auditor_externo')
-  @Delete('/delete/evaluation/:evaluationId/version/:versionId') // Ruta para eliminar una version de evaluacion
-  async deleteEvaluationVersion(@Param('evaluationId', ParseIntPipe) evaluationId: number,@Param('versionId', ParseIntPipe) versionId: number,@CurrentUser() user: { id: number }) {
-    return this.service.deleteEvaluationVersion(evaluationId,versionId,user.id);
+  @Delete('/delete/evaluation/:evaluationId') // Ruta para eliminar una evaluacion
+  async deleteEvaluationVersion(@Param('evaluationId', ParseIntPipe) evaluationId: number,@CurrentUser() user: { id: number }) {
+    return this.service.deleteEvaluation(evaluationId,user.id);
   }
   // Endpoint para obtener los datos de la evaluación para exportación (HU 14)
   @UseGuards(JwtAuthGuard, RolesGuard)

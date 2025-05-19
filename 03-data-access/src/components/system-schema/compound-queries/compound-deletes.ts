@@ -120,59 +120,72 @@ export async function deleteUser(userId: number) {
 }
 
 
-export async function deleteEvaluationVersion(dto: DeleteEvaluationData) {
-  // Paso 1: validar propiedad y relación con la evaluación
-  const version = await Prisma.evaluationVersion.findFirst({
+export async function deleteEvaluation(dto: DeleteEvaluationData) {
+  // Paso 1: validar propiedad de la evaluación
+  const evaluation = await Prisma.evaluation.findFirst({
     where: {
-      id: dto.versionId,
-      evaluation_id: dto.evaluationId,
+      id: dto.evaluationId,
       created_by: dto.userId,
     },
     select: { id: true },
   });
 
-  if (!version) {
-    throw new ForbiddenException('No tienes permiso para eliminar esta versión o no existe.');
+  if (!evaluation) {
+    throw new ForbiddenException('No tienes permiso para eliminar esta evaluación o no existe.');
   }
 
-  // Paso 2: eliminar en orden seguro
+  // Paso 2: eliminar en cascada dentro de una transacción
   await Prisma.$transaction(async (tx) => {
-    // Obtener los IDs de respuestas de la versión
-    const answers = await tx.answer.findMany({
-      where: { version_id: dto.versionId },
+    // 2.1: Obtener todas las versiones de la evaluación
+    const versions = await tx.evaluationVersion.findMany({
+      where: { evaluation_id: dto.evaluationId },
       select: { id: true },
     });
-    const answerIds = answers.map((a) => a.id);
 
-    if (answerIds.length > 0) {
-      // Eliminar comentarios
-      await tx.comment.deleteMany({
-        where: { answer_id: { in: answerIds } },
+    const versionIds = versions.map((v) => v.id);
+
+    if (versionIds.length > 0) {
+      // 2.2: Obtener todos los IDs de respuestas de esas versiones
+      const answers = await tx.answer.findMany({
+        where: { version_id: { in: versionIds } },
+        select: { id: true },
       });
+      const answerIds = answers.map((a) => a.id);
 
-      // Eliminar evidencias
-      await tx.evidence.deleteMany({
-        where: { answer_id: { in: answerIds } },
-      });
+      if (answerIds.length > 0) {
+        // 2.3: Eliminar comentarios
+        await tx.comment.deleteMany({
+          where: { answer_id: { in: answerIds } },
+        });
 
-      // Eliminar respuestas
-      await tx.answer.deleteMany({
-        where: { id: { in: answerIds } },
+        // 2.4: Eliminar evidencias
+        await tx.evidence.deleteMany({
+          where: { answer_id: { in: answerIds } },
+        });
+
+        // 2.5: Eliminar respuestas
+        await tx.answer.deleteMany({
+          where: { id: { in: answerIds } },
+        });
+      }
+
+      // 2.6: Eliminar versiones
+      await tx.evaluationVersion.deleteMany({
+        where: { id: { in: versionIds } },
       });
     }
 
-    // Eliminar la versión
-    await tx.evaluationVersion.delete({
-      where: { id: dto.versionId },
+    // 2.7: Eliminar la evaluación
+    await tx.evaluation.delete({
+      where: { id: dto.evaluationId },
     });
   });
 
-  return { message: 'Versión eliminada correctamente' };
+  return { message: 'Evaluación eliminada correctamente' };
 }
 
 //Interfaces de datos usado en la HU013
 export interface DeleteEvaluationData {
   evaluationId: number,
-  versionId: number;
   userId: number;
 }

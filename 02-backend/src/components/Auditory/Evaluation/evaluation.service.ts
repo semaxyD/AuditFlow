@@ -372,13 +372,12 @@ export class EvaluationService {
 
 }
 
-
-  async deleteEvaluationVersion(evaluationId: number,versionId: number, userId: number) {
+  
+  async deleteEvaluation(evaluationId: number, userId: number) {
     try {
 
       const data = {
         evaluationId,
-        versionId,
         userId
       }
 
@@ -396,7 +395,7 @@ export class EvaluationService {
   
   
     } catch (error) {
-      throw new InternalServerErrorException('Error eliminando la versión de evaluación');
+      throw new InternalServerErrorException('Error eliminando la evaluación');
     }
   }
 

@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { companyUpdateSchema } from "../CompanyForm/CompanyForm.schema";
 import { z } from "zod";
+import { toast } from "sonner";
 
 export type Company = {
   id: number;
@@ -24,7 +25,6 @@ export type Company = {
   contact_name: string;
   contact_email: string;
 };
-import { toast } from "sonner";
 
 interface EditCompanyFormProps {
   company: Company;
@@ -34,13 +34,7 @@ interface EditCompanyFormProps {
 export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    handleSubmit,
-    control,
-    formState: { dirtyFields },
-    getValues,
-    reset,
-  } = useForm<z.infer<typeof companyUpdateSchema>>({
+  const form = useForm<z.infer<typeof companyUpdateSchema>>({
     resolver: zodResolver(companyUpdateSchema),
     defaultValues: {
       name: company.name,
@@ -51,25 +45,35 @@ export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
     },
   });
 
+  const {
+    handleSubmit,
+    control,
+    formState: { dirtyFields },
+    getValues,
+    reset,
+  } = form;
+
   async function onSubmit() {
     setIsLoading(true);
 
-    // Recopilamos sólo los campos que están "sucios"
     const allValues = getValues();
     const changedFields: Partial<z.infer<typeof companyUpdateSchema>> = {};
     for (const key of Object.keys(dirtyFields) as Array<
       keyof typeof dirtyFields
     >) {
-      // dirtyFields[key] === true si cambió
       // @ts-ignore
       changedFields[key] = allValues[key];
     }
 
-    // Payload sólo con los cambios (y el id, si tu endpoint lo requiere)
     const payload = {
       id: company.id,
-      ...changedFields,
+      phone: allValues.phone,
+      name: allValues.name,
+      address: allValues.address,
+      contactName: allValues.contact_name,
+      contactEmail: allValues.contact_email,
     };
+
     console.log("Payload a enviar:", payload);
 
     try {
@@ -86,7 +90,6 @@ export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
         }
       );
 
-      console.log("Respuesta del servidor:", res);
       const result = await res.json();
 
       if (res.ok) {
@@ -102,14 +105,14 @@ export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
       }
     } catch (error) {
       console.error("Error al actualizar compañía:", error);
-      alert("Error al actualizar compañía. Intenta más tarde.");
+      toast.error("Error al actualizar compañía. Intenta más tarde.");
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <Form control={control}>
+    <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-4 grid grid-cols-2 gap-4"

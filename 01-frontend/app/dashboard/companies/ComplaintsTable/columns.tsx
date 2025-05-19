@@ -5,11 +5,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Trash, Eye } from "lucide-react";
-import { Company } from "./mock/companies";
+import { Company } from "./types/company";
 import EditCompanyModal from "../components/EditCompanyModal/EditCompanyModal";
 import DeleteCompanyModal from "../components/DeleteCompanyModal/DeleteCompanyModal";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
-// 1) Cambiamos export const columns => export function getColumns
 export function getColumns(
   onDeleted: () => void,
   onUpdated: () => void
@@ -52,17 +52,28 @@ export function getColumns(
       id: "actions",
       enableHiding: false,
       cell: ({ row }) => {
+        const { hasAccess, role, status } = useRoleCheck("admin");
+
         const companyId = row.original.id.toString();
         return (
           <div className="flex gap-2 justify-end">
+            {hasAccess && role === "admin" && (
+              <>
+                <EditCompanyModal
+                  onUpdated={onUpdated}
+                  company={row.original}
+                />
+                <DeleteCompanyModal
+                  companyId={companyId}
+                  onDeleted={onDeleted}
+                />
+              </>
+            )}
             <Link href={`/dashboard/companies/${companyId}`}>
-              <Button variant="outline" size="icon">
+              <Button size="icon">
                 <Eye />
               </Button>
             </Link>
-            <EditCompanyModal onUpdated={onUpdated} company={row.original} />
-            {/* Aquí recibe onDeleted */}
-            <DeleteCompanyModal companyId={companyId} onDeleted={onDeleted} />
           </div>
         );
       },
