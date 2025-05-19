@@ -529,99 +529,142 @@ export async function getEvaluationDetailsByExternalAuditorId(data: {
 }
 
 export async function updateEvaluationWithDetails(data: UpdateEvaluationData) {
-  return await Prisma.$transaction(async (tx) => {
-    // 1. Obtener la versión activa de la evaluación
-    const version = await tx.evaluationVersion.findFirst({
-      where: {
-        evaluation_id: data.evaluation_id,
-        is_latest: true,
+  // 1. Obtener la versión activa
+  const previousVersion = await Prisma.evaluationVersion.findFirst({
+    where: {
+      evaluation_id: data.evaluation_id,
+      is_latest: true,
+    },
+  });
+
+  if (!previousVersion) {
+    throw new Error("No se encontró una versión activa para esta evaluación");
+  }
+
+  // 2. Desactivar versiones anteriores
+  await Prisma.evaluationVersion.updateMany({
+    where: { evaluation_id: data.evaluation_id },
+    data: { is_latest: false },
+  });
+
+  // 3. Crear nueva versión
+  const newVersion = await Prisma.evaluationVersion.create({
+    data: {
+      evaluation_id: data.evaluation_id,
+      created_by: data.user_id,
+      is_latest: true,
+      status: data.maturity_level,
+      score: data.total_score,
+      completion_percentage: data.completion_percentage,
+      answered_questions: data.answered_questions,
+      total_questions: data.total_questions,
+    },
+  });
+
+  // 4. Clonar respuestas previas
+  const previousAnswers = await Prisma.answer.findMany({
+    where: { version_id: previousVersion.id },
+    include: {
+      comments: true,
+      evidences: true,
+    },
+  });
+
+  const answerMap = new Map<number, number>(); // question_id → new answer_id
+
+  for (const old of previousAnswers) {
+    const newAnswer = await Prisma.answer.create({
+      data: {
+        version_id: newVersion.id,
+        question_id: old.question_id,
+        score: old.score,
+        response: old.response,
+        created_by: data.user_id,
+        created_at: new Date(),
       },
     });
 
-    if (!version) {
-      throw new Error("No se encontró una versión activa para esta evaluación");
+    answerMap.set(old.question_id, newAnswer.id);
+
+    for (const c of old.comments) {
+      await Prisma.comment.create({
+        data: {
+          answer_id: newAnswer.id,
+          text: c.text,
+          created_by: data.user_id,
+          created_at: new Date(),
+        },
+      });
     }
 
-    for (const section of data.sections) {
-      for (const question of section.questions) {
-        // 2. Buscar respuesta previa
-        const existingAnswer = await tx.answer.findFirst({
-          where: {
-            version_id: version.id,
-            question_id: question.question_id,
+    for (const e of old.evidences) {
+      await Prisma.evidence.create({
+        data: {
+          answer_id: newAnswer.id,
+          url: e.url,
+          created_by: data.user_id,
+          created_at: new Date(),
+        },
+      });
+    }
+  }
+
+  // 5. Sobrescribir respuestas modificadas
+  for (const section of data.sections) {
+    for (const question of section.questions) {
+      const existingAnswerId = answerMap.get(question.question_id);
+
+      if (existingAnswerId) {
+        await Prisma.comment.deleteMany({ where: { answer_id: existingAnswerId } });
+        await Prisma.evidence.deleteMany({ where: { answer_id: existingAnswerId } });
+
+        await Prisma.answer.update({
+          where: { id: existingAnswerId },
+          data: {
+            score: question.score,
+            response: question.answer,
           },
         });
 
-        let answerId: number;
-
-        if (existingAnswer) {
-          // 3. Actualizar respuesta existente
-          const updated = await tx.answer.update({
-            where: { id: existingAnswer.id },
-            data: {
-              score: question.score,
-              response: question.answer,
-            },
-          });
-
-          answerId = updated.id;
-
-          // 4. Limpiar evidencias y comentarios previos
-          await tx.evidence.deleteMany({ where: { answer_id: answerId } });
-          await tx.comment.deleteMany({ where: { answer_id: answerId } });
-        } else {
-          // 5. Crear nueva respuesta
-          const created = await tx.answer.create({
-            data: {
-              version_id: version.id,
-              question_id: question.question_id,
-              score: question.score,
-              response: question.answer,
-              created_by: data.user_id,
-              created_at: new Date(),
-            },
-          });
-
-          answerId = created.id;
-        }
-
-        // 6. Agregar comentario si lo hay
         if (question.comments?.trim()) {
-          await tx.comment.create({
+          await Prisma.comment.create({
             data: {
+              answer_id: existingAnswerId,
               text: question.comments.trim(),
               created_by: data.user_id,
-              answer_id: answerId,
               created_at: new Date(),
             },
           });
         }
 
-        // 7. Agregar evidencias si hay
         if (question.evidence?.length) {
-          await tx.evidence.create({
-            data: {
-              answer_id: answerId,
-              url: question.evidence, // ← string[]
-              created_by: data.user_id,
-              created_at: new Date(),
-            },
-          });
+          for (const url of question.evidence) {
+            await Prisma.evidence.create({
+              data: {
+                answer_id: existingAnswerId,
+                url:question.evidence,
+                created_by: data.user_id,
+                created_at: new Date(),
+              },
+            });
+          }
         }
       }
     }
+  }
 
-    // 8. Actualizar observaciones generales
-    await tx.evaluation.update({
-      where: { id: data.evaluation_id },
-      data: {
-        observations: data.observations ?? "",
-      },
-    });
-
-    return { success: true };
+  // 6. Actualizar observaciones generales
+  await Prisma.evaluation.update({
+    where: { id: data.evaluation_id },
+    data: {
+      observations: data.observations?.trim() ?? "",
+    },
   });
+
+  return { success: true, version_id: newVersion.id };
 }
+
+
 
 export async function getLatestVersionIdByEvaluationId(evaluationId: number) {
   const result = await Prisma.evaluationVersion.findFirst({

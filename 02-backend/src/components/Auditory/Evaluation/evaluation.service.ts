@@ -297,41 +297,81 @@ export class EvaluationService {
   async updateEvaluation(
   evaluationId: number,
   dto: EvaluationSubmissionDto,
-  userId: number
-  ) {
-    const sectionIds = dto.sections.map(s => s.id);
-    const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
+  userId: number,
+) {
+  const sectionIds = dto.sections.map(s => s.id);
+  const questionIds = dto.sections.flatMap(s => s.questions.map(q => q.id));
 
-    await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
-    await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
+  // 1. Validar existencia de secciones y preguntas
+  await this.validateEntityExistence('getCriterionsByIds', 'criterion-queries', sectionIds);
+  await this.validateEntityExistence('getQuestionsByIds', 'questions-queries', questionIds);
 
-    for (const section of dto.sections) {
-      for (const question of section.questions) {
-        const validScores = [0, 50, 100, null];
-        const validAnswers = ['Si', 'No', 'NM', 'NA'];
+  // 2. Validar respuestas, score y evidencias
+  for (const section of dto.sections) {
+    for (const question of section.questions) {
+      const validScores = [0, 50, 100, null];
+      const validAnswers = ['Si', 'No', 'NM', 'NA'];
 
-        if (!validScores.includes(question.score)) {
+      if (!validScores.includes(question.score)) {
+        throw new BadRequestException(
+          `El puntaje de la pregunta ${question.id} debe ser uno de los siguientes: 0, 50, 100 o null.`,
+        );
+      }
+
+      if (!validAnswers.includes(question.answer)) {
+        throw new BadRequestException(
+          `La respuesta de la pregunta ${question.id} debe ser una de las siguientes: ${validAnswers.join(', ')}`,
+        );
+      }
+
+      for (const evidenceUrl of question.evidence || []) {
+        if (!this.isValidUrl(evidenceUrl)) {
           throw new BadRequestException(
-            `El puntaje de la pregunta ${question.id} debe ser uno de los siguientes: 0, 50, 100 o null.`,
+            `El enlace de evidencia "${evidenceUrl}" en la pregunta ${question.id} no es un URL válido.`,
           );
-        }
-
-        if (!validAnswers.includes(question.answer)) {
-          throw new BadRequestException(
-            `La respuesta de la pregunta ${question.id} debe ser una de las siguientes: ${validAnswers.join(', ')}`,
-          );
-        }
-
-        for (const evidenceUrl of question.evidence || []) {
-          if (!this.isValidUrl(evidenceUrl)) {
-            throw new BadRequestException(
-              `El enlace de evidencia "${evidenceUrl}" en la pregunta ${question.id} no es un URL válido.`,
-            );
-          }
         }
       }
     }
   }
+
+  // 3. Calcular métricas (puedes tener una función interna si quieres)
+  const totalQuestions = questionIds.length;
+  const answeredQuestions = dto.sections.flatMap(s => s.questions).filter(q => q.answer !== 'NA').length;
+  const maxScore = totalQuestions * 100;
+  const totalScore = dto.sections
+    .flatMap(s => s.questions)
+    .filter(q => q.answer !== 'NA')
+    .reduce((acc, q) => acc + (q.score ?? 0), 0);
+  const completionPercentage = totalQuestions ? Math.round((totalScore / (answeredQuestions * 100)) * 100) : 0;
+  const maturityLevel = completionPercentage >= 80 ? 'aprobado' : 'rechazado';
+
+  // 4. Armar datos y enviar al módulo compuesto
+  const payload= {
+    evaluation_id: evaluationId,
+    user_id: userId,
+    completion_percentage: completionPercentage,
+    maturity_level: maturityLevel,
+    total_score: totalScore,
+    max_score: maxScore,
+    answered_questions: answeredQuestions,
+    total_questions: totalQuestions,
+    observations: dto.observations,
+    sections: dto.sections.map(section => ({
+      criterion_id: section.id,
+      questions: section.questions.map(q => ({
+        question_id: q.id,
+        score: q.score,
+        answer: q.answer,
+        comments: q.comments,
+        evidence: q.evidence,
+      })),
+    })),
+  };
+
+  return await this.queryFilter.filterQuery('updateEvaluationWithDetails', 'compound-evaluations', payload);
+
+}
+
 
   async deleteEvaluationVersion(evaluationId: number,versionId: number, userId: number) {
     try {
