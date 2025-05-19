@@ -189,12 +189,13 @@ export class UserService {
     return { message: 'Frecuencia actualizada correctamente', config: result};
   }
 
+
   //HU016 - crear compañia
   async createCompany(dto: CreateCompanyDto) {
     const existing = await this.queryFilter.filterQuery(
       'getCompanyByName',
       'company-queries',
-      dto.name,
+      dto.name
     );
 
     if (existing) {
@@ -255,7 +256,7 @@ export class UserService {
         dto
       );
 
-      return { message: 'Configuración eliminada correctamente' };
+      return { message: 'Configuración eliminada correctamente',deleted };
     } catch (error) {
       if (
         error.code === 'P2025' ||
@@ -263,7 +264,7 @@ export class UserService {
       ) {
         throw new NotFoundException('No existe una configuración con esos datos');
       }
-      throw new InternalServerErrorException('Error al eliminar la configuración');
+      throw new InternalServerErrorException('Error al eliminar la configuración,dio: ');
     }
   }
 

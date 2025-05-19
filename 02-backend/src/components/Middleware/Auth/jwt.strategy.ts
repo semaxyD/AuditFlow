@@ -31,9 +31,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException('Token válido, pero usuario no encontrado en la base de datos');
     }
-
-    console.log('✅ JWT Strategy validó y seteó el user:', payload);
-
     return {
       id:user.id,
       email: user.email,

@@ -333,10 +333,11 @@ export class EvaluationService {
     }
   }
 
-  async deleteEvaluationVersion(versionId: number, userId: number) {
+  async deleteEvaluationVersion(evaluationId: number,versionId: number, userId: number) {
     try {
 
       const data = {
+        evaluationId,
         versionId,
         userId
       }

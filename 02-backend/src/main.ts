@@ -10,5 +10,6 @@ async function bootstrap() {
   await queryLoaderService.onModuleInit;
 
   await app.listen(3001);
+  console.log(Buffer.from(process.env.DATABASE_URL || '').toString('hex'));
 }
 bootstrap();

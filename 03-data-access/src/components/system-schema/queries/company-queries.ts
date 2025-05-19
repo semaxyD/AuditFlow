@@ -52,24 +52,17 @@ export async function getCompanyByName(name: string) {
   });
 }
 
-export async function createCompany(dto: {
-    name: string;
-    nit: number;
-    address: string;
-    contactEmail: string;
-    contactName: string;
-    phone: string;
-}) {
-  return Prisma.company.create({
-    data: {
-      name: dto.name,
-      nit: dto.nit,
-      address: dto.address,
-      contact_name: dto.contactName,
-      contact_email: dto.contactEmail,
-      phone: dto.phone,
-    },
-  });
+export async function createCompany(dto: CreateCompany) {
+
+  const result = await Prisma.$executeRawUnsafe(`
+    INSERT INTO "company" (
+      name, nit, address, contact_name, contact_email, phone
+    ) VALUES (
+      $1, $2, $3, $4, $5, $6
+    )
+  `, dto.name, dto.nit, dto.address, dto.contactName, dto.contactEmail, dto.phone);
+
+  return result;
 }
 
 export async function getCompanyById(id: number) {
@@ -101,4 +94,13 @@ interface UpdateCompany {
   contactName?: string;
   contactEmail?: string;
   phone?: string;
+}
+
+interface CreateCompany {
+  name: string;
+  nit: number;
+  address: string;
+  contactName: string;
+  contactEmail: string;
+  phone: string;
 }

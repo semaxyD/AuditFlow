@@ -75,14 +75,18 @@ export async function deleteCompany( companyId: number) {
 }
 
 export async function deleteEvaluationVersion(dto: DeleteEvaluationData) {
-  // Paso 1: validar propiedad de la versión
-  const version = await Prisma.evaluationVersion.findUnique({
-    where: { id: dto.versionId },
-    select: { created_by: true },
+  // Paso 1: validar propiedad y relación con la evaluación
+  const version = await Prisma.evaluationVersion.findFirst({
+    where: {
+      id: dto.versionId,
+      evaluation_id: dto.evaluationId,
+      created_by: dto.userId,
+    },
+    select: { id: true },
   });
 
-  if (!version || version.created_by !== dto.userId) {
-    throw new ForbiddenException('No tienes permiso para eliminar esta versión.');
+  if (!version) {
+    throw new ForbiddenException('No tienes permiso para eliminar esta versión o no existe.');
   }
 
   // Paso 2: eliminar en orden seguro
@@ -120,8 +124,9 @@ export async function deleteEvaluationVersion(dto: DeleteEvaluationData) {
   return { message: 'Versión eliminada correctamente' };
 }
 
-//Interfaces de datos usado en la HU008
+//Interfaces de datos usado en la HU013
 export interface DeleteEvaluationData {
+  evaluationId: number,
   versionId: number;
   userId: number;
 }
