@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { columns } from "./ComplaintsTable/columns";
 import { Company } from "./ComplaintsTable/types/company";
 import CompaniesTable from "./ComplaintsTable/CompaniesTable";
 import { Loading } from "@/components/Loading";
@@ -12,6 +11,7 @@ export default function SearchUsersPage() {
   const [data, setData] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshToggle, setRefreshToggle] = useState(false);
 
   useEffect(() => {
     if (status === "loading" || role === null) return;
@@ -19,7 +19,6 @@ export default function SearchUsersPage() {
     setError(null);
 
     const token = window.localStorage.getItem("token") || "";
-
     const endpoint =
       role === "auditor_interno" || role === "auditor_externo"
         ? "http://localhost:3001/reports-evaluation/myCompanies"
@@ -38,7 +37,12 @@ export default function SearchUsersPage() {
       .then((companies: Company[]) => setData(companies))
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [role, status]);
+  }, [role, status, refreshToggle]);
+
+  const handleDeleted = () => {
+    // Dispara la recarga de la tabla sin recargar toda la página
+    setRefreshToggle((prev) => !prev);
+  };
 
   if (status === "loading" || loading) {
     return <Loading message="Cargando empresas…" />;
@@ -61,7 +65,8 @@ export default function SearchUsersPage() {
         Aquí encontrarás todas las empresas que han presentado una evaluación.
       </p>
       <div className="bg-white rounded-lg shadow p-6">
-        <CompaniesTable columns={columns} data={data} />
+        {/* Sólo pasamos data y onDeleted */}
+        <CompaniesTable data={data} onDeleted={handleDeleted} />
       </div>
     </div>
   );

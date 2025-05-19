@@ -10,7 +10,6 @@ import {
   getPaginationRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -19,45 +18,46 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Company } from "./types/company";
+import { getColumns } from "./columns";
 
-interface CompaniesTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
+type Props = {
+  data: Company[];
+  onDeleted: () => void;
+};
 
-export default function CompaniesTable<TData, TValue>({
-  columns,
-  data,
-}: CompaniesTableProps<TData, TValue>) {
+export default function CompaniesTable({ data, onDeleted }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [tableData, setTableData] = useState(data);
+  const [tableData, setTableData] = useState<Company[]>(data);
+
+  // Genera dinámicamente las columnas inyectando onDeleted
+  const columns = getColumns(onDeleted);
 
   const table = useReactTable({
     data: tableData,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onSortingChange: setSorting,
     state: {
       sorting,
       globalFilter: searchTerm,
     },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
 
+  // Aplicar filtro global al cambiar searchTerm
   useEffect(() => {
     table.setGlobalFilter(searchTerm);
-  }, [searchTerm]);
+  }, [searchTerm, table]);
 
   return (
     <div className="mt-10">
-      {data && data.length > 0 ? (
+      {table.getRowModel().rows.length > 0 ? (
         <>
           <div className="rounded-md border mt-3">
             <Table>
@@ -78,35 +78,22 @@ export default function CompaniesTable<TData, TValue>({
                 ))}
               </TableHeader>
               <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-20 text-center"
-                    >
-                      Sin resultados.
-                    </TableCell>
+                {table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
           </div>
+
           <div className="flex items-center justify-end space-x-2 py-4">
             <Button
               variant="outline"
