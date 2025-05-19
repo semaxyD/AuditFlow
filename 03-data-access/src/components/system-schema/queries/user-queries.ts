@@ -43,7 +43,7 @@ export async function createUser(data: {
   role: string;
   companyIds: number[];
 }) {
-  return await Prisma.user.create({ 
+  return await Prisma.user.create({
     data: {
       name: data.name,
       email: data.email,
@@ -51,7 +51,7 @@ export async function createUser(data: {
       role: data.role,
       companyAuditors: {
         create: data.companyIds.map(companyId => ({
-          company: {connect: {id: companyId} },
+          company: { connect: { id: companyId } },
         })),
       },
     },
@@ -70,9 +70,9 @@ export async function getUserCompanyById(userId: number) {
   return editor?.company_id ?? 0;
 }
 
-export async function validateUserEmail(email:string) {
+export async function validateUserEmail(email: string) {
   const validate = await Prisma.user.findUnique({
-    where: {email: email},
+    where: { email: email },
   });
   return validate;
 }
@@ -94,4 +94,29 @@ export async function getCompaniesByUserId(userId: number) {
 
   return auditorRecords.map((record) => record.company);
 }
+
+//Actualiza un usuario por su id
+export async function updateUserById(data: {
+  id: number;
+  name?: string;
+  email?: string;
+  role?: string;
+}) {
+  return await Prisma.user.update({
+    where: { id: data.id },
+    data: {
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+    },
+  });
+}
+
+
 

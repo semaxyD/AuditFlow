@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,118 +13,195 @@ import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
+
+type Norm = { id: number; name: string };
+type Company = { id: number; name: string };
 
 export function EvaluationSettingsModal({
-  companies,
-  rules,
   openModal,
   setOpenModal,
   setInfo,
 }: {
-  companies: any[];
-  rules: any[];
   openModal: boolean;
-  setOpenModal: (value: boolean) => void;
-  setInfo: (info: {
-    companyId: number | undefined;
-    ruleId: number | undefined;
-  }) => void;
+  setOpenModal: (v: boolean) => void;
+  setInfo: (info: { companyId?: number; ruleId: number }) => void;
 }) {
+  const { role } = useRoleCheck("auditor_interno", "auditor_externo");
+  const isInternal = role === "auditor_interno";
+
+  const [norms, setNorms] = useState<Norm[]>([]);
+  const [loadingNorms, setLoadingNorms] = useState(true);
+
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [loadingCompanies, setLoadingCompanies] = useState(true);
+
   const [selectedRule, setSelectedRule] = useState<string>("");
   const [selectedCompany, setSelectedCompany] = useState<string>("");
 
+  // 1) Cargar normas
   useEffect(() => {
-    if (companies.length === 1) {
-      setSelectedCompany(companies[0].id.toString());
-      setInfo({
-        companyId: companies[0].id,
-        ruleId: undefined
-      });
+    (async () => {
+      setLoadingNorms(true);
+      try {
+        const token = localStorage.getItem("token") || "";
+        const res = await fetch("http://localhost:3001/auditory/allNorms", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error(res.statusText);
+        const data: Norm[] = await res.json();
+        console.log("Normas cargadas:", data);
+        setNorms(data);
+      } catch (e) {
+        console.error("Error al cargar normas:", e);
+        setNorms([]);
+      } finally {
+        setLoadingNorms(false);
+      }
+    })();
+  }, []);
+
+  // 2) Cargar empresas
+  useEffect(() => {
+    if (isInternal) {
+      setLoadingCompanies(false);
+      setCompanies([]);
+      return;
     }
-  }, [companies]);
 
-  const handleRuleChange = (value: string) => {
-    setSelectedRule(value);
-    setInfo({
-      companyId: selectedCompany ? parseInt(selectedCompany) : undefined,
-      ruleId: parseInt(value)
-    });
-  };
-
-  const handleCompanyChange = (value: string) => {
-    setSelectedCompany(value);
-    setInfo({
-      companyId: parseInt(value),
-      ruleId: selectedRule ? parseInt(selectedRule) : undefined
-    });
-  };
+    (async () => {
+      setLoadingCompanies(true);
+      try {
+        const token = localStorage.getItem("token") || "";
+        const res = await fetch("http://localhost:3001/auditory/myCompanies", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error(res.statusText);
+        const data: Company[] = await res.json();
+        console.log("Empresas cargadas:", data);
+        setCompanies(data);
+        if (data.length === 1) {
+          setSelectedCompany(data[0].id.toString());
+        }
+      } catch (e) {
+        console.error("Error al cargar empresas:", e);
+        setCompanies([]);
+      } finally {
+        setLoadingCompanies(false);
+      }
+    })();
+  }, [isInternal]);
 
   const handleContinue = () => {
-    if (selectedRule && (selectedCompany || companies.length === 1)) {
+    if (isInternal) {
+      if (!selectedRule) {
+        alert("Debes seleccionar una norma");
+        return;
+      }
+      setInfo({ ruleId: +selectedRule });
       setOpenModal(false);
+      return;
     }
+
+    if (!selectedRule || !selectedCompany) {
+      alert("Debes seleccionar norma y empresa");
+      return;
+    }
+    setInfo({
+      ruleId: +selectedRule,
+      companyId: +selectedCompany,
+    });
+    setOpenModal(false);
   };
 
   return (
     <Dialog open={openModal} onOpenChange={setOpenModal}>
-      <DialogContent className="sm:max-w-[550px]" onInteractOutside={(e) => e.preventDefault()}>
+      <DialogContent
+        className="sm:max-w-[550px]"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
-          <DialogTitle>Parametros de la evaluación</DialogTitle>
+          <DialogTitle>Parámetros de la evaluación</DialogTitle>
           <DialogDescription>
-            Seleccione la norma y la empresa a la que realizará la evaluación
-            (si aplica).
+            {isInternal
+              ? "Selecciona la norma."
+              : "Selecciona la norma y la empresa."}
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-4 py-4">
+
+        <div className="grid grid-cols-1 gap-4 py-4">
+          {/* Selector de norma */}
           <div className="flex flex-col gap-2">
             <Label>Seleccionar norma</Label>
-            <Select value={selectedRule} onValueChange={handleRuleChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="ISO 14001..." />
-              </SelectTrigger>
-              <SelectContent>
-                {rules.map((rule) => (
-                  <SelectItem key={rule.id} value={rule.id.toString()}>
-                    {rule.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col gap-2">
-            <Label>Seleccionar empresa</Label>
-            <Select 
-              value={selectedCompany} 
-              onValueChange={handleCompanyChange}
-              disabled={companies.length === 1}
+            <Select
+              value={selectedRule}
+              onValueChange={setSelectedRule}
+              disabled={loadingNorms}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="ASOCI S.A.S" />
+                <SelectValue placeholder="Elige norma..." />
               </SelectTrigger>
               <SelectContent>
-                {companies.map((company) => (
-                  <SelectItem key={company.id} value={company.id.toString()}>
-                    {company.name}
+                {loadingNorms ? (
+                  <SelectItem value="loading" disabled>
+                    Cargando…
                   </SelectItem>
-                ))}
+                ) : norms.length === 0 ? (
+                  <SelectItem value="none" disabled>
+                    No hay normas
+                  </SelectItem>
+                ) : (
+                  norms.map((n) => (
+                    <SelectItem key={n.id} value={n.id.toString()}>
+                      {n.name}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>
+
+          {/* Selector de empresa (sólo externo) */}
+          {!isInternal && (
+            <div className="flex flex-col gap-2">
+              <Label>Seleccionar empresa</Label>
+              <Select
+                value={selectedCompany}
+                onValueChange={setSelectedCompany}
+                disabled={loadingCompanies}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Elige empresa..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {loadingCompanies ? (
+                    <SelectItem value="loading" disabled>
+                      Cargando…
+                    </SelectItem>
+                  ) : companies.length === 0 ? (
+                    <SelectItem value="none" disabled>
+                      No hay empresas
+                    </SelectItem>
+                  ) : (
+                    companies.map((c) => (
+                      <SelectItem key={c.id} value={c.id.toString()}>
+                        {c.name}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
         </div>
+
         <DialogFooter>
-          <Button 
-            type="button" 
-            onClick={handleContinue}
-            disabled={!selectedRule || (!selectedCompany && companies.length > 1)}
-          >
+          <Button type="button" onClick={handleContinue}>
             Continuar
           </Button>
         </DialogFooter>
