@@ -69,7 +69,7 @@ export function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg w-96  max-w-full space-y-10"
+        className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg w-lg  max-w-full space-y-10"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Iniciar Sesión
@@ -79,7 +79,7 @@ export function LoginForm() {
             {errorMessage}
           </div>
         )}
-        <div className="space-y-3">
+        <div className="space-y-7">
           <FormField
             control={form.control}
             name="email"
