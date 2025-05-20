@@ -333,7 +333,7 @@ export class EvaluationService {
       }
 
       const result = await this.queryFilter.filterQuery(
-        'deleteEvaluationVersion',
+        'deleteEvaluation',
         'compound-deletes',
         data
       );
