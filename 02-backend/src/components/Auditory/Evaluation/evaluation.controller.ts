@@ -96,17 +96,7 @@ export class EvaluationController {
   async deleteEvaluationVersion(@Param('evaluationId', ParseIntPipe) evaluationId: number,@CurrentUser() user: { id: number }) {
     return this.service.deleteEvaluation(evaluationId,user.id);
   }
-  // Endpoint para obtener los datos de la evaluación para exportación (HU 14)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('auditor_interno', 'auditor_externo',)
-  @Get('report-data/:evaluationId')
-  getEvaluationReportData(
-    @Param('evaluationId', ParseIntPipe) evaluationId: number,
-    @CurrentUser() user: { id: number }
-  ) {
-    return this.service.getEvaluationReportData(evaluationId, user.id);
-  }
-
+  
 
 
 

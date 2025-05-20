@@ -14,7 +14,7 @@ import { CurrentUser } from 'src/components/Middleware/decorators/current-user.d
 
 @Controller('reports-evaluation') // ruta base: http://localhost:3001/reports-evaluation
 export class ReportEvaluationController {
-  constructor(private readonly service: ReportEvaluationService) {}
+  constructor(private readonly service: ReportEvaluationService) { }
 
   // Endpoints Hu015
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -81,4 +81,18 @@ export class ReportEvaluationController {
       user.id,
     );
   }
+
+  // Endpoint para obtener los datos de la evaluación para exportación (HU 14)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('auditor_interno', 'auditor_externo',)
+  @Get('report-data/:evaluationId')
+  getEvaluationReportData(
+    @Param('evaluationId', ParseIntPipe) evaluationId: number,
+    @CurrentUser() user: { id: number }
+  ) {
+    return this.service.getEvaluationReportData(evaluationId, user.id);
+  }
+
+
+
 }
