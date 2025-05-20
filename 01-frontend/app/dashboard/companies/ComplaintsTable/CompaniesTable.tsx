@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { Company } from "./types/company";
 import { getColumns } from "./columns";
 import CreateCompanyModal from "../components/CreateCompanyModal/CreateCompanyModal";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 type Props = {
   data: Company[];
@@ -34,6 +35,7 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState<Company[]>(data);
+  const { role, status } = useRoleCheck("admin");
 
   const columns = getColumns(onDeleted, onUpdated);
 
@@ -57,9 +59,11 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
 
   return (
     <div className="mt-10 flex flex-col gap-4">
-      <div className="self-end">
-        <CreateCompanyModal />
-      </div>
+      {role === "admin" ? (
+        <div className="self-end">
+          <CreateCompanyModal />
+        </div>
+      ) : null}
 
       {table.getRowModel().rows.length > 0 ? (
         <>
