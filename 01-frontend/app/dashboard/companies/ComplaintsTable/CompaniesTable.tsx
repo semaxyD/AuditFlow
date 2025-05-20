@@ -34,7 +34,6 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
   const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState<Company[]>(data);
 
-  // Genera dinámicamente las columnas inyectando onDeleted
   const columns = getColumns(onDeleted, onUpdated);
 
   const table = useReactTable({
@@ -51,7 +50,6 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  // Aplicar filtro global al cambiar searchTerm
   useEffect(() => {
     table.setGlobalFilter(searchTerm);
   }, [searchTerm, table]);
