@@ -1,9 +1,8 @@
 import { Client } from 'pg';
 import * as dotenv from 'dotenv';
-
 dotenv.config();
 
-async function consultarUsuarios() {
+async function listarUsuarios() {
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
   });
@@ -11,25 +10,28 @@ async function consultarUsuarios() {
   await client.connect();
 
   const res = await client.query(`
-    SELECT 
-      id,
-      name,
-      email,
-      role
+    SELECT id, name, email, role
     FROM "user"
-    ORDER BY id;
+    ORDER BY id ASC
   `);
 
-  console.log(`👥 Lista de usuarios en el sistema:`);
-  res.rows.forEach((u) => {
-    console.log('──────────────────────────────');
-    console.log(`🆔 ID Usuario      : ${u.id}`);
-    console.log(`👤 Nombre          : ${u.name}`);
-    console.log(`📧 Correo          : ${u.email}`);
-    console.log(`🎭 Rol             : ${u.role}`);
-  });
+  if (res.rows.length === 0) {
+    console.log('⚠️  No hay usuarios registrados en el sistema.');
+  } else {
+    console.log('📋 Lista de usuarios:');
+    for (const user of res.rows) {
+      console.log('────────────────────────────');
+      console.log(`🆔 ID            : ${user.id}`);
+      console.log(`👤 Nombre        : ${user.name}`);
+      console.log(`📧 Correo        : ${user.email}`);
+      console.log(`🔐 Rol           : ${user.role}`);
+    }
+    console.log('────────────────────────────');
+  }
 
   await client.end();
 }
 
-consultarUsuarios();
+listarUsuarios().catch((err) => {
+  console.error('❌ Error al listar usuarios:', err);
+});

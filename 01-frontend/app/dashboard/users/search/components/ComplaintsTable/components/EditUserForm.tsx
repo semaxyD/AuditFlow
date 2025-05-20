@@ -24,7 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { toast } from "sonner";
 export const userSchema = z.object({
   name: z.string().min(1, { message: "Nombre es requerido" }),
   email: z.string().email({ message: "Email inválido" }),
@@ -42,49 +42,43 @@ export function EditUserForm({ user }: { user: User }) {
     },
   });
 
-  //Backend------------------------------------------------
   async function onSubmit(data: z.infer<typeof userSchema>) {
-    setIsLoading(true); // Activa el estado de carga mientras se envía el formulario
+    setIsLoading(true);
+
+    const payload = {
+      id: user.id,
+      ...data,
+    };
+    console.log("Datos enviados:", payload);
 
     try {
-      // Preparamos los datos que espera el backend
+      const token = localStorage.getItem("token") || "";
+      const res = await fetch(`http://localhost:3001/user/update/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-      // Enviamos los datos al backend
-      //   const res = await fetch("http://localhost:3001/usuarios", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(payload),
-      //   });
+      const result = await res.json();
 
-      //   const result = await res.json(); // Obtenemos la respuesta del backend
-
-      //   if (res.ok) {
-      // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
-
-      // alert(result.message || "Usuario registrado correctamente");
-      // form.reset(); // Limpia el formulario
-      //   } else {
-      //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
-      // alert(result.message || "Ocurrió un error al registrar");
-      //   }
-
-      let payload = {
-        id: user.id,
-        ...data,
-      };
-
-      console.log("Datos enviados:", payload);
+      if (res.ok) {
+        toast.success("Usuario editado correctamente");
+        window.location.reload();
+        form.reset(data);
+      } else {
+        console.error("Error al editar usuario:", result);
+        toast.error("Error al editar usuario");
+      }
     } catch (error) {
-      //mostramos error genérico
-      alert("Error al registrar usuario. Intente más tarde.");
-      console.error(error);
+      console.error("Excepción al editar usuario:", error);
+      toast.error("Error al editar usuario. Intente más tarde.");
     } finally {
-      setIsLoading(false); // Apagamos el estado de carga
+      setIsLoading(false);
     }
   }
-  //Backend------------------------------------------------------
 
   return (
     <Form {...form}>
@@ -99,7 +93,7 @@ export function EditUserForm({ user }: { user: User }) {
             <FormItem>
               <FormLabel>Nombre</FormLabel>
               <FormControl>
-                <Input placeholder="Electricos S.A." {...field} />
+                <Input placeholder="Nombre completo" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
