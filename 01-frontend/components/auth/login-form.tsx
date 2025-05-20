@@ -69,7 +69,7 @@ export function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg w-96  max-w-full space-y-10"
+        className="bg-white/90 backdrop-blur-md px-6 py-3 rounded-2xl shadow-lg w-96  max-w-full space-y-10"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Iniciar Sesión
@@ -79,48 +79,49 @@ export function LoginForm() {
             {errorMessage}
           </div>
         )}
+        <div className="space-y-3">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium text-gray-700">
+                  Correo electrónico
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="ejemplo@correo.com"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm text-red-600" />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-medium text-gray-700">
-                Correo electrónico
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="email"
-                  placeholder="ejemplo@correo.com"
-                  className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
-                />
-              </FormControl>
-              <FormMessage className="text-sm text-red-600" />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="font-medium text-gray-700">
-                Contraseña
-              </FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="password"
-                  placeholder="••••••••"
-                  className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
-                />
-              </FormControl>
-              <FormMessage className="text-sm text-red-600" />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium text-gray-700">
+                  Contraseña
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="••••••••"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm text-red-600" />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button
           type="submit"
