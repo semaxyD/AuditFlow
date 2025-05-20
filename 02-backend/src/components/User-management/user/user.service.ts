@@ -323,9 +323,12 @@ export class UserService {
     userId,
   );
 
+  // Sanitizar
+  const { password, ...safeUser } = deleted;
+
   return {
     message: 'Usuario eliminado correctamente junto con sus datos relacionados',
-    data: deleted,
+    data: safeUser,
   };
 }
 
