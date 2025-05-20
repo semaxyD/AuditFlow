@@ -3,6 +3,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/components/User-management/user/user.module';
 import { QueryFilterModule } from 'src/imports-barrel';
+import { RolesGuard } from './roles.guard';
+import { AccessAttemptService } from './access-attempt.service';
 
 @Module({
   imports: [
@@ -15,7 +17,7 @@ import { QueryFilterModule } from 'src/imports-barrel';
     forwardRef(()=> UserModule),
     QueryFilterModule
   ],
-  providers: [JwtStrategy],
-  exports: [JwtStrategy, JwtModule],
+  providers: [JwtStrategy, RolesGuard, AccessAttemptService],
+  exports: [JwtStrategy, JwtModule, RolesGuard, AccessAttemptService],
 })
 export class AuthModule {}
