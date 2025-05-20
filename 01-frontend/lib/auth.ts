@@ -1,16 +1,21 @@
 import { DefaultSession } from 'next-auth';
 import { UserRole } from './types';
 
-declare module 'next-auth' {
+declare module "next-auth" {
+  interface User {
+    accessToken?: string;
+    id: string;
+    role: string;
+    name?: string;
+  }
   interface Session {
     user: {
-      id: string;
-      role: UserRole;
-    } & DefaultSession['user'];
+      accessToken?: string;
+      id?: number;
+      role?: string;
+      name?: string;
+      email?: string | null;
+      image?: string | null;
+    };
   }
-
-  interface User {
-    id: string;
-    role: UserRole;
-  }
-} 
+}
