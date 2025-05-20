@@ -45,7 +45,6 @@ export const ROLES: { value: UserRole; label: string }[] = [
   { value: "administrador", label: "Administrador" },
   { value: "auditor_interno", label: "Auditor Interno" },
   { value: "auditor_externo", label: "Auditor Externo" },
-  { value: "empresa_cliente", label: "Empresa Cliente" },
 ];
 
 export function RegisterForm() {
