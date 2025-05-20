@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 import { CompanyDTO, companySchema } from "./CompanyForm.schema";
 
 export function CompanyForm() {
@@ -44,27 +45,37 @@ export function CompanyForm() {
 
     try {
       // Preparamos los datos que espera el backend
-
+      const payload = {
+        name: data.name,
+        nit: data.nit,
+        address: data.address,
+        phone: data.phone,
+        contactName: data.contact_name,
+        contactEmail: data.contact_email,
+      };
       // Enviamos los datos al backend
-      //   const res = await fetch("http://localhost:3001/usuarios", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(payload),
-      //   });
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:3001/user/create/company", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-      //   const result = await res.json(); // Obtenemos la respuesta del backend
+      const result = await res.json(); // Obtenemos la respuesta del backend
 
-      //   if (res.ok) {
-      // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
+      if (res.ok) {
+        // se puede reemplazar alert() por un toast de shadcn, modal u otro tipo de mensaje
 
-      // alert(result.message || "Usuario registrado correctamente");
-      // form.reset(); // Limpia el formulario
-      //   } else {
-      //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
-      // alert(result.message || "Ocurrió un error al registrar");
-      //   }
+        toast.success("Compañía creada correctamente");
+        window.location.reload(); // Recargamos la página para ver los cambios
+        form.reset(); // Limpia el formulario
+      } else {
+        //Si hubo error (por ejemplo, correo ya registrado), mostramos el mensaje del backend
+        toast.error(result.message || "Ocurrió un error al registrar");
+      }
 
       console.log("Datos enviados:", data);
     } catch (error) {
@@ -103,7 +114,14 @@ export function CompanyForm() {
             <FormItem>
               <FormLabel>NIT</FormLabel>
               <FormControl>
-                <Input placeholder="9001234567" {...field} />
+                <Input
+                  placeholder="9001234567"
+                  type="number"
+                  step="1"
+                  inputMode="numeric"
+                  pattern="\d*"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -168,7 +186,11 @@ export function CompanyForm() {
           )}
         />
 
-        <Button type="submit" className="w-full col-span-full" disabled={isLoading}>
+        <Button
+          type="submit"
+          className="w-full col-span-full"
+          disabled={isLoading}
+        >
           {isLoading ? "Creando..." : "Crear compañía"}
         </Button>
       </form>

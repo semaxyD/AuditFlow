@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Company } from "./types/company";
 import { getColumns } from "./columns";
+import CreateCompanyModal from "../components/CreateCompanyModal/CreateCompanyModal";
 
 type Props = {
   data: Company[];
@@ -55,7 +56,11 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
   }, [searchTerm, table]);
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 flex flex-col gap-4">
+      <div className="self-end">
+        <CreateCompanyModal />
+      </div>
+
       {table.getRowModel().rows.length > 0 ? (
         <>
           <div className="rounded-md border mt-3">
