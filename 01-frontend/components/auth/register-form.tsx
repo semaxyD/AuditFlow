@@ -51,6 +51,14 @@ export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loadingCompanies, setLoadingCompanies] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const t = localStorage.getItem("token");
+      setToken(t);
+    }
+  }, []);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -62,15 +70,11 @@ export function RegisterForm() {
       companyIds: [],
     },
   });
-  const token = localStorage.getItem("token");
-
   useEffect(() => {
     async function load() {
-      try {
-        console.log("⏳ Iniciando fetch de companiesList con headers:", {
-          Authorization: `Bearer ${token}`,
-        });
+      if (!token) return;
 
+      try {
         const res = await fetch(`${base}/user/companiesList`, {
           headers: {
             "Content-Type": "application/json",
@@ -78,11 +82,7 @@ export function RegisterForm() {
           },
         });
 
-        console.log("✅ Recibí respuesta:", res.status, res.statusText);
-        console.log(" Response headers:", Array.from(res.headers.entries()));
-
         const data = await res.json();
-        console.log("📦 companiesList data:", data);
 
         if (Array.isArray(data)) {
           setCompanies(data);
@@ -98,8 +98,9 @@ export function RegisterForm() {
         setLoadingCompanies(false);
       }
     }
+
     load();
-  }, []);
+  }, [token]);
 
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
