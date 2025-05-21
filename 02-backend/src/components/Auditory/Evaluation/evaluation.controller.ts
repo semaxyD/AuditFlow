@@ -8,6 +8,8 @@ import { CreateEvaluationDto } from './evaluation.dto';
 import { EvaluationSubmissionDto } from './evaluation-submission.dto';
 import { EvaluationService } from './evaluation.service';
 import { ReportEvaluationService } from '../../Reports-Evaluation/evaluation/report-evaluation.service'
+import { UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 // Enum local, solo usado en este controller
 enum AuditorType {
@@ -93,11 +95,17 @@ export class EvaluationController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('auditor_interno', 'auditor_externo')
   @Delete('/delete/evaluation/:evaluationId') // Ruta para eliminar una evaluacion
-  async deleteEvaluationVersion(@Param('evaluationId', ParseIntPipe) evaluationId: number,@CurrentUser() user: { id: number }) {
-    return this.service.deleteEvaluation(evaluationId,user.id);
+  async deleteEvaluationVersion(@Param('evaluationId', ParseIntPipe) evaluationId: number, @CurrentUser() user: { id: number }) {
+    return this.service.deleteEvaluation(evaluationId, user.id);
   }
-  
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post('norms/upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadNormCsv(@UploadedFile() file: any) {
+    return this.service.uploadNormFromCsv(file);
+  }
 
 
 }
