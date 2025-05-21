@@ -3,8 +3,8 @@ import { EvaluationForm } from "../types/evaluation-form.types";
 
 export const VALID_ANSWERS = [
   {
-    value: "Si",
-    label: "Si",
+    value: "Sí",
+    label: "Sí",
     score: 100,
   },
   {
@@ -13,7 +13,7 @@ export const VALID_ANSWERS = [
     score: 0,
   },
   {
-    value: "N/A",
+    value: "NA",
     label: "No aplica",
     score: 0,
   },

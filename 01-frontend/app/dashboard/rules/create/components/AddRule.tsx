@@ -45,10 +45,15 @@ export default function AddRule() {
     const formData = new FormData();
     formData.append("file", file);
 
+    const token = localStorage.getItem("token");
+
     try {
       const res = await fetch("http://localhost:3001/auditory/norms/upload", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!res.ok) {
         throw new Error("Error al subir el archivo.");
