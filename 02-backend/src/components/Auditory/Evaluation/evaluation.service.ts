@@ -3,6 +3,10 @@ import { EvaluationSubmissionDto } from "./evaluation-submission.dto"
 import { QueryFilterService } from '../../../imports-barrel';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Inject } from '@nestjs/common';
+import { parseNormCsv } from './csv-parser.util';
+
+
+
 
 @Injectable()
 export class EvaluationService {
@@ -371,6 +375,65 @@ export class EvaluationService {
       throw new InternalServerErrorException('Error eliminando la evaluación');
     }
   }
+
+
+  async uploadNormFromCsv(file:any) {
+    
+  try {
+    const parsedRows = await parseNormCsv(file.buffer);
+
+    // 1. Validar que toda la norma tenga el mismo código y nombre
+    const uniqueCodes = new Set(parsedRows.map(r => r.norma_codigo.toLowerCase()));
+    const uniqueNames = new Set(parsedRows.map(r => r.norma_nombre.toLowerCase()));
+
+    if (uniqueCodes.size !== 1 || uniqueNames.size !== 1) {
+      throw new BadRequestException(
+        'El archivo contiene múltiples códigos o nombres de norma diferentes.'
+      );
+    }
+
+    const normCode = parsedRows[0].norma_codigo;
+    const normName = parsedRows[0].norma_nombre;
+
+    // 2. Agrupar criterios y preguntas
+    const criteriosMap = new Map<string, string[]>();
+
+    for (const row of parsedRows) {
+      if (!criteriosMap.has(row.criterio)) {
+        criteriosMap.set(row.criterio, []);
+      }
+      criteriosMap.get(row.criterio)?.push(row.pregunta);
+    }
+
+    const criteriaToInsert = Array.from(criteriosMap.entries()).map(([criterio, preguntas]) => ({
+      description: criterio,
+      questions: preguntas.map(text => ({ text })),
+    }));
+
+    // 3. Enviar a compound-queries
+    const payload = {
+      code: normCode,
+      name: normName,
+      criteria: criteriaToInsert,
+    };
+
+    const result = await this.queryFilter.filterQuery(
+      'createNormWithDetails',
+      'compound-evaluations',
+      payload
+    );
+
+    return {
+      message: 'Norma cargada exitosamente',
+      norm_id: result,
+      criterios_creados: criteriaToInsert.length,
+      preguntas_registradas: parsedRows.length,
+    };
+  } catch (error) {
+    console.error('Error subiendo norma:', error);
+    throw new InternalServerErrorException('Error al subir la norma. Asegúrate de que el archivo sea válido.');
+  }
+}
 
 }
 

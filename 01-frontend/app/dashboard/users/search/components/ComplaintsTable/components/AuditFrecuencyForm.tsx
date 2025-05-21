@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,10 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { User } from "./EditUserModal";
-
-import { z } from "zod";
-import { ROLES } from "@/components/auth/register-form";
 import {
   Select,
   SelectContent,
@@ -24,27 +21,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 export const frequencySchema = z.object({
   userId: z.number({ message: "El ID del usuario es requerido" }),
-  companyId: z.number({ message: "La compañia es requerida" }),
+  companyId: z.number({ message: "La compañía es requerida" }),
   normId: z.number({ message: "La norma es requerida" }),
-  frequencyDays: z.number({ message: "Los días son requeridos" }).min(10, {
-    message: "El número de dias debe ser mayor a 10",
-  }),
+  frequencyDays: z
+    .number({ message: "Los días son requeridos" })
+    .min(10, { message: "El número de días debe ser mayor o igual a 10" }),
 });
 
-export default function EditUserForm({
-  userId,
-  rules,
-  companies,
-}: {
-  userId: string;
-  rules: any[];
-  companies: any[];
-}) {
+export type FrequencyFormData = z.infer<typeof frequencySchema>;
+
+type Company = { id: number; name: string };
+type Norm = { id: number; name: string };
+
+export default function EditFrequencyForm({ userId }: { userId: string }) {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof frequencySchema>>({
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [rules, setRules] = useState<Norm[]>([]);
+
+  const form = useForm<FrequencyFormData>({
     resolver: zodResolver(frequencySchema),
     defaultValues: {
       userId: Number(userId),
@@ -54,56 +52,120 @@ export default function EditUserForm({
     },
   });
 
-  //Backend------------------------------------------------
-  async function onSubmit(data: z.infer<typeof frequencySchema>) {
-    setIsLoading(true);
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
+  // Carga de compañías
+  useEffect(() => {
+    async function loadCompanies() {
+      try {
+        const res = await fetch(
+          `http://localhost:3001/user/${userId}/companies`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("Compañías:", res);
+        if (!res.ok) throw new Error("Falló al cargar compañías");
+        const data: Company[] = await res.json();
+        console.log("🌐 Companies fetched:", data);
+        setCompanies(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadCompanies();
+  }, [userId, token]);
+
+  // Carga de normas
+  useEffect(() => {
+    async function loadRules() {
+      try {
+        const res = await fetch(`http://localhost:3001/user/config/norms`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) throw new Error("Falló al cargar normas");
+        const data: Norm[] = await res.json();
+        setRules(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    loadRules();
+  }, [token]);
+
+  async function onSubmit(data: FrequencyFormData) {
+    setIsLoading(true);
     try {
       const payload = {
-        userId: Number(userId),
-        companyId: Number(data.companyId),
-        normId: Number(data.normId),
-        frequencyDays: Number(data.frequencyDays),
+        userId: data.userId,
+        companyId: data.companyId,
+        normId: data.normId,
+        frequencyDays: data.frequencyDays,
       };
-
       console.log("Datos enviados:", payload);
-      // Aquí iría tu llamada al backend
+      const res = await fetch(`http://localhost:3001/user/config/frequency`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        toast.success("Frecuencia de auditoría actualizada correctamente");
+        form.reset(data);
+        window.location.reload();
+      } else {
+        toast.error(result.message || "Error al actualizar la frecuencia");
+      }
     } catch (error) {
-      alert("Error al editar frecuencia de auditorias. Intente más tarde.");
       console.error(error);
+      toast.error("Error de red. Intenta más tarde.");
     } finally {
       setIsLoading(false);
     }
   }
-  //Backend------------------------------------------------------
 
   async function handleDelete() {
     setIsLoading(true);
+
     try {
-      if (!userId) {
-        alert("El ID del usuario es requerido");
-        return;
-      }
-      if (!form.getValues("companyId")) {
-        alert("La compañia es requerida");
-        return;
-      }
-      if (!form.getValues("normId")) {
-        alert("La norma es requerida");
+      const { userId, companyId, normId } = form.getValues();
+
+      if (!companyId || !normId) {
+        toast.error("Selecciona compañía y norma primero");
         return;
       }
 
-      const payload = {
-        userId: Number(userId),
-        companyId: Number(form.getValues("companyId")),
-        normId: Number(form.getValues("normId")),
-      };
+      const payload = { userId, companyId, normId };
+      console.log("Datos enviados para eliminar:", payload);
 
-      // Manejar que si la respuestaa del backend es 403 (segun semaxy) se debe mostrar que no existe la frecuencia
-      console.log("Datos enviados:", payload);
-    } catch (error) {
-      alert("Error al eliminar frecuencia de auditorias. Intente más tarde.");
+      const res = await fetch(`http://localhost:3001/user/config/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.status === 403) {
+        toast.error("No existe la frecuencia para eliminar");
+        return;
+      }
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Error al eliminar frecuencia");
+      }
+
+      toast.success("Frecuencia eliminada");
+      form.reset();
+      window.location.reload();
+    } catch (error: any) {
       console.error(error);
+      toast.error(error.message || "Error al eliminar frecuencia");
     } finally {
       setIsLoading(false);
     }
@@ -120,22 +182,19 @@ export default function EditUserForm({
           name="companyId"
           render={({ field }) => (
             <FormItem className="col-span-full">
-              <FormLabel>Compañia</FormLabel>
+              <FormLabel>Compañía</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
+                  onValueChange={(v) => field.onChange(Number(v))}
                   value={field.value?.toString()}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una compañia" />
+                    <SelectValue placeholder="Seleccione compañía" />
                   </SelectTrigger>
                   <SelectContent>
-                    {companies.map((company) => (
-                      <SelectItem
-                        key={company.id}
-                        value={company.id.toString()}
-                      >
-                        {company.name}
+                    {companies.map((c) => (
+                      <SelectItem key={c.id} value={c.id.toString()}>
+                        {c.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -154,16 +213,16 @@ export default function EditUserForm({
               <FormLabel>Norma</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
+                  onValueChange={(v) => field.onChange(Number(v))}
                   value={field.value?.toString()}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccione una norma" />
+                    <SelectValue placeholder="Seleccione norma" />
                   </SelectTrigger>
                   <SelectContent>
-                    {rules.map((rule) => (
-                      <SelectItem key={rule.id} value={rule.id.toString()}>
-                        {rule.name}
+                    {rules.map((r) => (
+                      <SelectItem key={r.id} value={r.id.toString()}>
+                        {r.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -178,12 +237,12 @@ export default function EditUserForm({
           control={form.control}
           name="frequencyDays"
           render={({ field }) => (
-            <FormItem className="w-full col-span-full">
+            <FormItem className="col-span-full">
               <FormLabel>Frecuencia de evaluación (días)</FormLabel>
               <FormControl>
                 <Input
                   type="number"
-                  placeholder="10..."
+                  placeholder="10"
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
                 />
@@ -193,12 +252,17 @@ export default function EditUserForm({
           )}
         />
 
-        <div className="flex gap-2 col-span-full self-end justify-end">
-          <Button type="button" variant="destructive" onClick={handleDelete}>
-            Eliminar actual
+        <div className="flex gap-2 col-span-full justify-end">
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleDelete}
+            disabled={isLoading}
+          >
+            {isLoading ? "Procesando..." : "Eliminar actual"}
           </Button>
-          <Button type="submit" className="" disabled={isLoading}>
-            {isLoading ? "Editando..." : "Editar frecuencia de evaluación"}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Guardando..." : "Editar frecuencia"}
           </Button>
         </div>
       </form>

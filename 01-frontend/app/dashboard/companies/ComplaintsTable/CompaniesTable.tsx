@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Company } from "./types/company";
 import { getColumns } from "./columns";
+import CreateCompanyModal from "../components/CreateCompanyModal/CreateCompanyModal";
+import { useRoleCheck } from "@/hooks/useRoleCheck";
 
 type Props = {
   data: Company[];
@@ -33,8 +35,8 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState<Company[]>(data);
+  const { role, status } = useRoleCheck("admin");
 
-  // Genera dinámicamente las columnas inyectando onDeleted
   const columns = getColumns(onDeleted, onUpdated);
 
   const table = useReactTable({
@@ -51,13 +53,18 @@ export default function CompaniesTable({ data, onDeleted, onUpdated }: Props) {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  // Aplicar filtro global al cambiar searchTerm
   useEffect(() => {
     table.setGlobalFilter(searchTerm);
   }, [searchTerm, table]);
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 flex flex-col gap-4">
+      {role === "admin" ? (
+        <div className="self-end">
+          <CreateCompanyModal />
+        </div>
+      ) : null}
+
       {table.getRowModel().rows.length > 0 ? (
         <>
           <div className="rounded-md border mt-3">

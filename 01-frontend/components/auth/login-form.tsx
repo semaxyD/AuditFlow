@@ -1,4 +1,6 @@
+// components/auth/LoginForm.tsx
 "use client";
+
 import { toast } from "sonner";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +23,6 @@ const formSchema = z.object({
   email: z.string().email("Correo electrónico inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
-
 type LoginFormData = z.infer<typeof formSchema>;
 
 export function LoginForm() {
@@ -31,17 +32,13 @@ export function LoginForm() {
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     setErrorMessage("");
 
-    // 1) Intentamos el login con NextAuth
     const res = await signIn("credentials", {
       redirect: false,
       email: data.email,
@@ -49,30 +46,14 @@ export function LoginForm() {
     });
 
     if (res?.ok) {
-      // 2) Recuperamos la sesión desde el endpoint de NextAuth
-      const r = await fetch("/api/auth/session");
-      const sessionData = await r.json();
-      console.log("⚡ sessionData from /api/auth/session:", sessionData);
-      toast.success("Sesión iniciada correctamente", {
-        description: sessionData.message,
-      });
-      // 3) Extraemos y guardamos el token
-      const token = sessionData?.user?.accessToken;
-      const user = sessionData?.user;
+      const sessionRes = await fetch("/api/auth/session");
+      const sessionData = await sessionRes.json();
+      toast.success("Sesión iniciada", { description: sessionData.message });
+      const token = sessionData.user?.accessToken;
       if (token) {
-        window.localStorage.setItem("token", token);
-        window.localStorage.setItem("user", JSON.stringify(user));
-        console.log("este es el usuario", user);
-
-        console.log("✅ Token guardado en localStorage:", token);
-      } else {
-        console.warn("❌ No vino accessToken en sessionData.user");
-        toast.error("Error al iniciar sesión", {
-          description: "No se pudo iniciar sesión",
-        });
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(sessionData.user));
       }
-
-      // 4) Redirigimos al dashboard
       router.push("/dashboard");
     } else {
       setErrorMessage("Correo o contraseña incorrectos");
@@ -88,47 +69,66 @@ export function LoginForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-80 mx-auto"
+        className="bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg w-lg  max-w-full space-y-10"
       >
-        <h2 className="text-xl font-bold text-center">Iniciar sesión</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Iniciar Sesión
+        </h2>
         {errorMessage && (
-          <div className="text-red-600 bg-red-100 p-2 rounded text-sm">
+          <div className="text-red-600 bg-red-100 p-3 rounded">
             {errorMessage}
           </div>
         )}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Correo electrónico</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="ejemplo@correo.com"
-                  type="email"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Contraseña</FormLabel>
-              <FormControl>
-                <Input placeholder="********" type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-7">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium text-gray-700">
+                  Correo electrónico
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="email"
+                    placeholder="ejemplo@correo.com"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm text-red-600" />
+              </FormItem>
+            )}
+          />
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Iniciando..." : "Iniciar sesión"}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-medium text-gray-700">
+                  Contraseña
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="••••••••"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                  />
+                </FormControl>
+                <FormMessage className="text-sm text-red-600" />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full py-3  text-white font-semibold rounded-lg shadow-md transition"
+          disabled={isLoading}
+        >
+          {isLoading ? "Iniciando..." : "Iniciar Sesión"}
         </Button>
       </form>
     </Form>
