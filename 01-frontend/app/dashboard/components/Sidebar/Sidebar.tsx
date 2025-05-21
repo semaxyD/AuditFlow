@@ -30,7 +30,7 @@ import {
 import {
   ChevronDown,
   FilePlus2,
-  Home,
+  Ruler,
   List,
   Search,
   Settings,
@@ -73,6 +73,13 @@ export function AppSidebar() {
         icon: FilePlus2,
       }
     );
+  }
+  if (role === "admin") {
+    items.push({
+      title: "Normas",
+      url: "/dashboard/rules/",
+      icon: Ruler,
+    });
   }
 
   useEffect(() => {

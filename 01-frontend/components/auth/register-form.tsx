@@ -29,7 +29,7 @@ const formSchema = z.object({
   email: z.string().email("Correo electrónico inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
   role: z.enum([
-    "administrador",
+    "admin",
     "auditor_interno",
     "auditor_externo",
     "empresa_cliente",
@@ -38,11 +38,10 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
 type Company = { id: number; name: string; phone: string };
 
 export const ROLES: { value: UserRole; label: string }[] = [
-  { value: "administrador", label: "Administrador" },
+  { value: "admin", label: "Administrador" },
   { value: "auditor_interno", label: "Auditor Interno" },
   { value: "auditor_externo", label: "Auditor Externo" },
 ];
@@ -50,6 +49,7 @@ export const ROLES: { value: UserRole; label: string }[] = [
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [loadingCompanies, setLoadingCompanies] = useState(true);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -57,28 +57,44 @@ export function RegisterForm() {
       name: "",
       email: "",
       password: "",
-      role: "empresa_cliente",
+      role: "auditor_interno",
       companyIds: [],
     },
   });
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("http://localhost:3001/user/companiesList");
+        console.log("⏳ Iniciando fetch de companiesList con headers:", {
+          Authorization: `Bearer ${token}`,
+        });
+
+        const res = await fetch("http://localhost:3001/user/companiesList", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log("✅ Recibí respuesta:", res.status, res.statusText);
+        console.log("🗂 Response headers:", Array.from(res.headers.entries()));
+
         const data = await res.json();
-        console.log("companiesList response:", data);
+        console.log("📦 companiesList data:", data);
+
         if (Array.isArray(data)) {
           setCompanies(data);
         } else if (Array.isArray(data.companies)) {
           setCompanies(data.companies);
         } else {
-          setCompanies([]);
           toast.error("Formato inesperado de empresas");
         }
       } catch (err) {
-        console.error(err);
+        console.error("❌ Error al cargar empresas:", err);
         toast.error("No se pudieron cargar las empresas.");
+      } finally {
+        setLoadingCompanies(false);
       }
     }
     load();
@@ -87,24 +103,24 @@ export function RegisterForm() {
   async function onSubmit(data: FormValues) {
     setIsLoading(true);
     try {
-      const payload = {
+      const payload: RegisterFormData = {
         name: data.name,
         email: data.email,
         password: data.password,
         role: data.role,
         companyIds: data.companyIds,
       };
-      console.log("Enviando al backend:", payload);
 
       const res = await fetch("http://localhost:3001/user/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
       const result = await res.json();
-      console.log("Respuesta del backend:", result);
-
       if (res.ok) {
         toast.success("Usuario registrado", { description: result.message });
         form.reset();
@@ -183,7 +199,10 @@ export function RegisterForm() {
             <FormItem>
               <FormLabel>Rol</FormLabel>
               <FormControl>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  value={field.value || "empresa_cliente"} // <- forzamos fallback
+                  onValueChange={(val) => field.onChange(val)}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione un rol" />
                   </SelectTrigger>
@@ -210,18 +229,26 @@ export function RegisterForm() {
               <FormLabel>Empresa</FormLabel>
               <FormControl>
                 <Select
-                  onValueChange={(val) => field.onChange([Number(val)])}
+                  onValueChange={(val) => {
+                    if (val !== "loading") field.onChange([Number(val)]);
+                  }}
                   value={field.value[0]?.toString() || ""}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione una empresa" />
                   </SelectTrigger>
                   <SelectContent>
-                    {companies.map((c) => (
-                      <SelectItem key={c.id} value={c.id.toString()}>
-                        {c.name}
+                    {loadingCompanies && (
+                      <SelectItem value="loading" disabled>
+                        Cargando empresas…
                       </SelectItem>
-                    ))}
+                    )}
+                    {!loadingCompanies &&
+                      companies.map((c) => (
+                        <SelectItem key={c.id} value={c.id.toString()}>
+                          {c.name}
+                        </SelectItem>
+                      ))}
                   </SelectContent>
                 </Select>
               </FormControl>

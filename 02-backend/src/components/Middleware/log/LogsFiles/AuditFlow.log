@@ -49,3 +49,233 @@
 [2025-05-21T04:01:31.857Z] INFO [RouterExplorer] Mapped {/auditory/delete/evaluation/:evaluationId, DELETE} route
 [2025-05-21T04:01:31.857Z] INFO [RouterExplorer] Mapped {/auditory/norms/upload, POST} route
 [2025-05-21T04:01:31.858Z] INFO [NestApplication] Nest application successfully started
+[2025-05-21T16:20:14.527Z] INFO [NestFactory] Starting Nest application...
+[2025-05-21T16:20:14.528Z] INFO [InstanceLoader] LoggerModule dependencies initialized
+[2025-05-21T16:20:14.528Z] INFO [InstanceLoader] JwtModule dependencies initialized
+[2025-05-21T16:20:14.528Z] INFO [InstanceLoader] WinstonModule dependencies initialized
+[2025-05-21T16:20:14.528Z] INFO [InstanceLoader] ConfigHostModule dependencies initialized
+[2025-05-21T16:20:14.528Z] INFO [InstanceLoader] AppModule dependencies initialized
+[2025-05-21T16:20:14.529Z] INFO [InstanceLoader] QueryFilterModule dependencies initialized
+[2025-05-21T16:20:14.529Z] INFO [InstanceLoader] ConfigModule dependencies initialized
+[2025-05-21T16:20:14.529Z] INFO [InstanceLoader] AuthModule dependencies initialized
+[2025-05-21T16:20:14.529Z] INFO [InstanceLoader] ReportEvaluationModule dependencies initialized
+[2025-05-21T16:20:14.530Z] INFO [InstanceLoader] UserModule dependencies initialized
+[2025-05-21T16:20:14.530Z] INFO [InstanceLoader] AuditoryEvaluationModule dependencies initialized
+[2025-05-21T16:20:14.530Z] INFO [RoutesResolver] AppController {/}:
+[2025-05-21T16:20:14.530Z] INFO [RouterExplorer] Mapped {/, GET} route
+[2025-05-21T16:20:14.530Z] INFO [RouterExplorer] Mapped {/ping, GET} route
+[2025-05-21T16:20:14.530Z] INFO [RoutesResolver] UserController {/user}:
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/companiesList, GET} route
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/create, POST} route
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/login, POST} route
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/protected, GET} route
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/search, GET} route
+[2025-05-21T16:20:14.531Z] INFO [RouterExplorer] Mapped {/user/:id, GET} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/:id/companies, GET} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/config/norms, GET} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/config/frequency, POST} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/config/delete, DELETE} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/create/company, POST} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/update/company/:companyId, PUT} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/delete/company/:companyId, DELETE} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/update/:id, PUT} route
+[2025-05-21T16:20:14.532Z] INFO [RouterExplorer] Mapped {/user/delete/:id, DELETE} route
+[2025-05-21T16:20:14.532Z] INFO [RoutesResolver] ReportEvaluationController {/reports-evaluation}:
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/companies, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/evaluations, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/version/:versionId, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/evolution, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/myCompanies, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/myEvaluations, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/evaluation/:evaluationId/details, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/reports-evaluation/report-data/:evaluationId, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RoutesResolver] EvaluationController {/auditory}:
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/auditory/allNorms, GET} route
+[2025-05-21T16:20:14.533Z] INFO [RouterExplorer] Mapped {/auditory/questions/:normId, GET} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/:normId/save, POST} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/myCompanies, GET} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/:normId/:companyId/saveExternal, POST} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/:evaluationId, PUT} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/assigned, GET} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/delete/evaluation/:evaluationId, DELETE} route
+[2025-05-21T16:20:14.534Z] INFO [RouterExplorer] Mapped {/auditory/norms/upload, POST} route
+[2025-05-21T16:20:14.534Z] INFO [NestApplication] Nest application successfully started
+[2025-05-21T16:20:28.740Z] INFO [UserService] Intentando login para el usuario: correoTest1@gmail.com
+[2025-05-21T16:20:29.875Z] INFO [UserService] Login exitoso para: correoTest1@gmail.com
+[2025-05-21T16:20:29.875Z] INFO [HTTP] POST /user/login (UserController.login) => 1137ms
+[2025-05-21T16:20:31.820Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:20:31.821Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:20:31.821Z] INFO [ReportEvaluationService] Fetching all companies
+[2025-05-21T16:20:32.057Z] INFO [ReportEvaluationService] Successfully fetched 4 companies
+[2025-05-21T16:20:32.057Z] INFO [HTTP] GET /reports-evaluation/companies (ReportEvaluationController.getCompanies) => 236ms
+[2025-05-21T16:23:27.017Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:23:27.017Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:23:27.018Z] INFO [ReportEvaluationService] Fetching all companies
+[2025-05-21T16:23:27.131Z] INFO [ReportEvaluationService] Successfully fetched 4 companies
+[2025-05-21T16:23:27.132Z] INFO [HTTP] GET /reports-evaluation/companies (ReportEvaluationController.getCompanies) => 115ms
+[2025-05-21T16:24:16.779Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:24:16.779Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:24:16.780Z] INFO [ReportEvaluationService] Fetching all companies
+[2025-05-21T16:24:16.895Z] INFO [ReportEvaluationService] Successfully fetched 4 companies
+[2025-05-21T16:24:16.895Z] INFO [HTTP] GET /reports-evaluation/companies (ReportEvaluationController.getCompanies) => 116ms
+[2025-05-21T16:24:38.300Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:24:38.301Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:24:38.301Z] INFO [ReportEvaluationService] Fetching all companies
+[2025-05-21T16:24:38.411Z] INFO [ReportEvaluationService] Successfully fetched 4 companies
+[2025-05-21T16:24:38.411Z] INFO [HTTP] GET /reports-evaluation/companies (ReportEvaluationController.getCompanies) => 110ms
+[2025-05-21T16:44:11.046Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:44:11.047Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:44:11.047Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:44:11.289Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:44:11.290Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 242ms
+[2025-05-21T16:44:51.923Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:44:51.923Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:44:51.924Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:44:52.047Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:44:52.047Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 123ms
+[2025-05-21T16:44:52.188Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:44:52.189Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:44:52.189Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:44:52.308Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:44:52.309Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 119ms
+[2025-05-21T16:45:04.290Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:45:04.290Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:45:04.291Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:45:04.416Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:45:04.416Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 125ms
+[2025-05-21T16:45:04.543Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:45:04.544Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:45:04.544Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:45:04.662Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:45:04.662Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 118ms
+[2025-05-21T16:45:11.556Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:45:11.556Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:45:11.557Z] INFO [UserService] Intentando crear usuario con email: correoTest1@gmail.com
+[2025-05-21T16:45:11.683Z] WARN [UserService] El correo correoTest1@gmail.com ya está registrado
+[2025-05-21T16:45:19.824Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:45:19.824Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:45:19.825Z] INFO [UserService] Intentando crear usuario con email: correoTesFDFDt1@gmail.com
+[2025-05-21T16:45:21.487Z] INFO [UserService] Usuario creado con ID: 18
+[2025-05-21T16:45:21.487Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 1663ms
+[2025-05-21T16:46:09.674Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:46:09.675Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:46:09.675Z] INFO [UserService] Intentando crear usuario con email: dAASDAasd@dasda.COM
+[2025-05-21T16:46:10.685Z] INFO [UserService] Usuario creado con ID: 19
+[2025-05-21T16:46:10.685Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 1010ms
+[2025-05-21T16:46:48.377Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:46:48.378Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:46:48.378Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:46:48.526Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:46:48.527Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 149ms
+[2025-05-21T16:46:48.652Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:46:48.652Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:46:48.653Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:46:48.775Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:46:48.775Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 123ms
+[2025-05-21T16:47:15.623Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:47:15.624Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:47:15.624Z] INFO [UserService] Intentando crear usuario con email: AAAhola@hola.com
+[2025-05-21T16:47:16.416Z] INFO [UserService] Usuario creado con ID: 20
+[2025-05-21T16:47:16.416Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 792ms
+[2025-05-21T16:47:52.972Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:47:52.972Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:47:52.973Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:47:53.092Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:47:53.092Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 119ms
+[2025-05-21T16:47:53.211Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:47:53.211Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:47:53.211Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:47:53.342Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:47:53.342Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 131ms
+[2025-05-21T16:48:03.884Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:48:03.884Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:48:03.884Z] INFO [UserService] Intentando crear usuario con email: cAAAAAorreoTest1@gmail.com
+[2025-05-21T16:48:04.979Z] INFO [UserService] Usuario creado con ID: 21
+[2025-05-21T16:48:04.980Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 1096ms
+[2025-05-21T16:50:04.529Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:04.529Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:04.531Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:04.793Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:04.793Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 263ms
+[2025-05-21T16:50:04.913Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:04.913Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:04.913Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:05.034Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:05.035Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 121ms
+[2025-05-21T16:50:05.155Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:05.155Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:05.156Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:05.274Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:05.274Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 119ms
+[2025-05-21T16:50:05.395Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:05.395Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:05.396Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:05.531Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:05.531Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 136ms
+[2025-05-21T16:50:30.985Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:30.985Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:30.986Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:31.124Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:31.124Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 139ms
+[2025-05-21T16:50:31.251Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:31.251Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:31.252Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:31.365Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:31.366Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 114ms
+[2025-05-21T16:50:31.805Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:31.805Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:31.806Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:31.925Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:31.926Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 120ms
+[2025-05-21T16:50:32.048Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:32.049Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:32.049Z] INFO [UserService] Obteniendo lista de empresas
+[2025-05-21T16:50:32.169Z] INFO [UserService] Se obtuvieron 4 empresas
+[2025-05-21T16:50:32.181Z] INFO [HTTP] GET /user/companiesList (UserController.CompaniesList) => 122ms
+[2025-05-21T16:50:42.237Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:50:42.237Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:50:42.238Z] INFO [UserService] Intentando crear usuario con email: daasdasd@dasda.asdada
+[2025-05-21T16:50:43.827Z] INFO [UserService] Usuario creado con ID: 22
+[2025-05-21T16:50:43.827Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 1590ms
+[2025-05-21T16:51:11.864Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:51:11.865Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:51:11.865Z] INFO [UserService] Intentando crear usuario con email: dasdadad@asdadas.coas
+[2025-05-21T16:51:12.644Z] INFO [UserService] Usuario creado con ID: 23
+[2025-05-21T16:51:12.644Z] INFO [HTTP] POST /user/create (UserController.crearUsuario) => 779ms
+[2025-05-21T16:51:42.852Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:51:42.853Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:51:42.853Z] INFO [UserService] Buscando todos los usuarios
+[2025-05-21T16:51:43.084Z] INFO [UserService] Se encontraron 14 usuarios
+[2025-05-21T16:51:43.084Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 231ms
+[2025-05-21T16:51:43.203Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:51:43.203Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:51:43.203Z] INFO [UserService] Buscando todos los usuarios
+[2025-05-21T16:51:43.317Z] INFO [UserService] Se encontraron 14 usuarios
+[2025-05-21T16:51:43.317Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 114ms
+[2025-05-21T16:51:50.861Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:51:50.861Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:51:50.862Z] INFO [UserService] Eliminando usuario con ID: 23
+[2025-05-21T16:51:53.046Z] INFO [HTTP] DELETE /user/delete/23 (UserController.deleteUser) => 2184ms
+[2025-05-21T16:51:53.725Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:51:53.725Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:51:53.726Z] INFO [UserService] Buscando todos los usuarios
+[2025-05-21T16:51:53.862Z] INFO [UserService] Se encontraron 13 usuarios
+[2025-05-21T16:51:53.862Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 136ms
+[2025-05-21T16:52:02.353Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:52:02.353Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:52:02.354Z] INFO [UserService] Eliminando usuario con ID: 22
+[2025-05-21T16:52:03.412Z] INFO [HTTP] DELETE /user/delete/22 (UserController.deleteUser) => 1059ms
+[2025-05-21T16:52:03.854Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:52:03.854Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:52:03.854Z] INFO [UserService] Buscando todos los usuarios
+[2025-05-21T16:52:03.969Z] INFO [UserService] Se encontraron 12 usuarios
+[2025-05-21T16:52:03.969Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 115ms
+[2025-05-21T16:52:18.257Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:52:18.257Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:52:18.257Z] INFO [UserService] Actualizando usuario con ID: 21
+[2025-05-21T16:52:18.733Z] INFO [HTTP] PUT /user/update/21 (UserController.updateUser) => 476ms
+[2025-05-21T16:52:19.181Z] INFO  Token validado para usuario: correoTest1@gmail.com (ID: 5)
+[2025-05-21T16:52:19.182Z] INFO [RolesGuard] Acceso permitido. UserID: 5, Rol: admin
+[2025-05-21T16:52:19.182Z] INFO [UserService] Buscando todos los usuarios
+[2025-05-21T16:52:19.308Z] INFO [UserService] Se encontraron 12 usuarios
+[2025-05-21T16:52:19.308Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 126ms
