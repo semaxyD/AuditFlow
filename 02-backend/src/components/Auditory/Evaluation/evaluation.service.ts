@@ -1,24 +1,34 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, LoggerService, Logger } from '@nestjs/common';
 import { EvaluationSubmissionDto } from "./evaluation-submission.dto"
 import { QueryFilterService } from '../../../imports-barrel';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { Inject } from '@nestjs/common';
 
 @Injectable()
 export class EvaluationService {
-  constructor(private readonly queryFilter: QueryFilterService) { }
+  constructor(
+    private readonly queryFilter: QueryFilterService,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
+  ) { 
+      this.logger = new Logger(EvaluationService.name);
+  }
 
   async getIdByNorm() {
+    this.logger.log('Fetching basic norm information');
     try {
       const query = await this.queryFilter.filterQuery('getAllNormsBasicInfo', 'norm-queries');
       return query
     } catch (error) {
-      throw new InternalServerErrorException('Error fetching evaluations', error);
+      this.logger.error('Error fetching evaluations', error.stack);
+      throw new InternalServerErrorException('Error fetching evaluations');
     }
   }
 
   async getQuestionsByNorm(normId: number) {
     try {
       const numericId = Number(normId);
-
+      this.logger.log(`Fetching questions by norm ID: ${numericId}`);
       const sections = await this.queryFilter.filterQuery(
         'getQuestionsByNorm',
         'criterion-queries',
@@ -29,7 +39,7 @@ export class EvaluationService {
   
   
     } catch (error) {
-      console.error('Error fetching questions by norm:', error);
+      this.logger.error('Error fetching questions by norm:', error.stack);
       throw new InternalServerErrorException('Error fetching questions by norm');
     }
   }
@@ -123,14 +133,20 @@ export class EvaluationService {
       }
 
     if(type == 1){
-      console.log("payload enviado a la query por parte del interno: ",evaluationData)
+      this.logger.log(`Payload enviado por el auditor interno: ${JSON.stringify(evaluationData)}`);
       const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData);
+      this.logger.log(`Evaluación creada exitosamente para usuario ${userId}, evaluación ID: ${result}`);
+     
       return {
         message: "Evaluacion Guardada correctamente",
-        evaluationId: result};
+        evaluationId: result
+      };
+
     }else{
-      console.log("payload enviado a la query por parte del externo: ",evaluationData2)
+      this.logger.log(`Payload enviado por el auditor externo: ${JSON.stringify(evaluationData2)}`);
       const result = await this.queryFilter.filterQuery('createEvaluationWithDetails', 'compound-evaluations', evaluationData2);
+      this.logger.log(`Evaluación creada exitosamente para usuario ${userId}, evaluación ID: ${result}`);
+
       return {
         message: "Evaluacion Guardada correctamente",
         evaluationId: result};
@@ -147,6 +163,7 @@ export class EvaluationService {
     const missingIds = ids.filter(id => !existingEntities.some((e: { id: number; }) => e.id === id));
 
     if (missingIds.length > 0) {
+      this.logger.warn(`IDs faltantes en ${queryName}: ${missingIds.join(', ')}`);
       throw new BadRequestException(
         `Los siguientes ${queryName} no existen: ${missingIds.join(', ')}`,
       );
@@ -205,6 +222,7 @@ export class EvaluationService {
     else if (completionPercentage >= 0) maturityLevel = 'No aprobado';
     else maturityLevel = 'No evaluado';
 
+    this.logger.log(`Métricas calculadas: completionPercentage=${completionPercentage}, maturityLevel=${maturityLevel}`);
 
     return {
       totalScore,
@@ -231,6 +249,7 @@ export class EvaluationService {
     
   async getEvaluationsByCreator(userId: number) {
     try {
+      this.logger.log(`Fetching evaluations created by user ${userId}`);
       const evaluations = await this.queryFilter.filterQuery(
         'getEvaluationsByCreator',
         'compound-evaluations',
@@ -239,7 +258,7 @@ export class EvaluationService {
 
       return evaluations;
     } catch (error) {
-      console.error('Error fetching evaluations for auditor:', error);
+      this.logger.error('Error fetching evaluations for auditor:', error.stack);
       throw new InternalServerErrorException('Error fetching evaluations for auditor');
     }
   }
@@ -325,6 +344,7 @@ export class EvaluationService {
 
   
   async deleteEvaluation(evaluationId: number, userId: number) {
+    this.logger.log(`Eliminando evaluación con ID: ${evaluationId}`);
     try {
 
       const data = {
@@ -339,13 +359,15 @@ export class EvaluationService {
       );
 
       if(!result){
+        this.logger.warn(`Evaluación con ID ${evaluationId} no encontrado`);
         throw new InternalServerErrorException('No fue posible eliminar una evaluacion');
       }
-
+      this.logger.log(`Evaluación eliminada correctamente`);
       return result;
   
   
     } catch (error) {
+      this.logger.error('Error al eliminar la evaluación', error.stack);
       throw new InternalServerErrorException('Error eliminando la evaluación');
     }
   }

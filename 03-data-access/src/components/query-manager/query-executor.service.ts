@@ -9,7 +9,6 @@ export class QueryExecutorService {
   async execute(collection: string, queryName: string, ...args: any[]) {
     const queries = this.loader.getQueries();
 
-    console.log("🚨 QueryExecutorService recibió queries:", Object.keys(queries));
     console.log("🧠 Buscando colección:", collection);
     
     const module = queries[collection];

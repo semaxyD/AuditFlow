@@ -4,17 +4,25 @@ import {
   ExecutionContext,
   UnauthorizedException,
   ForbiddenException,
+  Inject,
+  Logger,
+  LoggerService
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { AccessAttemptService } from './access-attempt.service';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private accessAttemptService: AccessAttemptService,
-  ) {}
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
+  ) {
+    this.logger = new Logger(RolesGuard.name);
+  }
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<string[]>(
@@ -28,6 +36,7 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
 
     if (!user?.role) {
+      this.logger.warn(`Acceso denegado: usuario sin rol definido. UserID: ${user?.id}`);
       throw new UnauthorizedException("No tienes permiso para acceder a este recurso, role vacío");
     }
 
@@ -39,7 +48,7 @@ export class RolesGuard implements CanActivate {
       const sec = seconds % 60;
       const formattedTime = `${minutes}m ${sec}s`;
 
-      console.warn(`Usuario ${user.id} bloqueado. Tiempo restante: ${formattedTime}`);
+      this.logger.warn(`Usuario bloqueado: ID ${user.id} - Tiempo restante: ${formattedTime}`);
       throw new ForbiddenException(
         `Has sido bloqueado temporalmente por múltiples intentos fallidos. Intenta nuevamente en ${formattedTime}.`
       );
@@ -56,12 +65,15 @@ export class RolesGuard implements CanActivate {
       const attemptsMade = data?.count || 0;
       const attemptsLeft = this.accessAttemptService.ATTEMPT_LIMIT - attemptsMade;
 
+      this.logger.warn(`Acceso denegado: rol insuficiente. UserID: ${user.id}, Rol: ${user.role}, Intentos restantes: ${attemptsLeft}`);
+
       throw new ForbiddenException(
         `No tienes permisos para acceder a este recurso. Te quedan ${attemptsLeft} intento${attemptsLeft === 1 ? '' : 's'} antes de un bloqueo temporal.`
       );
     }
 
     //Tiene permisos → limpiamos intentos fallidos anteriores
+    this.logger.log(`Acceso permitido. UserID: ${user.id}, Rol: ${user.role}`);
     this.accessAttemptService.resetAttempts(user.id);
 
     return true;

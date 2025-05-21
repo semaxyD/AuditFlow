@@ -6,6 +6,7 @@ import { ReportEvaluationModule } from './components/Reports-Evaluation/evaluati
 import { AuditoryEvaluationModule } from './components/Auditory/Evaluation/evaluation.module'
 import { ConfigModule } from '@nestjs/config';
 import { QueryFilterModule } from './imports-barrel';
+import { LoggerModule } from './components/Middleware/log/Logger.Module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { QueryFilterModule } from './imports-barrel';
     ReportEvaluationModule,
     AuditoryEvaluationModule,
     QueryFilterModule,
+    LoggerModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

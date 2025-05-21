@@ -43,19 +43,13 @@ export class QueryLoaderService implements OnModuleInit {
 
 
       for (const file of readdirSync(dir)) {
-        console.log(`🙄 Archivo '${file}' leyendo`)
-        console.log(`extension con la que se cargo el archivo '${file}' es '${file.endsWith('.js')}'`)
-
-
         if (file.endsWith('.js') && !file.endsWith('.d.ts') && !file.endsWith('.d.ts.map')) {
-          console.log(`tratado del archivo '${file}' dentro del if,con extension .js`)
 
           const name = file.replace('.js', '');
           const fullPath = join(dir, file);
 
 
           try{
-            console.log(`📦 Cargando archivo de queries '${name}' desde ${fullPath}`);
             const module = require(fullPath);
             this.queries[name] = module;
             console.log(`✅ Query '${name}' cargada correctamente.`);
