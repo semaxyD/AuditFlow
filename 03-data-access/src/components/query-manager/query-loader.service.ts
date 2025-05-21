@@ -19,11 +19,13 @@ export class QueryLoaderService implements OnModuleInit {
     const tsPaths = [
       join(__dirname, '../system-schema/queries'),
       join(__dirname, '../system-schema/compound-queries'),
+      join(__dirname, '../regulation-schema')
     ];
 
     const jsPaths = [
       join(__dirname, '../../../dist/components/system-schema/queries'),
       join(__dirname, '../../../dist/components/system-schema/compound-queries'),
+      join(__dirname, '../../../dist/components/regulation-schema/compound-queries')
     ];
 
     const tsExists = tsPaths.every((p) => existsSync(p));

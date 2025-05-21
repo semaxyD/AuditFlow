@@ -1,0 +1,51 @@
+[2025-05-21T04:01:31.808Z] INFO [NestFactory] Starting Nest application...
+[2025-05-21T04:01:31.811Z] INFO [InstanceLoader] LoggerModule dependencies initialized
+[2025-05-21T04:01:31.811Z] INFO [InstanceLoader] JwtModule dependencies initialized
+[2025-05-21T04:01:31.812Z] INFO [InstanceLoader] WinstonModule dependencies initialized
+[2025-05-21T04:01:31.814Z] INFO [InstanceLoader] ConfigHostModule dependencies initialized
+[2025-05-21T04:01:31.816Z] INFO [InstanceLoader] AppModule dependencies initialized
+[2025-05-21T04:01:31.816Z] INFO [InstanceLoader] QueryFilterModule dependencies initialized
+[2025-05-21T04:01:31.817Z] INFO [InstanceLoader] ConfigModule dependencies initialized
+[2025-05-21T04:01:31.818Z] INFO [InstanceLoader] AuthModule dependencies initialized
+[2025-05-21T04:01:31.820Z] INFO [InstanceLoader] ReportEvaluationModule dependencies initialized
+[2025-05-21T04:01:31.820Z] INFO [InstanceLoader] UserModule dependencies initialized
+[2025-05-21T04:01:31.821Z] INFO [InstanceLoader] AuditoryEvaluationModule dependencies initialized
+[2025-05-21T04:01:31.822Z] INFO [RoutesResolver] AppController {/}:
+[2025-05-21T04:01:31.822Z] INFO [RouterExplorer] Mapped {/, GET} route
+[2025-05-21T04:01:31.823Z] INFO [RouterExplorer] Mapped {/ping, GET} route
+[2025-05-21T04:01:31.823Z] INFO [RoutesResolver] UserController {/user}:
+[2025-05-21T04:01:31.824Z] INFO [RouterExplorer] Mapped {/user/companiesList, GET} route
+[2025-05-21T04:01:31.824Z] INFO [RouterExplorer] Mapped {/user/create, POST} route
+[2025-05-21T04:01:31.825Z] INFO [RouterExplorer] Mapped {/user/login, POST} route
+[2025-05-21T04:01:31.825Z] INFO [RouterExplorer] Mapped {/user/protected, GET} route
+[2025-05-21T04:01:31.826Z] INFO [RouterExplorer] Mapped {/user/search, GET} route
+[2025-05-21T04:01:31.827Z] INFO [RouterExplorer] Mapped {/user/:id, GET} route
+[2025-05-21T04:01:31.827Z] INFO [RouterExplorer] Mapped {/user/:id/companies, GET} route
+[2025-05-21T04:01:31.834Z] INFO [RouterExplorer] Mapped {/user/config/norms, GET} route
+[2025-05-21T04:01:31.835Z] INFO [RouterExplorer] Mapped {/user/config/frequency, POST} route
+[2025-05-21T04:01:31.836Z] INFO [RouterExplorer] Mapped {/user/config/delete, DELETE} route
+[2025-05-21T04:01:31.837Z] INFO [RouterExplorer] Mapped {/user/create/company, POST} route
+[2025-05-21T04:01:31.838Z] INFO [RouterExplorer] Mapped {/user/update/company/:companyId, PUT} route
+[2025-05-21T04:01:31.839Z] INFO [RouterExplorer] Mapped {/user/delete/company/:companyId, DELETE} route
+[2025-05-21T04:01:31.843Z] INFO [RouterExplorer] Mapped {/user/update/:id, PUT} route
+[2025-05-21T04:01:31.844Z] INFO [RouterExplorer] Mapped {/user/delete/:id, DELETE} route
+[2025-05-21T04:01:31.846Z] INFO [RoutesResolver] ReportEvaluationController {/reports-evaluation}:
+[2025-05-21T04:01:31.847Z] INFO [RouterExplorer] Mapped {/reports-evaluation/companies, GET} route
+[2025-05-21T04:01:31.848Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/evaluations, GET} route
+[2025-05-21T04:01:31.848Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/version/:versionId, GET} route
+[2025-05-21T04:01:31.849Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/evolution, GET} route
+[2025-05-21T04:01:31.850Z] INFO [RouterExplorer] Mapped {/reports-evaluation/myCompanies, GET} route
+[2025-05-21T04:01:31.850Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/myEvaluations, GET} route
+[2025-05-21T04:01:31.851Z] INFO [RouterExplorer] Mapped {/reports-evaluation/evaluation/:evaluationId/details, GET} route
+[2025-05-21T04:01:31.851Z] INFO [RouterExplorer] Mapped {/reports-evaluation/report-data/:evaluationId, GET} route
+[2025-05-21T04:01:31.852Z] INFO [RoutesResolver] EvaluationController {/auditory}:
+[2025-05-21T04:01:31.852Z] INFO [RouterExplorer] Mapped {/auditory/allNorms, GET} route
+[2025-05-21T04:01:31.853Z] INFO [RouterExplorer] Mapped {/auditory/questions/:normId, GET} route
+[2025-05-21T04:01:31.853Z] INFO [RouterExplorer] Mapped {/auditory/:normId/save, POST} route
+[2025-05-21T04:01:31.854Z] INFO [RouterExplorer] Mapped {/auditory/myCompanies, GET} route
+[2025-05-21T04:01:31.854Z] INFO [RouterExplorer] Mapped {/auditory/:normId/:companyId/saveExternal, POST} route
+[2025-05-21T04:01:31.855Z] INFO [RouterExplorer] Mapped {/auditory/:evaluationId, PUT} route
+[2025-05-21T04:01:31.856Z] INFO [RouterExplorer] Mapped {/auditory/assigned, GET} route
+[2025-05-21T04:01:31.857Z] INFO [RouterExplorer] Mapped {/auditory/delete/evaluation/:evaluationId, DELETE} route
+[2025-05-21T04:01:31.857Z] INFO [RouterExplorer] Mapped {/auditory/norms/upload, POST} route
+[2025-05-21T04:01:31.858Z] INFO [NestApplication] Nest application successfully started

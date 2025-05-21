@@ -419,7 +419,7 @@ export class EvaluationService {
 
     const result = await this.queryFilter.filterQuery(
       'createNormWithDetails',
-      'compound-evaluations',
+      'compound-queries',
       payload
     );
 
