@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,10 @@ export default function AddRule() {
       setFile(null);
       return;
     }
-    if (selectedFile.type !== "text/csv" && !selectedFile.name.endsWith(".csv")) {
+    if (
+      selectedFile.type !== "text/csv" &&
+      !selectedFile.name.endsWith(".csv")
+    ) {
       setError("El archivo debe ser un .csv");
       setFile(null);
       return;
@@ -43,7 +46,7 @@ export default function AddRule() {
     formData.append("file", file);
 
     try {
-      const res = await fetch("/norms/upload", {
+      const res = await fetch("http://localhost:3001/auditory/norms/upload", {
         method: "POST",
         body: formData,
       });
@@ -64,10 +67,11 @@ export default function AddRule() {
     <div className="space-y-4 flex flex-col max-w-lg">
       <div className="bg-muted p-4 rounded">
         <p>
-          Para subir una nueva norma, debes subir un archivo en formato <b>.csv</b> con la siguiente estructura:
+          Para subir una nueva norma, debes subir un archivo en formato{" "}
+          <b>.csv</b> con la siguiente estructura:
         </p>
         <pre className="bg-background p-2 rounded mt-2 text-sm overflow-x-auto">
-norma_codigo,norma_nombre,criterio,pregunta
+          norma_codigo,norma_nombre,criterio,pregunta
         </pre>
       </div>
       <Input
