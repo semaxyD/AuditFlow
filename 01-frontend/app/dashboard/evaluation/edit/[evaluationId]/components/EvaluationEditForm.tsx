@@ -3,30 +3,34 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState, useEffect } from "react";
-import { createEvaluationSchema } from "../schemas/evaluation.schema";
 import { Button } from "@/components/ui/button";
-import { SectionQuestions } from "./SectionQuestions";
-import { ObservationsModal } from "./ObservationsModal";
-import { EvaluationSettingsModal } from "./EvaluationSettingsModal";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
-import type { EvaluationForm as EvalFormType } from "../types/evaluation-form.types";
 import { toast } from "sonner";
+import { createEvaluationSchema } from "../../../schemas/evaluation.schema";
+import { SectionQuestions } from "../../../components/SectionQuestions";
+import { ObservationsModal } from "../../../components/ObservationsModal";
+import type { EvaluationForm as EvalFormType } from "../../../types/evaluation-form.types";
+import { useParams, useSearchParams } from "next/navigation";
 
-export function EvaluationForm({
-  companies,
-  rules,
-}: {
-  companies: { id: number; name: string }[];
-  rules: any[];
-}) {
+export function EvaluationEditForm() {
   // — Estados —
+  const params = useParams();
+  const searchParams = useSearchParams();
+
+  const evaluationId = params.evaluationId;
+  const companyId = searchParams.get("companyId");
+  const ruleId = searchParams.get("ruleId");
+
   const [formData, setFormData] = useState<EvalFormType>({
     name: "",
     description: "",
     totalQuestions: 0,
     sections: [],
   });
-  const [info, setInfo] = useState<{ ruleId?: number; companyId?: number }>({});
+  const [info, setInfo] = useState<{ ruleId?: number; companyId?: number }>({
+    ruleId: Number(ruleId),
+    companyId: Number(companyId),
+  });
   const [isLoadingForm, setIsLoadingForm] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
   const [openObservationsModal, setOpenObservationsModal] = useState(false);
@@ -39,43 +43,62 @@ export function EvaluationForm({
 
   // Carga preguntas cuando cambia ruleId
   useEffect(() => {
-    if (!info.ruleId) return;
     setIsLoadingForm(true);
     const token = window.localStorage.getItem("token") || "";
 
-    fetch(`http://localhost:3001/auditory/questions/${info.ruleId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `http://localhost:3001/reports-evaluation/evaluation/${evaluationId}/details`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then(async (res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
-        const sections = json["Preguntas por criterios Generadas"].map(
-          (c: any) => ({
-            id: c.criterion_id,
-            title: c.criterion_description,
-            questions: c.questions.map((q: any) => ({
-              id: q.question_id,
-              question: q.question_text,
-              evidence: [] as string[],
-            })),
-          })
-        );
+
+        // La respuesta viene como un array, tomamos el primer elemento
+        const payload = Array.isArray(json) && json.length > 0 ? json[0] : null;
+        if (!payload) {
+          throw new Error("Detalles de evaluación vacíos");
+        }
+
+        // Mapear criterios a secciones
+        const sections = payload.criteria.map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          questions: c.questions.map((q: any) => ({
+            id: q.question_id,
+            question: q.text,
+            // si quieres inicializar el formulario con la respuesta existente:
+            answer: q.response || "",
+            // evidencias vienen como array anidado; lo aplanamos
+            evidences: Array.isArray(q.evidences) ? q.evidences.flat(2) : [],
+            comments: q.comments,
+            // cualquier otro campo que necesites:
+            createdAt: q.created_at,
+            versionId: q.version_id,
+          })),
+        }));
+
         setFormData({
-          name: "",
-          description: "",
-          totalQuestions: sections.reduce(
-            (sum, sec) => sum + sec.questions.length,
-            0
-          ),
+          // por ejemplo, puedes usar company_name y norm_name como título y descripción
+          name: payload.company_name,
+          description: payload.norm_name,
+          totalQuestions: payload.total_questions,
+          // si quieres mostrar cuántas respondió:
+          answeredQuestions: payload.answered_questions,
+          completionPercentage: payload.completion_percentage,
           sections,
         });
       })
-      .catch((err) => console.error("Error cargando preguntas:", err))
+      .catch((err) => {
+        console.error("Error cargando detalles de la evaluación:", err);
+      })
       .finally(() => setIsLoadingForm(false));
-  }, [info.ruleId]);
+  }, [evaluationId]);
 
   useEffect(() => {
     if (formData.sections.length > 0) {
@@ -84,24 +107,70 @@ export function EvaluationForm({
   }, [formData.sections]);
 
   const schema = useMemo(() => createEvaluationSchema(formData), [formData]);
-  const defaultValues = useMemo(
-    () => ({
+  const defaultValues = useMemo(() => {
+    return {
       totalQuestions: formData.totalQuestions,
-      sections: formData.sections.reduce((acc, sec) => {
-        acc[sec.id] = sec.questions.reduce((qAcc, q) => {
-          qAcc[q.id] = {
-            answer: "",
-            evidence: "",
-            observations: "",
-            score: 100,
-          };
-          return qAcc;
-        }, {} as any);
-        return acc;
-      }, {} as any),
-    }),
-    [formData]
-  );
+      sections: formData.sections.reduce(
+        (secAcc, sec) => {
+          secAcc[sec.id] = sec.questions.reduce(
+            (qAcc, q) => {
+              // valor de respuesta ya traído de la API
+              const answer = q.answer || "";
+              // aplanamos el array de evidencias y lo unimos en un string separado por comas
+              const evidenceList = Array.isArray(q.evidences)
+                ? q.evidences
+                : [];
+              const evidence = evidenceList.join(", ");
+              // observaciones (comments) o cadena vacía
+              const observations = q.comments || "";
+              // calculamos score según la respuesta
+              let score = 0;
+              if (
+                answer.toLowerCase() === "si" ||
+                answer.toLowerCase() === "sí"
+              ) {
+                score = 100;
+              } else if (answer === "NM") {
+                score = 50;
+              } else {
+                score = 0;
+              }
+
+              qAcc[q.id] = {
+                answer,
+                evidence,
+                observations,
+                score,
+              };
+              return qAcc;
+            },
+            {} as Record<
+              number,
+              {
+                answer: string;
+                evidence: string;
+                observations: string;
+                score: number;
+              }
+            >
+          );
+          return secAcc;
+        },
+        {} as Record<
+          number,
+          Record<
+            number,
+            {
+              answer: string;
+              evidence: string;
+              observations: string;
+              score: number;
+            }
+          >
+        >
+      ),
+    };
+  }, [formData]);
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -166,14 +235,10 @@ export function EvaluationForm({
     console.log("Payload reestructurado:", JSON.stringify(payload, null, 2));
 
     const token = window.localStorage.getItem("token") || "";
-    console.log("Token:", role);
-    const endpoint =
-      role === "auditor_externo"
-        ? `http://localhost:3001/auditory/${info.ruleId}/${info.companyId}/saveExternal`
-        : `http://localhost:3001/auditory/${info.ruleId}/save`;
+    const endpoint = `http://localhost:3001/auditory/${evaluationId}`;
 
     fetch(endpoint, {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -212,15 +277,6 @@ export function EvaluationForm({
 
   return (
     <>
-      {!info.ruleId || (!isInternal && !info.companyId) ? (
-        <EvaluationSettingsModal
-          companies={companies}
-          openModal={true}
-          setOpenModal={() => {}}
-          setInfo={setInfo}
-        />
-      ) : null}
-
       {info.ruleId &&
         (isInternal || info.companyId) &&
         formData.sections.length > 0 && (

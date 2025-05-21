@@ -2,7 +2,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, FileSpreadsheet, FileText } from "lucide-react";
+import { Eye, FileSpreadsheet, FileText, Pencil } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -21,6 +21,10 @@ export type Evaluation = {
     norm_code: string;
   };
 };
+
+const user = localStorage.getItem("user");
+const parsedUser = user ? JSON.parse(user) : null;
+const id = parsedUser?.id;
 
 export function getEvaluationColumns(
   role: string,
@@ -128,6 +132,13 @@ export function getEvaluationColumns(
             <Link href={href}>
               <Button size="icon" title="Ver detalles">
                 <Eye />
+              </Button>
+            </Link>
+            <Link
+              href={`/dashboard/evaluation/edit/${evaluationId}?companyId=${companyId}&ruleId=${row.original.norm.norm_id}&userId=${id}`}
+            >
+              <Button size="icon" title="Editar">
+                <Pencil />
               </Button>
             </Link>
           </div>
