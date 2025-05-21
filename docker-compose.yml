@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  data-access:
+    build:
+      context: ./03-data-access
+      dockerfile: Dockerfile
+    volumes:
+      - data-access-dist:/app/dist
+    container_name: data-access
+    env_file:
+      - ./03-data-access/.env
+
+  backend:
+    build:
+      context: ./02-backend
+      dockerfile: Dockerfile
+    volumes:
+      - data-access-dist:/app/03-data-access/dist
+
+      # 📁 Logs del sistema
+      # Este volumen asegura que los logs generados por Winston (AuditFlow.log)
+      # se guarden directamente en el disco C:\ del host, para que puedan ser
+      # revisados fácilmente desde cualquier PC con Windows, sin necesidad de buscar dentro del contenedor.
+      #
+      # 📌 Requisito: Tener Docker Desktop instalado y que el disco C: esté compartido (lo está por defecto).
+      # 📂 Ruta donde se generará el log: C:\AuditFlow.log
+      #
+      # No es necesario crear la carpeta: Winston la crea automáticamente si no existe.
+      - /host_mnt/c/:/app/src/components/Middleware/log/LogsFiles
+
+    depends_on:
+      - data-access
+    container_name: backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./02-backend/.env
+
+volumes:
+  data-access-dist:
