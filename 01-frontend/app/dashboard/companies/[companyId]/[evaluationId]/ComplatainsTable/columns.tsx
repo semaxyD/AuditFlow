@@ -137,9 +137,7 @@ export const versionColumns: ColumnDef<Version>[] = [
           >
             <FileSpreadsheet />
           </Button>
-          <Button size="icon" variant="outline">
-            <Pencil />
-          </Button>
+
           <Link
             href={`/dashboard/companies/${evaluationId}/version/${versionId}`}
           >

@@ -253,8 +253,9 @@ export function EvaluationEditForm() {
           );
           throw new Error(errBody.message);
         }
+        window.location.href = "/dashboard/companies";
+
         toast.success("Evaluación guardada con éxito");
-        reset(defaultValues);
       })
       .catch((err) => {
         console.error(err);

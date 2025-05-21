@@ -78,7 +78,7 @@ export function RegisterForm() {
         });
 
         console.log("✅ Recibí respuesta:", res.status, res.statusText);
-        console.log("🗂 Response headers:", Array.from(res.headers.entries()));
+        console.log(" Response headers:", Array.from(res.headers.entries()));
 
         const data = await res.json();
         console.log("📦 companiesList data:", data);

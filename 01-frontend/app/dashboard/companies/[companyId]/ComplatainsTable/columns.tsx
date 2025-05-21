@@ -126,21 +126,24 @@ export function getEvaluationColumns(
                 </Button>
               </>
             )}
-            {(role === "auditor_interno" || role === "auditor_externo") && (
-              <DeleteEvaluationModal evaluationId={evaluationId.toString()} />
-            )}
+
             <Link href={href}>
               <Button size="icon" title="Ver detalles">
                 <Eye />
               </Button>
             </Link>
-            <Link
-              href={`/dashboard/evaluation/edit/${evaluationId}?companyId=${companyId}&ruleId=${row.original.norm.norm_id}&userId=${id}`}
-            >
-              <Button size="icon" title="Editar">
-                <Pencil />
-              </Button>
-            </Link>
+            {role === "auditor_interno" && (
+              <Link
+                href={`/dashboard/evaluation/edit/${evaluationId}?companyId=${companyId}&ruleId=${row.original.norm.norm_id}&userId=${id}`}
+              >
+                <Button variant="outline" size="icon" title="Editar">
+                  <Pencil />
+                </Button>
+              </Link>
+            )}
+            {(role === "auditor_interno" || role === "auditor_externo") && (
+              <DeleteEvaluationModal evaluationId={evaluationId.toString()} />
+            )}
           </div>
         );
       },

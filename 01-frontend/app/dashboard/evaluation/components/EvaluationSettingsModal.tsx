@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
-
+import { useRouter } from "next/navigation";
 type Norm = { id: number; name: string };
 type Company = { id: number; name: string };
 
@@ -42,6 +42,8 @@ export function EvaluationSettingsModal({
   const [loadingCompanies, setLoadingCompanies] = useState(true);
 
   const [selectedRule, setSelectedRule] = useState<string>("");
+  const router = useRouter();
+
   const [selectedCompany, setSelectedCompany] = useState<string>("");
 
   // 1) Cargar normas
@@ -96,7 +98,10 @@ export function EvaluationSettingsModal({
       }
     })();
   }, [isInternal]);
-
+  function handleClose() {
+    setOpen(false);
+    router.push("/ruta-a-donde-quieras"); // <- cambio de página
+  }
   const handleContinue = () => {
     if (isInternal) {
       if (!selectedRule) {

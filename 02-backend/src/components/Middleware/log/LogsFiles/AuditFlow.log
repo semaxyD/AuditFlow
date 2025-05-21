@@ -279,3 +279,675 @@
 [2025-05-21T16:52:19.182Z] INFO [UserService] Buscando todos los usuarios
 [2025-05-21T16:52:19.308Z] INFO [UserService] Se encontraron 12 usuarios
 [2025-05-21T16:52:19.308Z] INFO [HTTP] GET /user/search (UserController.buscarUsuarios) => 126ms
+[2025-05-21T16:55:03.889Z] INFO [UserService] Intentando login para el usuario: correoTest4@gmail.com
+[2025-05-21T16:55:04.180Z] INFO [UserService] Login exitoso para: correoTest4@gmail.com
+[2025-05-21T16:55:04.180Z] INFO [HTTP] POST /user/login (UserController.login) => 292ms
+[2025-05-21T16:55:06.445Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:06.445Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:06.446Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 11
+[2025-05-21T16:55:06.690Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 11
+[2025-05-21T16:55:06.691Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 245ms
+[2025-05-21T16:55:22.653Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:22.654Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:22.654Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:55:23.349Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:55:23.349Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 695ms
+[2025-05-21T16:55:26.908Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:26.908Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:26.908Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:55:27.267Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:55:27.267Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 359ms
+[2025-05-21T16:55:27.393Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:27.393Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:27.394Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:55:27.736Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:55:27.737Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 344ms
+[2025-05-21T16:55:28.360Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:28.360Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:28.361Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 35 by auditor ID 11
+[2025-05-21T16:55:28.597Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T16:55:28.597Z] INFO [HTTP] GET /reports-evaluation/evaluation/35/details (ReportEvaluationController.getEvaluationDetails) => 236ms
+[2025-05-21T16:55:28.714Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:28.714Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:55:28.714Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 35 by auditor ID 11
+[2025-05-21T16:55:28.827Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T16:55:28.827Z] INFO [HTTP] GET /reports-evaluation/evaluation/35/details (ReportEvaluationController.getEvaluationDetails) => 113ms
+[2025-05-21T16:55:39.164Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:39.165Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 11, Rol: auditor_externo, Intentos restantes: 4
+[2025-05-21T16:55:59.520Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:55:59.521Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 11, Rol: auditor_externo, Intentos restantes: 3
+[2025-05-21T16:59:22.013Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:22.014Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:22.014Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T16:59:22.039Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:22.039Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:22.039Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 11
+[2025-05-21T16:59:22.157Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 11
+[2025-05-21T16:59:22.158Z] INFO [HTTP] GET /auditory/myCompanies (EvaluationController.getMyCompanies) => 119ms
+[2025-05-21T16:59:22.252Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 238ms
+[2025-05-21T16:59:22.281Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:22.282Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:22.282Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 11
+[2025-05-21T16:59:22.362Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:22.363Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:22.363Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T16:59:22.402Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 11
+[2025-05-21T16:59:22.402Z] INFO [HTTP] GET /auditory/myCompanies (EvaluationController.getMyCompanies) => 120ms
+[2025-05-21T16:59:22.474Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 110ms
+[2025-05-21T16:59:32.014Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:32.014Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:32.014Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:59:32.688Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:59:32.689Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 675ms
+[2025-05-21T16:59:32.806Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:32.807Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:32.807Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:59:32.824Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:32.825Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:32.825Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 35 by auditor ID 11
+[2025-05-21T16:59:33.064Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T16:59:33.064Z] INFO [HTTP] GET /reports-evaluation/evaluation/35/details (ReportEvaluationController.getEvaluationDetails) => 239ms
+[2025-05-21T16:59:33.136Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:59:33.136Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 329ms
+[2025-05-21T16:59:33.200Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:33.201Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:33.201Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 35 by auditor ID 11
+[2025-05-21T16:59:33.331Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T16:59:33.331Z] INFO [HTTP] GET /reports-evaluation/evaluation/35/details (ReportEvaluationController.getEvaluationDetails) => 130ms
+[2025-05-21T16:59:35.830Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:35.830Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:35.830Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 11
+[2025-05-21T16:59:35.952Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 11
+[2025-05-21T16:59:35.952Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 122ms
+[2025-05-21T16:59:38.167Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T16:59:38.168Z] INFO [RolesGuard] Acceso permitido. UserID: 11, Rol: auditor_externo
+[2025-05-21T16:59:38.168Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 11
+[2025-05-21T16:59:38.514Z] INFO [ReportEvaluationService] Successfully fetched 2 evaluations
+[2025-05-21T16:59:38.514Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 346ms
+[2025-05-21T17:00:14.182Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T17:00:14.182Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 11, Rol: auditor_externo, Intentos restantes: 4
+[2025-05-21T17:00:14.296Z] INFO  Token validado para usuario: correoTest4@gmail.com (ID: 11)
+[2025-05-21T17:00:14.296Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 11, Rol: auditor_externo, Intentos restantes: 3
+[2025-05-21T17:02:34.094Z] INFO [UserService] Intentando login para el usuario: correoTest3@gmail.com
+[2025-05-21T17:02:34.389Z] INFO [UserService] Login exitoso para: correoTest3@gmail.com
+[2025-05-21T17:02:34.389Z] INFO [HTTP] POST /user/login (UserController.login) => 296ms
+[2025-05-21T17:02:35.520Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:02:35.520Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:02:35.521Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:02:35.745Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:02:35.745Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 224ms
+[2025-05-21T17:02:40.778Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:02:40.778Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:02:40.779Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:02:41.456Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:02:41.456Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 678ms
+[2025-05-21T17:03:36.997Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:36.997Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:36.997Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:03:37.335Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:03:37.335Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 338ms
+[2025-05-21T17:03:37.450Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:37.450Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:37.450Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:03:37.790Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:03:37.790Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 340ms
+[2025-05-21T17:03:38.658Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:38.658Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:38.659Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 10 by auditor ID 10
+[2025-05-21T17:03:38.905Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:03:38.905Z] INFO [HTTP] GET /reports-evaluation/evaluation/10/details (ReportEvaluationController.getEvaluationDetails) => 247ms
+[2025-05-21T17:03:39.023Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:39.023Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:39.023Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 10 by auditor ID 10
+[2025-05-21T17:03:39.138Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:03:39.138Z] INFO [HTTP] GET /reports-evaluation/evaluation/10/details (ReportEvaluationController.getEvaluationDetails) => 115ms
+[2025-05-21T17:03:40.601Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:40.601Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:40.601Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:03:41.281Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:03:41.281Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 680ms
+[2025-05-21T17:03:43.980Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:43.980Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:43.981Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:03:44.347Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:03:44.347Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 367ms
+[2025-05-21T17:03:44.469Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:44.469Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:44.469Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:03:44.484Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:44.484Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:44.484Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:03:44.730Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:03:44.731Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 246ms
+[2025-05-21T17:03:44.829Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:03:44.829Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 360ms
+[2025-05-21T17:03:44.847Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:03:44.847Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:03:44.848Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:03:44.967Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:03:44.967Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 120ms
+[2025-05-21T17:04:09.945Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:04:09.946Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:04:22.316Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:04:22.316Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:18:30.369Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:18:30.369Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:16.465Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:16.465Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:20.576Z] INFO [HTTP] PUT /auditory/37 (EvaluationController.updateEvaluation) => 4111ms
+[2025-05-21T17:19:28.783Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:28.783Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:28.784Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:19:29.021Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:19:29.021Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 238ms
+[2025-05-21T17:19:31.196Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:31.196Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:31.197Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:19:31.887Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:19:31.887Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 690ms
+[2025-05-21T17:19:39.011Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:39.022Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:39.023Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:19:39.373Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:19:39.373Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 351ms
+[2025-05-21T17:19:39.490Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:39.490Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:39.491Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:19:39.716Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:19:39.716Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 225ms
+[2025-05-21T17:19:44.413Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:44.414Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:44.414Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID: 37, version ID: 73
+[2025-05-21T17:19:44.655Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail
+[2025-05-21T17:19:44.656Z] INFO [HTTP] GET /reports-evaluation/37/version/73 (ReportEvaluationController.getEvaluationDetail) => 242ms
+[2025-05-21T17:19:52.587Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:52.587Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:52.588Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:19:52.819Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:19:52.819Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 232ms
+[2025-05-21T17:19:52.948Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:19:52.949Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:19:52.949Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:19:53.179Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:19:53.179Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 230ms
+[2025-05-21T17:20:04.149Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:20:04.149Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:20:04.149Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:20:04.482Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:20:04.483Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 334ms
+[2025-05-21T17:21:32.303Z] INFO [UserService] Intentando login para el usuario: correoTest3@gmail.com
+[2025-05-21T17:21:32.601Z] INFO [UserService] Login exitoso para: correoTest3@gmail.com
+[2025-05-21T17:21:32.601Z] INFO [HTTP] POST /user/login (UserController.login) => 298ms
+[2025-05-21T17:22:00.467Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:22:00.467Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:22:00.467Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:22:00.691Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:22:00.691Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 224ms
+[2025-05-21T17:23:43.653Z] INFO [UserService] Intentando login para el usuario: correoTest3@gmail.com
+[2025-05-21T17:23:44.946Z] INFO [UserService] Login exitoso para: correoTest3@gmail.com
+[2025-05-21T17:23:44.946Z] INFO [HTTP] POST /user/login (UserController.login) => 1293ms
+[2025-05-21T17:23:55.110Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:23:55.110Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:23:55.111Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:23:55.355Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:23:55.355Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 245ms
+[2025-05-21T17:26:20.772Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:26:20.773Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:26:20.773Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:26:21.463Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:26:21.463Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 690ms
+[2025-05-21T17:26:21.579Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:26:21.580Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:26:21.580Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:26:21.929Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:26:21.929Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 349ms
+[2025-05-21T17:26:22.807Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:26:22.807Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:26:22.807Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:26:23.042Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:26:23.042Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 235ms
+[2025-05-21T17:26:23.160Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:26:23.160Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:26:23.160Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:26:23.273Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:26:23.273Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 113ms
+[2025-05-21T17:26:35.468Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:26:35.468Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:26:39.667Z] INFO [HTTP] PUT /auditory/37 (EvaluationController.updateEvaluation) => 4199ms
+[2025-05-21T17:28:26.940Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:26.941Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:29.350Z] INFO [HTTP] PUT /auditory/37 (EvaluationController.updateEvaluation) => 2409ms
+[2025-05-21T17:28:30.393Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:30.393Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:30.394Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:28:30.616Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:28:30.616Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 223ms
+[2025-05-21T17:28:35.750Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:35.750Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:35.751Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:28:36.449Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:28:36.449Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 698ms
+[2025-05-21T17:28:52.660Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:52.661Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:52.661Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:28:52.998Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:28:52.999Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 337ms
+[2025-05-21T17:28:53.111Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:53.111Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:53.111Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:28:53.338Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:28:53.339Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 228ms
+[2025-05-21T17:28:54.706Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:28:54.706Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:28:54.706Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID: 37, version ID: 75
+[2025-05-21T17:28:54.938Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail
+[2025-05-21T17:28:54.938Z] INFO [HTTP] GET /reports-evaluation/37/version/75 (ReportEvaluationController.getEvaluationDetail) => 232ms
+[2025-05-21T17:29:00.201Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:00.202Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:00.202Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:29:00.450Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:29:00.450Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 248ms
+[2025-05-21T17:29:00.564Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:00.564Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:00.565Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:29:00.794Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:29:00.794Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 229ms
+[2025-05-21T17:29:03.242Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:03.242Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:03.243Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:29:03.584Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:29:03.584Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 341ms
+[2025-05-21T17:29:07.308Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:07.308Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:07.308Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:29:07.645Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:29:07.645Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 337ms
+[2025-05-21T17:29:07.893Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:07.893Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:07.894Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:29:08.275Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:29:08.275Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 382ms
+[2025-05-21T17:29:08.870Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:08.870Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:08.871Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 38 by auditor ID 10
+[2025-05-21T17:29:09.106Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:29:09.106Z] INFO [HTTP] GET /reports-evaluation/evaluation/38/details (ReportEvaluationController.getEvaluationDetails) => 235ms
+[2025-05-21T17:29:09.236Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:09.237Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:29:09.237Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 38 by auditor ID 10
+[2025-05-21T17:29:09.350Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:29:09.351Z] INFO [HTTP] GET /reports-evaluation/evaluation/38/details (ReportEvaluationController.getEvaluationDetails) => 113ms
+[2025-05-21T17:29:24.069Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:29:24.070Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:31:10.951Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:31:10.952Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:31:30.933Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:31:30.933Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:31:35.072Z] INFO [HTTP] PUT /auditory/38 (EvaluationController.updateEvaluation) => 4139ms
+[2025-05-21T17:31:54.920Z] INFO [NestFactory] Starting Nest application...
+[2025-05-21T17:31:54.921Z] INFO [InstanceLoader] LoggerModule dependencies initialized
+[2025-05-21T17:31:54.921Z] INFO [InstanceLoader] JwtModule dependencies initialized
+[2025-05-21T17:31:54.921Z] INFO [InstanceLoader] WinstonModule dependencies initialized
+[2025-05-21T17:31:54.921Z] INFO [InstanceLoader] ConfigHostModule dependencies initialized
+[2025-05-21T17:31:54.921Z] INFO [InstanceLoader] AppModule dependencies initialized
+[2025-05-21T17:31:54.922Z] INFO [InstanceLoader] QueryFilterModule dependencies initialized
+[2025-05-21T17:31:54.922Z] INFO [InstanceLoader] ConfigModule dependencies initialized
+[2025-05-21T17:31:54.922Z] INFO [InstanceLoader] AuthModule dependencies initialized
+[2025-05-21T17:31:54.922Z] INFO [InstanceLoader] ReportEvaluationModule dependencies initialized
+[2025-05-21T17:31:54.922Z] INFO [InstanceLoader] UserModule dependencies initialized
+[2025-05-21T17:31:54.923Z] INFO [InstanceLoader] AuditoryEvaluationModule dependencies initialized
+[2025-05-21T17:31:54.923Z] INFO [RoutesResolver] AppController {/}:
+[2025-05-21T17:31:54.923Z] INFO [RouterExplorer] Mapped {/, GET} route
+[2025-05-21T17:31:54.923Z] INFO [RouterExplorer] Mapped {/ping, GET} route
+[2025-05-21T17:31:54.923Z] INFO [RoutesResolver] UserController {/user}:
+[2025-05-21T17:31:54.923Z] INFO [RouterExplorer] Mapped {/user/companiesList, GET} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/create, POST} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/login, POST} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/protected, GET} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/search, GET} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/:id, GET} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/:id/companies, GET} route
+[2025-05-21T17:31:54.924Z] INFO [RouterExplorer] Mapped {/user/config/norms, GET} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/config/frequency, POST} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/config/delete, DELETE} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/create/company, POST} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/update/company/:companyId, PUT} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/delete/company/:companyId, DELETE} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/update/:id, PUT} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/user/delete/:id, DELETE} route
+[2025-05-21T17:31:54.925Z] INFO [RoutesResolver] ReportEvaluationController {/reports-evaluation}:
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/reports-evaluation/companies, GET} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/evaluations, GET} route
+[2025-05-21T17:31:54.925Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/version/:versionId, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:evaluationId/evolution, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/reports-evaluation/myCompanies, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/reports-evaluation/:companyId/myEvaluations, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/reports-evaluation/evaluation/:evaluationId/details, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/reports-evaluation/report-data/:evaluationId, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RoutesResolver] EvaluationController {/auditory}:
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/auditory/allNorms, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/auditory/questions/:normId, GET} route
+[2025-05-21T17:31:54.926Z] INFO [RouterExplorer] Mapped {/auditory/:normId/save, POST} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/myCompanies, GET} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/:normId/:companyId/saveExternal, POST} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/:evaluationId, PUT} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/assigned, GET} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/delete/evaluation/:evaluationId, DELETE} route
+[2025-05-21T17:31:54.927Z] INFO [RouterExplorer] Mapped {/auditory/norms/upload, POST} route
+[2025-05-21T17:31:54.927Z] INFO [NestApplication] Nest application successfully started
+[2025-05-21T17:32:04.259Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:32:04.260Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:32:08.618Z] INFO [HTTP] PUT /auditory/38 (EvaluationController.updateEvaluation) => 4357ms
+[2025-05-21T17:32:09.690Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:32:09.690Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:32:09.691Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:32:09.933Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:32:09.933Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 243ms
+[2025-05-21T17:36:49.433Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:49.433Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:49.436Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:36:50.195Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:36:50.196Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 763ms
+[2025-05-21T17:36:52.128Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:52.128Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:52.129Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 10
+[2025-05-21T17:36:52.517Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:36:52.518Z] INFO [HTTP] GET /reports-evaluation/10/evolution (ReportEvaluationController.getEvolution) => 389ms
+[2025-05-21T17:36:52.644Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:52.644Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:52.645Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 10
+[2025-05-21T17:36:52.904Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:36:52.904Z] INFO [HTTP] GET /reports-evaluation/10/evolution (ReportEvaluationController.getEvolution) => 259ms
+[2025-05-21T17:36:53.726Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:53.726Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:53.727Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:36:54.093Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:36:54.093Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 367ms
+[2025-05-21T17:36:57.104Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:57.104Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:57.105Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 10
+[2025-05-21T17:36:57.370Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:36:57.371Z] INFO [HTTP] GET /reports-evaluation/10/evolution (ReportEvaluationController.getEvolution) => 266ms
+[2025-05-21T17:36:57.494Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:57.494Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:57.494Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 10
+[2025-05-21T17:36:57.739Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:36:57.739Z] INFO [HTTP] GET /reports-evaluation/10/evolution (ReportEvaluationController.getEvolution) => 245ms
+[2025-05-21T17:36:58.238Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:36:58.239Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:36:58.239Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:36:58.623Z] INFO [ReportEvaluationService] Successfully fetched 12 evaluations
+[2025-05-21T17:36:58.623Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 384ms
+[2025-05-21T17:37:00.569Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:00.570Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:00.571Z] INFO [EvaluationService] Eliminando evaluación con ID: 10
+[2025-05-21T17:37:02.129Z] INFO [EvaluationService] Evaluación eliminada correctamente
+[2025-05-21T17:37:02.130Z] INFO [HTTP] DELETE /auditory/delete/evaluation/10 (EvaluationController.deleteEvaluationVersion) => 1560ms
+[2025-05-21T17:37:06.008Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:06.008Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:06.009Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:06.731Z] INFO [ReportEvaluationService] Successfully fetched 11 evaluations
+[2025-05-21T17:37:06.731Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 723ms
+[2025-05-21T17:37:13.670Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:13.671Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:13.671Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 15
+[2025-05-21T17:37:14.025Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:14.025Z] INFO [HTTP] GET /reports-evaluation/15/evolution (ReportEvaluationController.getEvolution) => 354ms
+[2025-05-21T17:37:14.145Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:14.145Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:14.146Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 15
+[2025-05-21T17:37:14.377Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:14.377Z] INFO [HTTP] GET /reports-evaluation/15/evolution (ReportEvaluationController.getEvolution) => 232ms
+[2025-05-21T17:37:15.033Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:15.034Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:15.034Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:15.398Z] INFO [ReportEvaluationService] Successfully fetched 11 evaluations
+[2025-05-21T17:37:15.398Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 364ms
+[2025-05-21T17:37:17.079Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:17.080Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:17.080Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 19
+[2025-05-21T17:37:17.323Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:17.323Z] INFO [HTTP] GET /reports-evaluation/19/evolution (ReportEvaluationController.getEvolution) => 243ms
+[2025-05-21T17:37:17.445Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:17.446Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:17.446Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 19
+[2025-05-21T17:37:17.686Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:17.686Z] INFO [HTTP] GET /reports-evaluation/19/evolution (ReportEvaluationController.getEvolution) => 240ms
+[2025-05-21T17:37:18.365Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:18.365Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:18.365Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:18.710Z] INFO [ReportEvaluationService] Successfully fetched 11 evaluations
+[2025-05-21T17:37:18.710Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 345ms
+[2025-05-21T17:37:25.817Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:25.817Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:25.818Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 20
+[2025-05-21T17:37:26.049Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:26.049Z] INFO [HTTP] GET /reports-evaluation/20/evolution (ReportEvaluationController.getEvolution) => 231ms
+[2025-05-21T17:37:26.166Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:26.167Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:26.167Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 20
+[2025-05-21T17:37:26.392Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:26.392Z] INFO [HTTP] GET /reports-evaluation/20/evolution (ReportEvaluationController.getEvolution) => 225ms
+[2025-05-21T17:37:26.855Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:26.855Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:26.856Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:27.216Z] INFO [ReportEvaluationService] Successfully fetched 11 evaluations
+[2025-05-21T17:37:27.217Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 362ms
+[2025-05-21T17:37:29.694Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:29.694Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:29.695Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 21
+[2025-05-21T17:37:29.927Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:29.927Z] INFO [HTTP] GET /reports-evaluation/21/evolution (ReportEvaluationController.getEvolution) => 232ms
+[2025-05-21T17:37:30.043Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:30.044Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:30.044Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 21
+[2025-05-21T17:37:30.296Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:30.296Z] INFO [HTTP] GET /reports-evaluation/21/evolution (ReportEvaluationController.getEvolution) => 252ms
+[2025-05-21T17:37:31.816Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:31.816Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:31.817Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:32.172Z] INFO [ReportEvaluationService] Successfully fetched 11 evaluations
+[2025-05-21T17:37:32.173Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 356ms
+[2025-05-21T17:37:33.968Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:33.968Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:33.969Z] INFO [EvaluationService] Eliminando evaluación con ID: 21
+[2025-05-21T17:37:36.175Z] INFO [EvaluationService] Evaluación eliminada correctamente
+[2025-05-21T17:37:36.176Z] INFO [HTTP] DELETE /auditory/delete/evaluation/21 (EvaluationController.deleteEvaluationVersion) => 2208ms
+[2025-05-21T17:37:38.166Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:38.168Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:38.168Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:38.513Z] INFO [ReportEvaluationService] Successfully fetched 10 evaluations
+[2025-05-21T17:37:38.514Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 345ms
+[2025-05-21T17:37:43.898Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:43.898Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:43.899Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 38
+[2025-05-21T17:37:44.132Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:44.132Z] INFO [HTTP] GET /reports-evaluation/38/evolution (ReportEvaluationController.getEvolution) => 234ms
+[2025-05-21T17:37:44.260Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:44.261Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:44.261Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 38
+[2025-05-21T17:37:44.489Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:44.489Z] INFO [HTTP] GET /reports-evaluation/38/evolution (ReportEvaluationController.getEvolution) => 228ms
+[2025-05-21T17:37:46.133Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:46.133Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:46.134Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:46.507Z] INFO [ReportEvaluationService] Successfully fetched 10 evaluations
+[2025-05-21T17:37:46.508Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 374ms
+[2025-05-21T17:37:48.492Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:48.492Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:48.492Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:48.872Z] INFO [ReportEvaluationService] Successfully fetched 10 evaluations
+[2025-05-21T17:37:48.872Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 380ms
+[2025-05-21T17:37:48.997Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:48.998Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:48.998Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:49.341Z] INFO [ReportEvaluationService] Successfully fetched 10 evaluations
+[2025-05-21T17:37:49.342Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 344ms
+[2025-05-21T17:37:49.460Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:49.461Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:49.461Z] INFO [ReportEvaluationService] Fetching evaluations for company ID 2 by external auditor ID 10
+[2025-05-21T17:37:49.811Z] INFO [ReportEvaluationService] Successfully fetched 10 evaluations
+[2025-05-21T17:37:49.811Z] INFO [HTTP] GET /reports-evaluation/2/myEvaluations (ReportEvaluationController.getMyEvaluations) => 350ms
+[2025-05-21T17:37:50.036Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:50.036Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:50.037Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:37:50.281Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:37:50.281Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 244ms
+[2025-05-21T17:37:50.412Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:50.412Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:50.412Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID 37 by auditor ID 10
+[2025-05-21T17:37:50.538Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail for external auditor
+[2025-05-21T17:37:50.538Z] INFO [HTTP] GET /reports-evaluation/evaluation/37/details (ReportEvaluationController.getEvaluationDetails) => 126ms
+[2025-05-21T17:37:51.734Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:51.734Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:51.734Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:37:52.266Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:52.266Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 532ms
+[2025-05-21T17:37:52.394Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:37:52.395Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:37:52.395Z] INFO [ReportEvaluationService] Fetching evolution of evaluation ID: 37
+[2025-05-21T17:37:52.639Z] INFO [ReportEvaluationService] Successfully fetched evolution data
+[2025-05-21T17:37:52.639Z] INFO [HTTP] GET /reports-evaluation/37/evolution (ReportEvaluationController.getEvolution) => 244ms
+[2025-05-21T17:42:38.874Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:42:38.874Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:42:38.874Z] INFO [ReportEvaluationService] Fetching evaluation detail for evaluation ID: 37, version ID: 65
+[2025-05-21T17:42:39.118Z] INFO [ReportEvaluationService] Successfully fetched evaluation detail
+[2025-05-21T17:42:39.118Z] INFO [HTTP] GET /reports-evaluation/37/version/65 (ReportEvaluationController.getEvaluationDetail) => 244ms
+[2025-05-21T17:42:56.382Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:42:56.383Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:42:56.383Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:42:56.471Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:42:56.471Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:42:56.587Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:42:56.587Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 3
+[2025-05-21T17:42:56.608Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 225ms
+[2025-05-21T17:42:56.733Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:42:56.733Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:42:56.734Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:42:56.848Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 114ms
+[2025-05-21T17:45:56.787Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:45:56.788Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:45:56.789Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:45:56.792Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:45:56.794Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:45:57.029Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 241ms
+[2025-05-21T17:45:57.971Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:45:57.972Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 3
+[2025-05-21T17:45:57.973Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:45:57.973Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:45:57.974Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:45:58.093Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 120ms
+[2025-05-21T17:48:48.392Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:48:48.392Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:48:48.402Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:48:48.402Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:48:48.403Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:48:48.650Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 246ms
+[2025-05-21T17:49:32.855Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:49:32.855Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:49:32.856Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:49:32.864Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:49:32.865Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:49:32.971Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 115ms
+[2025-05-21T17:52:19.107Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:52:19.108Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 3
+[2025-05-21T17:52:19.110Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:52:19.111Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:52:19.111Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:52:19.233Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 121ms
+[2025-05-21T17:53:58.480Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:53:58.480Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:53:58.481Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:53:58.489Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:53:58.489Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:53:58.722Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 241ms
+[2025-05-21T17:54:03.121Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:54:03.122Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:54:03.123Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:54:03.130Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:54:03.131Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:54:03.247Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 125ms
+[2025-05-21T17:54:15.127Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:54:15.127Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:54:15.127Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:54:15.366Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:54:15.366Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 239ms
+[2025-05-21T17:55:20.629Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:55:20.629Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:55:20.630Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:55:20.650Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:55:20.651Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:55:20.765Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 134ms
+[2025-05-21T17:55:20.775Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:55:20.775Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 3
+[2025-05-21T17:55:20.891Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:55:20.891Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:55:20.891Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:55:21.011Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 119ms
+[2025-05-21T17:55:57.652Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:55:57.653Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:55:57.653Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:55:57.774Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:55:57.774Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 121ms
+[2025-05-21T17:56:03.225Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:03.225Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:03.226Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:56:03.347Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 122ms
+[2025-05-21T17:56:03.358Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:03.358Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:56:03.480Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:03.481Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:03.481Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:56:03.489Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:03.490Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:56:03.638Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 157ms
+[2025-05-21T17:56:15.096Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:15.096Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:15.096Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:56:15.218Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:56:15.218Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 122ms
+[2025-05-21T17:56:15.387Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:15.387Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:15.387Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:56:15.403Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:15.403Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 4
+[2025-05-21T17:56:15.504Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 116ms
+[2025-05-21T17:56:15.530Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:15.530Z] WARN [RolesGuard] Acceso denegado: rol insuficiente. UserID: 10, Rol: auditor_interno, Intentos restantes: 3
+[2025-05-21T17:56:15.631Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:15.631Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:15.631Z] INFO [EvaluationService] Fetching basic norm information
+[2025-05-21T17:56:15.754Z] INFO [HTTP] GET /auditory/allNorms (EvaluationController.getIdByNorms) => 123ms
+[2025-05-21T17:56:18.566Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:18.566Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:18.567Z] INFO [EvaluationService] Fetching questions by norm ID: 5
+[2025-05-21T17:56:19.070Z] INFO [HTTP] GET /auditory/questions/5 (EvaluationController.getQuestionsByNorm) => 504ms
+[2025-05-21T17:56:36.686Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:56:36.686Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:56:36.933Z] INFO [AuditFrequencyGuard] Auditor interno evaluando norma 5 para su empresa 2
+[2025-05-21T17:56:37.193Z] INFO [AuditFrequencyGuard] No hay configuración de frecuencia. Acceso permitido. UserID: 10
+[2025-05-21T17:56:37.856Z] INFO [EvaluationService] Métricas calculadas: completionPercentage=100, maturityLevel=Aprobado
+[2025-05-21T17:56:37.857Z] INFO [EvaluationService] Payload enviado por el auditor interno: {"userId":10,"normId":5,"company_id":2,"completion_percentage":100,"maturity_level":"Aprobado","total_score":400,"max_score":400,"answered_questions":4,"total_questions":4,"observations":"dasda","sections":[{"criterion_id":41,"questions":[{"question_id":74,"answer":"Sí","evidence":[],"comments":"ayuda","score":100},{"question_id":75,"answer":"Sí","evidence":[],"comments":"ayuda","score":100}]},{"criterion_id":42,"questions":[{"question_id":76,"answer":"Sí","evidence":[],"comments":"","score":100},{"question_id":77,"answer":"Sí","evidence":[],"comments":"ayuda","score":100}]}]}
+[2025-05-21T17:56:39.857Z] INFO [EvaluationService] Evaluación creada exitosamente para usuario 10, evaluación ID: 39
+[2025-05-21T17:56:39.858Z] INFO [HTTP] POST /auditory/5/save (EvaluationController.submitEvaluation) => 2663ms
+[2025-05-21T17:57:27.115Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:57:27.116Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:57:27.234Z] INFO [AuditFrequencyGuard] Auditor interno evaluando norma 5 para su empresa 2
+[2025-05-21T17:57:27.371Z] INFO [AuditFrequencyGuard] No hay configuración de frecuencia. Acceso permitido. UserID: 10
+[2025-05-21T17:57:27.744Z] INFO [EvaluationService] Métricas calculadas: completionPercentage=100, maturityLevel=Aprobado
+[2025-05-21T17:57:27.745Z] INFO [EvaluationService] Payload enviado por el auditor interno: {"userId":10,"normId":5,"company_id":2,"completion_percentage":100,"maturity_level":"Aprobado","total_score":400,"max_score":400,"answered_questions":4,"total_questions":4,"observations":"dasda","sections":[{"criterion_id":41,"questions":[{"question_id":74,"answer":"Sí","evidence":[],"comments":"","score":100},{"question_id":75,"answer":"Sí","evidence":[],"comments":"","score":100}]},{"criterion_id":42,"questions":[{"question_id":76,"answer":"Sí","evidence":[],"comments":"","score":100},{"question_id":77,"answer":"Sí","evidence":[],"comments":"","score":100}]}]}
+[2025-05-21T17:57:28.823Z] INFO [EvaluationService] Evaluación creada exitosamente para usuario 10, evaluación ID: 40
+[2025-05-21T17:57:28.823Z] INFO [HTTP] POST /auditory/5/save (EvaluationController.submitEvaluation) => 1452ms
+[2025-05-21T17:58:23.543Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:58:23.544Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:58:23.666Z] INFO [AuditFrequencyGuard] Auditor interno evaluando norma 5 para su empresa 2
+[2025-05-21T17:58:23.782Z] INFO [AuditFrequencyGuard] No hay configuración de frecuencia. Acceso permitido. UserID: 10
+[2025-05-21T17:58:24.147Z] INFO [EvaluationService] Métricas calculadas: completionPercentage=100, maturityLevel=Aprobado
+[2025-05-21T17:58:24.147Z] INFO [EvaluationService] Payload enviado por el auditor interno: {"userId":10,"normId":5,"company_id":2,"completion_percentage":100,"maturity_level":"Aprobado","total_score":400,"max_score":400,"answered_questions":4,"total_questions":4,"observations":"dasda","sections":[{"criterion_id":41,"questions":[{"question_id":74,"answer":"Sí","evidence":[],"comments":"","score":100},{"question_id":75,"answer":"Sí","evidence":[],"comments":"","score":100}]},{"criterion_id":42,"questions":[{"question_id":76,"answer":"Sí","evidence":[],"comments":"","score":100},{"question_id":77,"answer":"Sí","evidence":[],"comments":"","score":100}]}]}
+[2025-05-21T17:58:25.279Z] INFO [EvaluationService] Evaluación creada exitosamente para usuario 10, evaluación ID: 41
+[2025-05-21T17:58:25.279Z] INFO [HTTP] POST /auditory/5/save (EvaluationController.submitEvaluation) => 1497ms
+[2025-05-21T17:58:26.372Z] INFO  Token validado para usuario: correoTest3@gmail.com (ID: 10)
+[2025-05-21T17:58:26.372Z] INFO [RolesGuard] Acceso permitido. UserID: 10, Rol: auditor_interno
+[2025-05-21T17:58:26.373Z] INFO [ReportEvaluationService] Fetching companies assigned to external auditor ID: 10
+[2025-05-21T17:58:26.526Z] INFO [ReportEvaluationService] Successfully fetched 1 companies for auditor ID 10
+[2025-05-21T17:58:26.526Z] INFO [HTTP] GET /reports-evaluation/myCompanies (ReportEvaluationController.getMyCompanies) => 153ms

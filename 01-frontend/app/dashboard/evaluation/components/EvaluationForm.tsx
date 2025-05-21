@@ -32,6 +32,7 @@ export function EvaluationForm({
   const [openObservationsModal, setOpenObservationsModal] = useState(false);
   const [finalObservation, setFinalObservation] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(true);
 
   // Detectamos rol para ajustar la lógica de modal
   const { role } = useRoleCheck("auditor_interno", "auditor_externo");
@@ -189,6 +190,8 @@ export function EvaluationForm({
           throw new Error(errBody.message);
         }
         toast.success("Evaluación guardada con éxito");
+        window.location.href = "/dashboard/companies";
+
         reset(defaultValues);
       })
       .catch((err) => {
@@ -215,8 +218,8 @@ export function EvaluationForm({
       {!info.ruleId || (!isInternal && !info.companyId) ? (
         <EvaluationSettingsModal
           companies={companies}
-          openModal={true}
-          setOpenModal={() => {}}
+          openModal={settingsOpen}
+          setOpenModal={setSettingsOpen}
           setInfo={setInfo}
         />
       ) : null}
