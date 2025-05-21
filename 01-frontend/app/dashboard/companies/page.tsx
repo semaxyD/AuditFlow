@@ -52,7 +52,7 @@ export default function SearchUsersPage() {
       <CompaniesTable
         data={data}
         onDeleted={handleDeleted}
-        onUpdated={handleUpdated} // ← aquí
+        onUpdated={handleUpdated}
       />
     </div>
   );

@@ -45,13 +45,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { title } from "process";
 
 export function AppSidebar() {
   const { role, status } = useRoleCheck("auditor_interno", "auditor_externo");
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
-  const items = [{ title: "Inicio", url: "/dashboard", icon: Home }];
+  const items = [];
 
   if (role === "admin") {
     items.push({
@@ -59,13 +60,21 @@ export function AppSidebar() {
       url: "/dashboard/companies",
       icon: Building2,
     });
-  } else if (role === "auditor_interno" || role === "auditor_externo") {
-    items.push({
-      title: "Mis auditorías",
-      url: "/dashboard/companies",
-      icon: FileSearch2,
-    });
+  } else {
+    items.push(
+      {
+        title: "Mis auditorías",
+        url: "/dashboard/companies",
+        icon: FileSearch2,
+      },
+      {
+        title: "Crear auditoría",
+        url: "/dashboard/evaluation",
+        icon: FilePlus2,
+      }
+    );
   }
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -101,96 +110,47 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
-              <SidebarMenu>
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton asChild>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4" />
-                            Usuarios
+              {role === "admin" && (
+                <SidebarMenu>
+                  <Collapsible className="group/collapsible">
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton asChild>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <User className="w-4 h-4" />
+                              Usuarios
+                            </div>
+                            <ChevronDown className="w-4 h-4 transition-transform" />
                           </div>
-                          <ChevronDown className="w-4 h-4 transition-transform" />
-                        </div>
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
-                          <Link
-                            href="/dashboard/users/create"
-                            className="flex items-center gap-2 group-hover/subitem:text-white"
-                          >
-                            <UserPlus className="w-4 h-4" />
-                            <span>Crear</span>
-                          </Link>
-                        </SidebarMenuSubItem>
-                        <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
-                          <Link
-                            href="/dashboard/users/search"
-                            className="flex items-center gap-2 group-hover/subitem:text-white"
-                          >
-                            <Search className="w-4 h-4" />
-                            <span>Buscar</span>
-                          </Link>
-                        </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              </SidebarMenu>
-              <SidebarMenu>
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton asChild>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <ListChecks className="w-4 h-4" />
-                            Evaluaciones
-                          </div>
-                          <ChevronDown className="w-4 h-4 transition-transform" />
-                        </div>
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenuSub>
-                        {role === "admin" ? (
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
                           <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                             <Link
-                              href="/dashboard/companies"
+                              href="/dashboard/users/create"
                               className="flex items-center gap-2 group-hover/subitem:text-white"
                             >
-                              <Building2 className="w-4 h-4" />
-                              <span>Empresas</span>
+                              <UserPlus className="w-4 h-4" />
+                              <span>Crear</span>
                             </Link>
                           </SidebarMenuSubItem>
-                        ) : (
                           <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
                             <Link
-                              href="/dashboard/companies"
+                              href="/dashboard/users/search"
                               className="flex items-center gap-2 group-hover/subitem:text-white"
                             >
-                              <FileSearch2 className="w-4 h-4" />
-                              <span>Mis auditorías</span>
+                              <Search className="w-4 h-4" />
+                              <span>Buscar</span>
                             </Link>
                           </SidebarMenuSubItem>
-                        )}
-                        <SidebarMenuSubItem className="hover:bg-gray-900 px-2 py-1 rounded-md group/subitem cursor-pointer">
-                          <Link
-                            href="/dashboard/evaluation"
-                            className="flex items-center gap-2 group-hover/subitem:text-white"
-                          >
-                            <FilePlus2 className="w-4 h-4" />
-                            <span>Crear</span>
-                          </Link>
-                        </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-              </SidebarMenu>
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+                </SidebarMenu>
+              )}
             </SidebarGroupContent>
           </SidebarGroup>
         </Collapsible>
@@ -217,20 +177,6 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width] w-60"
               >
-                {role === "admin" && (
-                  <DropdownMenuItem>
-                    <Link
-                      href="/dashboard/settings"
-                      className="flex items-center gap-2"
-                    >
-                      <Settings className="w-4 h-4" />
-                      Configuración
-                    </Link>
-                  </DropdownMenuItem>
-                )}
-
-                {role === "admin" && <DropdownMenuSeparator />}
-
                 <DropdownMenuItem
                   onSelect={() => {
                     localStorage.removeItem("token");

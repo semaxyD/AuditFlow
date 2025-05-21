@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { companyUpdateSchema } from "../CompanyForm/CompanyForm.schema";
+import { companyUpdateSchema } from "../CompanyForm/CompanyUpdate.schema";
 import { z } from "zod";
 import { toast } from "sonner";
 
