@@ -17,11 +17,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { useState, useEffect } from "react";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
 import { useRouter } from "next/navigation";
 type Norm = { id: number; name: string };
 type Company = { id: number; name: string };
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export function EvaluationSettingsModal({
   openModal,
@@ -52,7 +54,7 @@ export function EvaluationSettingsModal({
       setLoadingNorms(true);
       try {
         const token = localStorage.getItem("token") || "";
-        const res = await fetch("http://localhost:3001/auditory/allNorms", {
+        const res = await fetch(`${base}/auditory/allNorms`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(res.statusText);
@@ -80,7 +82,7 @@ export function EvaluationSettingsModal({
       setLoadingCompanies(true);
       try {
         const token = localStorage.getItem("token") || "";
-        const res = await fetch("http://localhost:3001/auditory/myCompanies", {
+        const res = await fetch(`${base}/auditory/myCompanies`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error(res.statusText);

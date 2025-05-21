@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import React, { useRef, useState } from "react";
 import { toast } from "sonner";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export default function AddRule() {
   const [file, setFile] = useState<File | null>(null);
@@ -48,7 +49,7 @@ export default function AddRule() {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://localhost:3001/auditory/norms/upload", {
+      const res = await fetch(`${base}/auditory/norms/upload`, {
         method: "POST",
         body: formData,
         headers: {

@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { toast } from "sonner";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export function DeleteUserModal({ userId }: { userId: string }) {
   const handleDeleteUser = async () => {
@@ -19,16 +20,13 @@ export function DeleteUserModal({ userId }: { userId: string }) {
       console.log("Eliminando usuario con ID:", userId);
       const token = localStorage.getItem("token") || "";
 
-      const response = await fetch(
-        `http://localhost:3001/user/delete/${userId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${base}/user/delete/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
         const errorText = await response.text();

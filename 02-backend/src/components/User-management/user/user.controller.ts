@@ -1,5 +1,14 @@
 // src/components/user-management/user/user.controller.ts
-import { Body, Controller, Post, UseGuards, Get, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  Get,
+  Delete,
+  ParseIntPipe,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { LoginDto } from './login.dto';
 import { CreateCompanyDto } from './create-company.dto';
@@ -10,12 +19,11 @@ import { JwtAuthGuard } from '../../Middleware/Auth/jwt-auth.guard'; // Importar
 import { Roles } from '../../Middleware/decorators/roles.decorator';
 import { RolesGuard } from '../../Middleware/Auth/roles.guard';
 import { Param } from '@nestjs/common';
-import { UpdateFrequencyDto } from './update-frecuency.dto'
+import { UpdateFrequencyDto } from './update-frecuency.dto';
 
-@Controller('user') // Ruta base: http://localhost:3001/user
+@Controller('user')
 export class UserController {
-  constructor(private readonly service: UserService) { }
-
+  constructor(private readonly service: UserService) {}
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
@@ -24,7 +32,6 @@ export class UserController {
     return this.service.CompaniesList();
   }
 
-
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Post('create') // Ruta para crear un nuevo usuario
@@ -32,13 +39,11 @@ export class UserController {
     return this.service.crearUsuario(body);
   }
 
-
   // Endpoints Hu005
   @Post('login') // Ruta para el login de validacion
   async login(@Body() loginDto: LoginDto) {
     return this.service.login(loginDto);
   }
-
 
   //endpoint temporal para probar la proteccion de endpoints(mientras se implementan otros endpoints que si sean protegidos)
   @UseGuards(JwtAuthGuard) // Aplicar el guardia para esta ruta de prueba
@@ -46,7 +51,6 @@ export class UserController {
   async getProtectedData() {
     return { message: 'Acceso concedido' };
   }
-
 
   //HU002 y HU017 endpoint protegido para obtener todos los usuarios, solamente accesible por el rol ADMIN
   //Sirve para listar los usuarios y asi seleccionar a quien se va a configurar
@@ -57,7 +61,6 @@ export class UserController {
     return this.service.buscarUsuarios();
   }
 
-
   //endpoinrt que devuelve info completa de un usuario por su ID
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
@@ -66,7 +69,6 @@ export class UserController {
     //  Solo accesible si el token es válido y el rol es ADMIN
     return this.service.obtenerUsuarioPorId(id);
   }
-
 
   // HU017 - Trae las empresas asociadas a un usuario para armar el formulario de configuración
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -110,7 +112,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Put('update/company/:companyId') // Ruta para modificar una nueva empresa
-  async updateCompany(@Param('companyId', ParseIntPipe) companyId: number, @Body() body: UpdateCompanyDto) {
+  async updateCompany(
+    @Param('companyId', ParseIntPipe) companyId: number,
+    @Body() body: UpdateCompanyDto,
+  ) {
     return this.service.updateCompany(companyId, body);
   }
 
@@ -137,9 +142,4 @@ export class UserController {
   async deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.service.deleteUser(id);
   }
-
-
-
-
-
 }

@@ -6,8 +6,8 @@ import { Check, X, Minus, AlertTriangle, HelpCircle } from "lucide-react";
 const labelMap: Record<string, string> = {
   Sí: "Sí",
   No: "No",
-  "No aplica": "N/A",
-  "N/M": "N/M",
+  NA: "NA",
+  NM: "NM",
 };
 
 // Mapeo de iconos y clases de color

@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import DeleteEvaluationModal from "../components/DeleteEvaluationModal/DeleteEvaluationModal";
 import { generateEvaluationReport } from "../[evaluationId]/utils/generatePdfReport";
 import { exportEvaluationToExcel } from "../[evaluationId]/utils/generateExcelReport";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export type Evaluation = {
   evaluation_id: number;
   evaluation_created_at: string;
@@ -62,7 +62,7 @@ export function getEvaluationColumns(
 
         const fetchFullEval = async () => {
           const res = await fetch(
-            `http://localhost:3001/reports-evaluation/evaluation/${evaluationId}/details`,
+            `${base}/reports-evaluation/evaluation/${evaluationId}/details`,
             {
               headers: {
                 "Content-Type": "application/json",

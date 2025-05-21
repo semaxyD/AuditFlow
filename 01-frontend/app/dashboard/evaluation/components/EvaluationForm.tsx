@@ -11,6 +11,7 @@ import { EvaluationSettingsModal } from "./EvaluationSettingsModal";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
 import type { EvaluationForm as EvalFormType } from "../types/evaluation-form.types";
 import { toast } from "sonner";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export function EvaluationForm({
   companies,
@@ -44,7 +45,7 @@ export function EvaluationForm({
     setIsLoadingForm(true);
     const token = window.localStorage.getItem("token") || "";
 
-    fetch(`http://localhost:3001/auditory/questions/${info.ruleId}`, {
+    fetch(`${base}/auditory/questions/${info.ruleId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -170,8 +171,8 @@ export function EvaluationForm({
     console.log("Token:", role);
     const endpoint =
       role === "auditor_externo"
-        ? `http://localhost:3001/auditory/${info.ruleId}/${info.companyId}/saveExternal`
-        : `http://localhost:3001/auditory/${info.ruleId}/save`;
+        ? `${base}/auditory/${info.ruleId}/${info.companyId}/saveExternal`
+        : `${base}/auditory/${info.ruleId}/save`;
 
     fetch(endpoint, {
       method: "POST",

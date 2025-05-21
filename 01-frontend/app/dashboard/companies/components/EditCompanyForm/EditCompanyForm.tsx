@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { companyUpdateSchema } from "../CompanyForm/CompanyUpdate.schema";
 import { z } from "zod";
 import { toast } from "sonner";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export type Company = {
   id: number;
   name: string;
@@ -78,17 +78,14 @@ export function EditCompanyForm({ company, onUpdated }: EditCompanyFormProps) {
 
     try {
       const token = window.localStorage.getItem("token") ?? "";
-      const res = await fetch(
-        `http://localhost:3001/user/update/company/${company.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const res = await fetch(`${base}/user/update/company/${company.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
       const result = await res.json();
 

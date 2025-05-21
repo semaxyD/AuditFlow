@@ -1,6 +1,7 @@
 // lib/authOptions.ts
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 const decodeJwtPayload = (token: string) => {
   try {

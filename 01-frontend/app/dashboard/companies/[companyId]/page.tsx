@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import EvaluationTable from "./ComplatainsTable/TableEvaluations";
 import { getEvaluationColumns } from "./ComplatainsTable/columns";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 import type {
   ApiEvaluation,
@@ -39,8 +40,8 @@ export default function CompanyPage() {
 
     const endpoint =
       role === "auditor_interno" || role === "auditor_externo"
-        ? `http://localhost:3001/reports-evaluation/${companyId}/myEvaluations`
-        : `http://localhost:3001/reports-evaluation/${companyId}/evaluations`;
+        ? `${base}/reports-evaluation/${companyId}/myEvaluations`
+        : `${base}/reports-evaluation/${companyId}/evaluations`;
 
     fetch(endpoint, {
       headers: {

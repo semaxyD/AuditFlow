@@ -1,6 +1,6 @@
 // SearchUsersPage.tsx
 "use client";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 import { useEffect, useState } from "react";
 import CompaniesTable from "./ComplaintsTable/CompaniesTable";
 import { Company } from "./ComplaintsTable/types/company";
@@ -24,7 +24,7 @@ export default function SearchUsersPage() {
         ? "/reports-evaluation/myCompanies"
         : "/reports-evaluation/companies";
 
-    fetch(`http://localhost:3001${endpoint}`, {
+    fetch(`${base}${endpoint}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,

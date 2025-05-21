@@ -6,7 +6,7 @@ import VersionTable from "./ComplatainsTable/TableVersions";
 import { versionColumns } from "./ComplatainsTable/columns";
 import { Loading } from "@/components/Loading";
 import { useParams } from "next/navigation";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export default function CompanyEvaluationVersionsPage() {
   const params = useParams();
   const companyId = params?.companyId as string;
@@ -30,15 +30,12 @@ export default function CompanyEvaluationVersionsPage() {
     }
 
     const token = window.localStorage.getItem("token") || "";
-    fetch(
-      `http://localhost:3001/reports-evaluation/${evaluationId}/evolution`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(`${base}/reports-evaluation/${evaluationId}/evolution`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => {
         if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
         return res.json() as Promise<ApiVersion[]>;

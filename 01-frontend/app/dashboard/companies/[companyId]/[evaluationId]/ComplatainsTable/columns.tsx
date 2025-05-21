@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { generateEvaluationReport } from "../utils/generatePdfReport";
 import { exportEvaluationToExcel } from "../utils/generateExcelReport";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export const versionColumns: ColumnDef<Version>[] = [
   {
     accessorKey: "version_number",
@@ -79,7 +79,7 @@ export const versionColumns: ColumnDef<Version>[] = [
       // Reutilizamos la misma llamada fetch para PDF y Excel
       const fetchFullEval = async () => {
         const res = await fetch(
-          `http://localhost:3001/reports-evaluation/${evaluationId}/version/${versionId}`,
+          `${base}/reports-evaluation/${evaluationId}/version/${versionId}`,
           {
             headers: {
               "Content-Type": "application/json",

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { CompanyDTO, companySchema } from "./CompanyForm.schema";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export function CompanyForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,7 @@ export function CompanyForm() {
       };
       // Enviamos los datos al backend
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3001/user/create/company", {
+      const res = await fetch(`${base}/user/create/company`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

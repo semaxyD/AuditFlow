@@ -31,6 +31,7 @@ export const frequencySchema = z.object({
     .number({ message: "Los días son requeridos" })
     .min(10, { message: "El número de días debe ser mayor o igual a 10" }),
 });
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export type FrequencyFormData = z.infer<typeof frequencySchema>;
 
@@ -59,12 +60,9 @@ export default function EditFrequencyForm({ userId }: { userId: string }) {
   useEffect(() => {
     async function loadCompanies() {
       try {
-        const res = await fetch(
-          `http://localhost:3001/user/${userId}/companies`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const res = await fetch(`${base}/user/${userId}/companies`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log("Compañías:", res);
         if (!res.ok) throw new Error("Falló al cargar compañías");
         const data: Company[] = await res.json();
@@ -81,7 +79,7 @@ export default function EditFrequencyForm({ userId }: { userId: string }) {
   useEffect(() => {
     async function loadRules() {
       try {
-        const res = await fetch(`http://localhost:3001/user/config/norms`, {
+        const res = await fetch(`${base}/user/config/norms`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error("Falló al cargar normas");
@@ -104,7 +102,7 @@ export default function EditFrequencyForm({ userId }: { userId: string }) {
         frequencyDays: data.frequencyDays,
       };
       console.log("Datos enviados:", payload);
-      const res = await fetch(`http://localhost:3001/user/config/frequency`, {
+      const res = await fetch(`${base}/user/config/frequency`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +140,7 @@ export default function EditFrequencyForm({ userId }: { userId: string }) {
       const payload = { userId, companyId, normId };
       console.log("Datos enviados para eliminar:", payload);
 
-      const res = await fetch(`http://localhost:3001/user/config/delete`, {
+      const res = await fetch(`${base}/user/config/delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

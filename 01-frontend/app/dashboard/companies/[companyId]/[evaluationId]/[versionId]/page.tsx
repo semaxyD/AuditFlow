@@ -22,6 +22,8 @@ import { CriteriaList } from "./components/CriteriaList";
 import { Loading } from "@/components/Loading";
 import { useRoleCheck } from "@/hooks/useRoleCheck";
 
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
+
 ChartJS.register(
   Title,
   Tooltip,
@@ -60,8 +62,8 @@ export default function EvaluationPage() {
     const token = localStorage.getItem("token") || "";
     const endpoint =
       role === "auditor_externo"
-        ? `http://localhost:3001/reports-evaluation/evaluation/${versionId}/details`
-        : `http://localhost:3001/reports-evaluation/${companyId}/version/${versionId}`;
+        ? `${base}/reports-evaluation/evaluation/${versionId}/details`
+        : `${base}/reports-evaluation/${companyId}/version/${versionId}`;
 
     fetch(endpoint, {
       headers: {
@@ -98,14 +100,14 @@ export default function EvaluationPage() {
   const allQuestions = criteria.flatMap((c) => c.questions);
   const yesCount = allQuestions.filter((q) => q.response === "Sí").length;
   const noCount = allQuestions.filter((q) => q.response === "No").length;
-  const naCount = allQuestions.filter((q) => q.response === "No aplica").length;
-  const improveCount = allQuestions.filter((q) => q.response === "N/M").length;
+  const naCount = allQuestions.filter((q) => q.response === "NA").length;
+  const improveCount = allQuestions.filter((q) => q.response === "NM").length;
   const totalCount = allQuestions.length;
   const compliancePerc =
     totalCount > 0 ? Math.round((yesCount / totalCount) * 100) : 0;
 
   const chartData = {
-    labels: ["Sí", "No", "N/A", "N/M"],
+    labels: ["Sí", "No", "NA", "NM"],
     datasets: [
       {
         label: "Respuestas",

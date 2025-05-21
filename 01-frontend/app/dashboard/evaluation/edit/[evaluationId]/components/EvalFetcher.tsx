@@ -13,6 +13,7 @@ interface Evaluation {
   totalQuestions: number;
   sections: any[];
 }
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export default function EvalFetcher({
   evaluationId,
@@ -35,15 +36,12 @@ export default function EvalFetcher({
     }
 
     setIsLoading(true);
-    fetch(
-      `http://localhost:3001/reports-evaluation/${companyId}/myEvaluations`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(`${base}/reports-evaluation/${companyId}/myEvaluations`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

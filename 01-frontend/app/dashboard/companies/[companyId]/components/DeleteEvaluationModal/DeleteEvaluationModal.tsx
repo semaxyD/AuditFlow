@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export default function DeleteEvaluationModal({
   evaluationId,
 }: {
@@ -31,7 +31,7 @@ export default function DeleteEvaluationModal({
 
     try {
       const res = await fetch(
-        `http://localhost:3001/auditory/delete/evaluation/${evaluationId}`,
+        `${base}/auditory/delete/evaluation/${evaluationId}`,
         {
           method: "DELETE",
           headers: {

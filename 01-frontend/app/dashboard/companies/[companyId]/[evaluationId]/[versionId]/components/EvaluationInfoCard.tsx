@@ -97,7 +97,7 @@ export function EvaluationInfoCard({
             <div className="flex items-center gap-2">
               <Minus className="text-gray-500" />{" "}
               <span>
-                N/A: <strong>{naCount}</strong> ({" "}
+                NA: <strong>{naCount}</strong> ({" "}
                 {Math.round((naCount / totalQuestions) * 100)}%){" "}
               </span>{" "}
             </div>
@@ -105,7 +105,7 @@ export function EvaluationInfoCard({
             <div className="flex items-center gap-2">
               <AlertTriangle className="text-amber-500" />{" "}
               <span>
-                N/M: <strong>{improveCount}</strong> ({" "}
+                NM: <strong>{improveCount}</strong> ({" "}
                 {Math.round((improveCount / totalQuestions) * 100)}%){" "}
               </span>{" "}
             </div>

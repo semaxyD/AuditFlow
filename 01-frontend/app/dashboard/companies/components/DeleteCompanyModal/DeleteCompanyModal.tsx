@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 export default function DeleteCompanyModal({
   companyId,
   onDeleted,
@@ -33,16 +33,13 @@ export default function DeleteCompanyModal({
     const token = window.localStorage.getItem("token") || "";
 
     try {
-      const res = await fetch(
-        `http://localhost:3001/user/delete/company/${companyId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(`${base}/user/delete/company/${companyId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       toast.success("Empresa eliminada correctamente", {
         description: "La empresa ha sido eliminada de la base de datos.",

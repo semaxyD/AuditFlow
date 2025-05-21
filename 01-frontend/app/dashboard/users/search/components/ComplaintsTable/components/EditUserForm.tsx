@@ -25,6 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
+
 export const userSchema = z.object({
   name: z.string().min(1, { message: "Nombre es requerido" }),
   email: z.string().email({ message: "Email inválido" }),
@@ -53,7 +55,7 @@ export function EditUserForm({ user }: { user: User }) {
 
     try {
       const token = localStorage.getItem("token") || "";
-      const res = await fetch(`http://localhost:3001/user/update/${user.id}`, {
+      const res = await fetch(`${base}/user/update/${user.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

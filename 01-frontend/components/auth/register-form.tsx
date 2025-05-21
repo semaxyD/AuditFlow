@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserRole, RegisterFormData } from "@/lib/types";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 const formSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
@@ -70,7 +71,7 @@ export function RegisterForm() {
           Authorization: `Bearer ${token}`,
         });
 
-        const res = await fetch("http://localhost:3001/user/companiesList", {
+        const res = await fetch(`${base}/user/companiesList`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -111,7 +112,7 @@ export function RegisterForm() {
         companyIds: data.companyIds,
       };
 
-      const res = await fetch("http://localhost:3001/user/create", {
+      const res = await fetch(`${base}/user/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

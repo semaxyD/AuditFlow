@@ -11,6 +11,7 @@ import { SectionQuestions } from "../../../components/SectionQuestions";
 import { ObservationsModal } from "../../../components/ObservationsModal";
 import type { EvaluationForm as EvalFormType } from "../../../types/evaluation-form.types";
 import { useParams, useSearchParams } from "next/navigation";
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export function EvaluationEditForm() {
   // — Estados —
@@ -46,15 +47,12 @@ export function EvaluationEditForm() {
     setIsLoadingForm(true);
     const token = window.localStorage.getItem("token") || "";
 
-    fetch(
-      `http://localhost:3001/reports-evaluation/evaluation/${evaluationId}/details`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(`${base}/reports-evaluation/evaluation/${evaluationId}/details`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(async (res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
@@ -235,7 +233,7 @@ export function EvaluationEditForm() {
     console.log("Payload reestructurado:", JSON.stringify(payload, null, 2));
 
     const token = window.localStorage.getItem("token") || "";
-    const endpoint = `http://localhost:3001/auditory/${evaluationId}`;
+    const endpoint = `${base}/auditory/${evaluationId}`;
 
     fetch(endpoint, {
       method: "PUT",

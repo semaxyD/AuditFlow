@@ -26,6 +26,7 @@ import { User } from "./types/users";
 interface UsersTableProps {
   columns: ColumnDef<User>[];
 }
+const base = process.env.NEXT_PUBLIC_ENDPOINT;
 
 export default function UsersTable({ columns }: UsersTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -38,7 +39,7 @@ export default function UsersTable({ columns }: UsersTableProps) {
       setLoading(true);
       try {
         const token = window.localStorage.getItem("token") || "";
-        const res = await fetch("http://localhost:3001/user/search", {
+        const res = await fetch(`${base}/user/search`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
