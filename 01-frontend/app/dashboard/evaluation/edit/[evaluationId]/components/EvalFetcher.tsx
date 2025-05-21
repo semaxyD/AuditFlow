@@ -82,23 +82,6 @@ export default function EvalFetcher({
       <h1 className="text-4xl font-bold text-teal-700">
         Editando la evaluación {evaluation.id}
       </h1>
-      <div className="mt-4 space-y-2 text-gray-500">
-        <p>
-          <b>Nombre:</b> {evaluation.name}
-        </p>
-        <p>
-          <b>Fecha:</b> {evaluation.date}
-        </p>
-        <p>
-          <b>Estado:</b> {evaluation.status}
-        </p>
-        <p>
-          <b>Puntaje:</b> {evaluation.score}
-        </p>
-        <p>
-          <b>Total de preguntas:</b> {evaluation.totalQuestions}
-        </p>
-      </div>
 
       <div className="mt-8">
         <EvaluationEditForm />
