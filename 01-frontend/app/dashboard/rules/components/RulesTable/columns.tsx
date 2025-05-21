@@ -31,20 +31,4 @@ export const columns: ColumnDef<Rule>[] = [
     accessorKey: "name",
     header: "Nombre",
   },
-
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2 justify-end">
-          <Button variant="default" size="icon" title="Ver evaluación" asChild>
-            <Link href={`/dashboard/evaluations-list/${row.getValue("id")}`}>
-              <Eye />
-            </Link>
-          </Button>
-        </div>
-      );
-    },
-  },
 ];
